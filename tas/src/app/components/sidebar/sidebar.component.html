@@ -1,0 +1,25 @@
+<!--USER TITLE-->
+<div class="logo">
+    <div class="card card-profile" style="width:100%; margin:0; padding-top:60px">
+        <div class="card-avatar" style="width:70px; height:70px">
+            <img src="../assets/img/icon.png"/>
+        </div>
+        <div class="content">
+            <h5 class="card-title" style="margin-bottom:0">Wisesa Priya Fentika</h5>
+            <h6 class="category text-gray" style="margin-bottom:10px">AS ADMINISTRATOR</h6>
+        </div>
+    </div>
+</div>
+<!--SIDEBAR MENU-->
+<div class="sidebar-wrapper">
+    <ul class="nav">
+            <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
+                <md-toolbar style="background-color:transparent">
+                    <button md-button style="width:100%; height:50px; text-align:start">
+                        <a  [routerLink]="[menuItem.path]"><i class="material-icons" style="margin-right:20px">{{menuItem.icon}}</i>{{menuItem.title}}</a>
+                    </button>
+                </md-toolbar>
+            </li>
+    </ul>
+</div>
+

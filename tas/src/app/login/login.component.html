@@ -1,0 +1,30 @@
+<div align="center" style="background-color:#B0BEC5; height:100vh; padding-top:80px">
+    <md-card style="width:30%; height:70vh; padding:0">
+        <md-card-header style="background-image:url(../assets/img/mitrais.jpg); height:30%"></md-card-header>
+        <md-card-content style="height:50%; padding:10px">
+            <h4 style="color:#6100BF"><b>TRAINING ADMIN SYSTEMS</b></h4>
+            <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+                <md-form-field style="width:70%">
+                    <br>
+                    <input mdInput placeholder="Username" type="text" [(ngModel)]="model.username" #username="ngModel" style="color:#673AB7">
+                </md-form-field>
+            </form>
+            <!-- <div *ngIf="f.submitted && !username.valid">Username is required!</div> -->
+            <form>
+                <md-form-field style="width:70%">
+                    <br>
+                    <input mdInput placeholder="Password" type="password" [(ngModel)]="model.password" #password="ngModel" style="color:#673AB7">
+                </md-form-field>
+            </form>
+            <!-- <div *ngIf="f.submitted && !password.valid">Password is required!</div> -->
+            <br>
+            <md-checkbox style="margin-right:40%" id="rememberMe" name="rememberMe" [(ngModel)]="model.rememberMe" #rememberMe="ngModel">Remember Me</md-checkbox>
+        </md-card-content>
+        <md-card-actions style="height:20%">
+            <button md-button style="width:40%; background-color:#6100BF; color:#FFFFFF" [disabled]="loading" type="submit" (click)="showWarning('bottom','center')">Submit</button>
+        </md-card-actions>
+    </md-card>
+    <p class="copyright pull-center" style="margin-top:50px">
+        &copy; {{test | date: 'yyyy'}} Bima Team | <a href="https://www.mitrais.com/">Mitrais</a> 2017
+    </p>
+</div>
