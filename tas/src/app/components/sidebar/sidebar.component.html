@@ -1,4 +1,3 @@
-<!--USER TITLE-->
 <div class="logo">
     <div class="card card-profile" style="width:100%; margin:0; padding-top:60px">
         <div class="card-avatar" style="width:70px; height:70px">
@@ -10,13 +9,12 @@
         </div>
     </div>
 </div>
-<!--SIDEBAR MENU-->
 <div class="sidebar-wrapper">
     <ul class="nav">
             <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
                 <md-toolbar style="background-color:transparent">
                     <button md-button style="width:100%; height:50px; text-align:start">
-                        <a  [routerLink]="[menuItem.path]"><i class="material-icons" style="margin-right:20px">{{menuItem.icon}}</i>{{menuItem.title}}</a>
+                        <a  [routerLink]="[menuItem.path]" style="color:#6100BF"><i class="material-icons" style="margin-right:20px; color:#6100BF">{{menuItem.icon}}</i>{{menuItem.title}}</a>
                     </button>
                 </md-toolbar>
             </li>

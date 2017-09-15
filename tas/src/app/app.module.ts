@@ -18,12 +18,16 @@ import { ComponentsModule } from './components/components.module';
 import { AppComponent } from './app.component';
 import { LoginAuth } from './authentication/authentication.component'
 import { LoginComponent } from './login/login.component';
+import { RoleComponent } from './login/role.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { PeriodComponent, AddPeriodComponent } from './period/period.component';
+import { PeriodComponent } from './period/period.component';
+import { AddPeriodComponent } from './period/period-add.component';
+import { UserComponent } from './user/user.component';
 
 import { AuthenticationService } from './services/authentication.service';
 import { AlertService } from './services/alert.service';
+import { LoginService } from './services/login.service';
 
 @NgModule({
   exports: [ MdAutocompleteModule, MdButtonModule, MdButtonToggleModule,
@@ -40,10 +44,12 @@ export class MaterialModule {}
   declarations: [
     AppComponent,
     LoginComponent,
+    RoleComponent,
     HomeComponent,
     DashboardComponent,
     PeriodComponent,
     AddPeriodComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +67,7 @@ export class MaterialModule {}
     CookieService,
     AuthenticationService,
     AlertService,
+    LoginService,
   ],
   bootstrap: [
     AppComponent,

@@ -10,12 +10,8 @@ import 'rxjs/add/operator/map'
 export class AuthenticationService {
     constructor(private http: Http, private cookieService:CookieService, private router:Router) { }
 
-    login(username: string, password: string) {
-        if (username == "wrong"){
-            return false;
-        }
+    login(username: string, password: string): void {
         this.cookieService.put('currentUser', JSON.stringify({ 'username': username, 'password': password }));
-        return true;
     }
 
     logout() {

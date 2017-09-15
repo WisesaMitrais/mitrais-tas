@@ -3,8 +3,6 @@ import { DataSource } from '@angular/cdk/collections';
 import { MdPaginator, MdSort, SelectionModel } from '@angular/material';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
-import { AddPeriodComponent } from './period-add.component';
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
@@ -15,21 +13,13 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
-  selector: 'tas-period',
-  templateUrl: './period.component.html',
-  styleUrls: ['./period.component.css']
+  selector: 'tas-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.css']
 })
-export class PeriodComponent {
-  constructor(public dialog: MdDialog) {}
+export class UserComponent {
 
-  openDialog(): void {
-    let dialogRef = this.dialog.open(AddPeriodComponent, {
-      width: '600px',
-      height: '430px'
-    });
-  }
-
-displayedColumns = ['userId', 'name', 'active', 'courses', 'startDate', 'endDate', 'createdBy', 'updateBy', 'action'];
+displayedColumns = ['employeeId', 'fullName', 'email', 'jobFamilyStream', 'grade', 'accountName', 'active', 'role', 'action'];
   exampleDatabase = new ExampleDatabase();
   selection = new SelectionModel<string>(true, []);
   dataSource: ExampleDataSource | null;
@@ -73,23 +63,15 @@ displayedColumns = ['userId', 'name', 'active', 'courses', 'startDate', 'endDate
   }
 }
 
-const NAMES = ['aaa', 'bbb', 'ccc', 'ddd', 'eee'];
-const ACTIVES = ['yes', 'no'];
-const COURSES = ['ffff', 'gggg', 'hhhh'];
-const STARTDATES = ['01-January-2017', '02-March-2017'];
-const ENDDATES = ['30-July-2017', '31-December-2017'];
-const CREATEDBY = ['vv', 'xx'];
-const UPDATEBY = ['yyyyy', 'zzzzz'];
-
 export interface UserData {
   id: string;
-  name: string;
+  fullName: string;
+  email: string;
+  jobFamilyStream: string;
+  grade: string;
+  accountName: string;
   active: string;
-  courses: string;
-  startDate: string;
-  endDate: string;
-  createdBy: string;
-  updateBy: string;
+  role: string;
 }
 
 export class ExampleDatabase {
@@ -109,13 +91,13 @@ export class ExampleDatabase {
   private createNewUser() {
     return {
       id: (this.data.length + 1).toString(),
-      name: NAMES[Math.round(Math.random() * (NAMES.length - 1))],
-      active: ACTIVES[Math.round(Math.random() * (ACTIVES.length - 1))],
-      courses: COURSES[Math.round(Math.random() * (COURSES.length - 1))],
-      startDate: STARTDATES[Math.round(Math.random() * (STARTDATES.length - 1))],
-      endDate: ENDDATES[Math.round(Math.random() * (ENDDATES.length - 1))],
-      createdBy: CREATEDBY[Math.round(Math.random() * (CREATEDBY.length - 1))],
-      updateBy: UPDATEBY[Math.round(Math.random() * (UPDATEBY.length - 1))]
+      fullName: 'full name',
+      email: 'email',
+      jobFamilyStream: 'job family stream',
+      grade: 'grade',
+      accountName: 'account name',
+      active: 'active',
+      role: 'role'
     };
   }
 }
@@ -146,7 +128,7 @@ export class ExampleDataSource extends DataSource<any> {
 
     return Observable.merge(...displayDataChanges).map(() => {
       this.filteredData = this._exampleDatabase.data.slice().filter((item: UserData) => {
-        let searchStr = (item.name).toLowerCase();
+        let searchStr = (item.fullName).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
 
@@ -169,13 +151,13 @@ export class ExampleDataSource extends DataSource<any> {
 
       switch (this._sort.active) {
         case 'userId': [propertyA, propertyB] = [a.id, b.id]; break;
-        case 'name': [propertyA, propertyB] = [a.name, b.name]; break;
+        case 'fullName': [propertyA, propertyB] = [a.fullName, b.fullName]; break;
+        case 'email': [propertyA, propertyB] = [a.email, b.email]; break;
+        case 'jobFamilyStream': [propertyA, propertyB] = [a.jobFamilyStream, b.jobFamilyStream]; break;
+        case 'grade': [propertyA, propertyB] = [a.grade, b.grade]; break;
+        case 'accountName': [propertyA, propertyB] = [a.accountName, b.accountName]; break;
         case 'active': [propertyA, propertyB] = [a.active, b.active]; break;
-        case 'courses': [propertyA, propertyB] = [a.courses, b.courses]; break;
-        case 'startDate': [propertyA, propertyB] = [a.startDate, b.startDate]; break;
-        case 'endDate': [propertyA, propertyB] = [a.endDate, b.endDate]; break;
-        case 'createdBy': [propertyA, propertyB] = [a.createdBy, b.createdBy]; break;
-        case 'updateBy': [propertyA, propertyB] = [a.updateBy, b.updateBy]; break;
+        case 'role': [propertyA, propertyB] = [a.role, b.role]; break;
       }
 
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;

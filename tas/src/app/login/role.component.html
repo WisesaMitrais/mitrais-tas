@@ -1,0 +1,20 @@
+<md-toolbar style="background-color:#6100BF; color:#FEFEFE">Choose Your Role</md-toolbar>
+<br>
+<md-button-toggle-group #group="mdButtonToggleGroup">
+    <md-button-toggle value="admin" style="width:113px; text-align:center" (click)="toDashboard()">
+      <md-icon style="color:#444444">content_paste</md-icon>
+      <h4 style="color:#444444">Admin</h4>
+    </md-button-toggle>
+    <md-button-toggle value="manager" style="width:112px; text-align:center">
+      <md-icon style="color:#444444">gavel</md-icon>
+      <h4 style="color:#444444">Manager</h4>
+    </md-button-toggle>
+    <md-button-toggle value="trainer" style="width:113px; text-align:center">
+      <md-icon style="color:#444444">border_color</md-icon>
+      <h4 style="color:#444444">Trainer</h4>
+    </md-button-toggle>
+    <md-button-toggle value="staff" style="width:112px; text-align:center">
+      <md-icon style="color:#444444">work</md-icon>
+      <h4 style="color:#444444">Staff</h4>
+    </md-button-toggle>
+</md-button-toggle-group>

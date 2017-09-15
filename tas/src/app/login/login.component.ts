@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {CookieService} from 'angular2-cookie/core';
+import { CookieService } from 'angular2-cookie/core';
+import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+
+import { RoleComponent } from './role.component';
 
 import { AuthenticationService } from '../services/authentication.service';
 import { AlertService } from '../services/alert.service';
+import { LoginService } from '../services/login.service';
+import { User } from '../services/user';
 
 declare var $: any;
 
@@ -15,35 +20,42 @@ declare var $: any;
 export class LoginComponent implements OnInit {
     loading = false;
     model: any = {};
-    homeUrl:string = '/home/dashboard';
+    user: User;
 
     constructor(
+        public dialog: MdDialog,
+        private loginService: LoginService,
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
         private alertService: AlertService ,
-        private cookieService:CookieService){
+        private cookieService: CookieService){
+    }
+
+    openRoleDialog(): void {
+        let dialogRef = this.dialog.open(RoleComponent, {
+        width: '500px',
+        height: '225px'
+        });
     }
 
     ngOnInit(){
-        this.model=JSON.parse(this.cookieService.get('loginData'));
+        this.model = JSON.parse(this.cookieService.get('loginData'));
     }
 
     login(): void {
+        // this.loginService
+        // .getUserLogin("admin", "admin")
+        // .then(user => this.user = user);
+        // alert(this.user);
         if (this.model.rememberMe){
             this.rememberMe();
         }
-
-        if(this.authenticationService.login(this.model.username, this.model.password)){
-            this.router.navigate([this.homeUrl]);
-        } else {
-            alert("Username or password invalid !");
-        }
+        this.authenticationService.login(this.model.username, this.model.password);
     }
 
     rememberMe(){
         this.cookieService.put('loginData',JSON.stringify({ 'username': this.model.username, 'password': this.model.password }));
-        console.log ('My Cookie: ' + this.cookieService.get('loginData'));
     }
 
     showWarning(from, align){
