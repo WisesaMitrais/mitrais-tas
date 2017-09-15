@@ -40,16 +40,15 @@ public class User {
 	@Column (name = "grade")
 	private String grade;
 	
-	@ManyToOne
-	@JoinColumn (name = "id_office")
-	private Office office;
+	@Column (name = "id_office")
+	private long idOffice;
 	
 	public User() {
 		
 	}
 	
 	public User(Long idUser, String name, String email, String username, String password, Boolean active, String jobFamilyStream,
-			String grade, Office office) {
+			String grade, long idOffice) {
 		this.name = name;
 		this.email = email;
 		this.username = username;
@@ -57,16 +56,16 @@ public class User {
 		this.active = active;
 		this.jobFamilyStream = jobFamilyStream;
 		this.grade = grade;
-		this.office = office;
+		this.idOffice = idOffice;
 	}
 	
 	
-	public Office getOffice() {
-		return office;
+	public long getOffice() {
+		return idOffice;
 	}
 
-	public void setOffice(Office office) {
-		this.office = office;
+	public void setOffice(long office) {
+		this.idOffice = office;
 	}
 
 	public Boolean getActive() {

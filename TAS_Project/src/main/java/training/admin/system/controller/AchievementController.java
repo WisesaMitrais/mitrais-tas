@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import training.admin.system.model.Role;
-import training.admin.system.repository.RoleRepository;
+import training.admin.system.model.Achievement;
+import training.admin.system.repository.AchievementRepository;
 
 @RestController
-@RequestMapping("/role")
-public class RoleController {
-
+@RequestMapping("/achievement")
+public class AchievementController {
+	
 	@Autowired
-	RoleRepository roleRepository;
+	AchievementRepository achievementRepository;
 	
 	@RequestMapping(value="/all", method=RequestMethod.GET)
-	public List<Role> findAll( ){
-		return roleRepository.findAll();
+	public List<Achievement> findAll( ) {
+		return achievementRepository.findAll();
 	}
 	
 	@RequestMapping(value="/allPage", method=RequestMethod.GET)
-	public Page<Role> findAll(Pageable pageable){
-		return roleRepository.findAll(pageable);
+	public Page<Achievement> findAll(Pageable pageable) {
+		return achievementRepository.findAll(pageable);
 	}
 }

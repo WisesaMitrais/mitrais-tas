@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import training.admin.system.model.Role;
-import training.admin.system.repository.RoleRepository;
+import training.admin.system.model.UserRole;
+import training.admin.system.repository.UserRoleRepository;
 
 @RestController
-@RequestMapping("/role")
-public class RoleController {
+@RequestMapping("/userrole")
+public class UserRoleController {
 
 	@Autowired
-	RoleRepository roleRepository;
+	UserRoleRepository userRoleRepository;
 	
 	@RequestMapping(value="/all", method=RequestMethod.GET)
-	public List<Role> findAll( ){
-		return roleRepository.findAll();
+	public List<UserRole> findAll(){
+		return userRoleRepository.findAll();				
 	}
 	
 	@RequestMapping(value="/allPage", method=RequestMethod.GET)
-	public Page<Role> findAll(Pageable pageable){
-		return roleRepository.findAll(pageable);
+	public Page<UserRole> findAll(Pageable pageable){
+		return userRoleRepository.findAll(pageable);				
 	}
 }

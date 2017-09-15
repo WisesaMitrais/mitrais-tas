@@ -21,15 +21,14 @@ public class Room {
 	@Column (name="name")
 	private String name;
 	
-	@ManyToOne
-	@JoinColumn (name="id_office")
-	private Office idOffice;
+	@Column (name="id_office")
+	private long idOffice;
 	
 	public Room() {
 		
 	}
 	
-	public Room(long idRoom, String name, Office idOffice) {
+	public Room(long idRoom, String name, long idOffice) {
 		this.idRoom = idRoom;
 		this.name = name;
 		this.idOffice = idOffice;
@@ -51,11 +50,11 @@ public class Room {
 		this.name = name;
 	}
 
-	public Office getIdOffice() {
+	public long getIdOffice() {
 		return idOffice;
 	}
 
-	public void setId_office(Office idOffice) {
+	public void setId_office(long idOffice) {
 		this.idOffice = idOffice;
 	}
 	

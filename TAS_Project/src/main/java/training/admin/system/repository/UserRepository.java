@@ -7,4 +7,6 @@ import training.admin.system.model.User;
 
 @Component
 public interface UserRepository extends JpaRepository<User, Long>{
+	User findByNameIgnoreCase(String name);
+	User findByUsernameAndPassword(String username, String password);
 }
