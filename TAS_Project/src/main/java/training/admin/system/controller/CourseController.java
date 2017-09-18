@@ -25,7 +25,17 @@ public class CourseController {
 	}
 	
 	@RequestMapping(value="/allPage", method=RequestMethod.GET)
-	public Page<Course> findAll(Pageable pageable){
+	public Page<Course> findAll (Pageable pageable){
 		return courseRepository.findAll(pageable);
+	}
+	
+	@RequestMapping(value="/bcc", method = RequestMethod.GET)
+	public Page<Course> findBcc (Pageable pageable){
+		return courseRepository.findByBccCourse(pageable,true);
+	}
+	
+	@RequestMapping(value="/notBcc", method = RequestMethod.GET)
+	public Page<Course> findNotBcc (Pageable pageable){
+		return courseRepository.findByBccCourse(pageable,false);
 	}
 }

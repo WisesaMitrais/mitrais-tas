@@ -19,10 +19,10 @@ public class Schedule {
 	private long idSchedule;
 	
 	@Column (name="start_date")
-	private Date start_date;
+	private Date startDate;
 	
 	@Column (name="end_date")
-	private Date end_date;
+	private Date endDate;
 	
 	@Column (name = "capacity")
 	private Integer capacity;
@@ -36,20 +36,32 @@ public class Schedule {
 	@Column (name = "id_room")
 	private Long idRoom;
 	
+	@Column (name = "id_trainer1")
+	private Long idMainTrainer;
+	
+	@Column (name = "id_trainer2")
+	private Long idBackupTrainer;
+	
 	public Schedule() {
 		
 	}
 
-	public Schedule(long idSchedule, Date start_date, Date end_date, Integer capacity, Long idTraining, Long idCourse,
-			Long idRoom) {
+
+
+	public Schedule(long idSchedule, Date startDate, Date endDate, Integer capacity, Long idTraining, Long idCourse,
+			Long idRoom, Long idMainTrainer, Long idBackupTrainer) {
+		super();
 		this.idSchedule = idSchedule;
-		this.start_date = start_date;
-		this.end_date = end_date;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.capacity = capacity;
 		this.idTraining = idTraining;
 		this.idCourse = idCourse;
 		this.idRoom = idRoom;
+		this.idMainTrainer = idMainTrainer;
+		this.idBackupTrainer = idBackupTrainer;
 	}
+
 
 	public long getIdSchedule() {
 		return idSchedule;
@@ -60,19 +72,19 @@ public class Schedule {
 	}
 
 	public Date getStart_date() {
-		return start_date;
+		return startDate;
 	}
 
 	public void setStart_date(Date start_date) {
-		this.start_date = start_date;
+		this.startDate = start_date;
 	}
 
 	public Date getEnd_date() {
-		return end_date;
+		return endDate;
 	}
 
 	public void setEnd_date(Date end_date) {
-		this.end_date = end_date;
+		this.endDate = end_date;
 	}
 
 	public Integer getCapacity() {
@@ -106,8 +118,22 @@ public class Schedule {
 	public void setIdRoom(Long idRoom) {
 		this.idRoom = idRoom;
 	}
-	
-	
+
+	public Long getIdMainTrainer() {
+		return idMainTrainer;
+	}
+
+	public void setIdMainTrainer(Long idMainTrainer) {
+		this.idMainTrainer = idMainTrainer;
+	}
+
+	public Long getIdBackupTrainer() {
+		return idBackupTrainer;
+	}
+
+	public void setIdBackupTrainer(Long idBackupTrainer) {
+		this.idBackupTrainer = idBackupTrainer;
+	}
 	
 
 }

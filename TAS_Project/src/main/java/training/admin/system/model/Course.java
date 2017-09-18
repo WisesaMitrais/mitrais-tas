@@ -20,14 +20,26 @@ public class Course {
 	@Column(name="name")
 	private String name;
 	
+	@Column(name="bcc_course")
+	private Boolean bccCourse;
+	
 	public Course() {
 		
 	}
 	
-	public Course(long idCourse, String name) {
+	public Boolean isBccCourse() {
+		return bccCourse;
+	}
+
+	public void setBccCourse(Boolean bccCourse) {
+		this.bccCourse = bccCourse;
+	}
+
+	public Course(long idCourse, String name, Boolean bccCourse) {
 		super();
 		this.idCourse = idCourse;
 		this.name = name;
+		this.bccCourse = bccCourse;
 	}
 	
 	public long getIdCourse() {

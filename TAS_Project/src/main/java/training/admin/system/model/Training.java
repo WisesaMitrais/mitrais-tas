@@ -41,6 +41,9 @@ public class Training {
 
 	@Column (name="updated_date")
 	private Date updatedDate;
+	
+	@Column (name="open_enrollment")
+	private Boolean openEnrollment;
 
 	public Training() {
 		
@@ -130,8 +133,18 @@ public class Training {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
+
+	public boolean isActive() {
+		return active;
+	}
 	
-	
+	public Boolean isOpenEnrollment() {
+		return openEnrollment;
+	}
+
+	public void setOpenEnrollment(Boolean openEnrollment) {
+		this.openEnrollment = openEnrollment;
+	}
 	
 	
 }
