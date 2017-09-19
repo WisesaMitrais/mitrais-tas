@@ -3,13 +3,10 @@
         <md-card-header style="background-color:#6100BF;padding-top:10px; padding-left:20px; height:65px">
             <div md-card-avatar style="color:#FEFEFE"><md-icon>dvr</md-icon></div>
             <md-card-title style="color:#FEFEFE">ACTIVE TRAINING</md-card-title>
-            <md-card-subtitle style="color:#FEFEFE">Total list : 10</md-card-subtitle>
-            <md-form-field floatPlaceholder="never" style="position:absolute; right:0; margin-right:20px">
-                <input mdInput #filter placeholder="Search item">
-            </md-form-field>
+            <md-card-subtitle style="color:#FEFEFE">Total list : {{totalDataAT}}</md-card-subtitle>
         </md-card-header>
         <md-card-content>
-            <md-table #table [dataSource]="dataSource" mdSort style="height:300px">
+            <md-table #table [dataSource]="dataSource" mdSort style="background-color:#F2F2F2; height:300px">
                 <ng-container mdColumnDef="courseName">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Course Name </b></md-header-cell>
                     <md-cell *mdCellDef="let row"> {{row.courseName}} </md-cell>
@@ -39,40 +36,38 @@
             </md-table>
         </md-card-content>
     </md-card>
+
     <md-card style="padding:0; margin-left:20px; margin-right:20px; margin-top:30px">
         <md-card-header style="background-color:#6100BF;padding-top:10px; padding-left:20px; height:65px">
             <div md-card-avatar style="color:#FEFEFE"><md-icon>dvr</md-icon></div>
             <md-card-title style="color:#FEFEFE">BUSINESS COMMUNICATION COURSE (BCC) SCHEDULE</md-card-title>
-            <md-card-subtitle style="color:#FEFEFE">Total list : 10</md-card-subtitle>
-            <md-form-field floatPlaceholder="never" style="position:absolute; right:0; margin-right:20px">
-                <input mdInput #filter placeholder="Search item">
-            </md-form-field>
+            <md-card-subtitle style="color:#FEFEFE">Total list : {{totalDataBCCS}}</md-card-subtitle>
         </md-card-header>
         <md-card-content>
-            <md-table #table [dataSource]="dataSource2" mdSort style="height:300px">
+            <md-table #table [dataSource]="dataSource2" mdSort style="background-color:#F2F2F2; height:300px">
                 <ng-container mdColumnDef="trainer">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Trainer </b></md-header-cell>
                     <md-cell *mdCellDef="let row"> {{row.trainer}} </md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="monday">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Monday </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.monday}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.mon}} </md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="tuesday">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Tuesday </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.tuesday}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.tue}} </md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="wednesday">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Wednesday </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.wednesday}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.wed}} </md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="thursday">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Thursday </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.thursday}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.thu}} </md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="friday">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Friday </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.friday}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.fri}} </md-cell>
                 </ng-container>
                 <md-header-row *mdHeaderRowDef="bccScheduleColumns"></md-header-row>
                 <md-row *mdRowDef="let row; columns: bccScheduleColumns;"></md-row>

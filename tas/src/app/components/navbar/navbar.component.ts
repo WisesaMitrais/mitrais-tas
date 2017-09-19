@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+import { CookieService } from 'angular2-cookie/core';
+import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 import { RoleComponent } from '.../../app/login/role.component';
@@ -12,13 +13,16 @@ import { ROUTES } from '../sidebar/sidebar.component';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-    test : Date = new Date();
     private listTitles: any[];
     location: Location;
     private toggleButton: any;
     private sidebarVisible: boolean;
 
-    constructor(location: Location,  private element: ElementRef, private router: Router, public dialog: MdDialog) {
+    constructor(location: Location,  
+        private element: ElementRef, 
+        private router: Router, 
+        public dialog: MdDialog, 
+        public cookieService: CookieService) {
         this.location = location;
         this.sidebarVisible = false;
     }
@@ -45,7 +49,12 @@ export class NavbarComponent implements OnInit {
     }
 
     toLogin(){
+        this.cookieService.remove('currentUser');
         this.router.navigate(['/login']);
+    }
+
+    toDashboard(){
+        this.router.navigate(['/home/dashboard']);
     }
 
     toChangeRole(): void{

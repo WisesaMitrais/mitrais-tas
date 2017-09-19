@@ -25,9 +25,10 @@ import { PeriodComponent } from './period/period.component';
 import { AddPeriodComponent } from './period/period-add.component';
 import { UserComponent } from './user/user.component';
 
-import { AuthenticationService } from './services/authentication.service';
 import { AlertService } from './services/alert.service';
 import { LoginService } from './services/login.service';
+import { DashboardService } from './services/dashboard.service';
+import { UrlService } from './services/url.service';
 
 @NgModule({
   exports: [ MdAutocompleteModule, MdButtonModule, MdButtonToggleModule,
@@ -65,12 +66,13 @@ export class MaterialModule {}
   providers: [
     LoginAuth,
     CookieService,
-    AuthenticationService,
     AlertService,
     LoginService,
+    UrlService,
+    DashboardService
   ],
   bootstrap: [
-    AppComponent,
+    AppComponent
   ]
 })
 export class AppModule { }

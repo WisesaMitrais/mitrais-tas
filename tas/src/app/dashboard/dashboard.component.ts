@@ -1,8 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {DataSource} from '@angular/cdk/collections';
-import {MdSort} from '@angular/material';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import { Component, ViewChild } from '@angular/core';
+import { DataSource } from '@angular/cdk/collections';
+import { MdSort } from '@angular/material';
+
+import { DashboardAT } from '../services/dashboard-at';
+import { DashboardBCCS } from '../services/dashboard-bccs';
+import { DashboardService } from '../services/dashboard.service';
+
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
@@ -12,57 +18,58 @@ import 'rxjs/add/operator/map';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
-
+export class DashboardComponent {
   activeTrainingColumns = ['courseName', 'mainTrainer', 'backupTrainer', 'startDate', 'endDate', 'office'];
-  exampleDatabase = new ExampleDatabase();
+  dashboardAT: DashboardAT[];
+  exampleDatabase;
   dataSource: ExampleDataSource | null;
+  totalDataAT: number;
 
   bccScheduleColumns = ['trainer', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-  exampleDatabase2 = new ExampleDatabase2();
+  dashboardBCCS: DashboardBCCS[];
+  exampleDatabase2;
   dataSource2: ExampleDataSource2 | null;
+  totalDataBCCS: number;
+
+  constructor(private dashboardService: DashboardService) { 
+    this.dashboardService.getDataAT().subscribe(((dashboardAT) => {
+      this.dashboardAT = dashboardAT;
+      this.totalDataAT = this.dashboardAT.length;
+      this.exampleDatabase = new ExampleDatabase(this.dashboardAT); 
+      this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort);
+    }));
+
+    this.dashboardService.getDataBCCS().subscribe(((dashboardBCCS) => {
+      this.dashboardBCCS = dashboardBCCS;
+      this.totalDataBCCS = this.dashboardBCCS.length;
+      this.exampleDatabase2 = new ExampleDatabase2(this.dashboardBCCS);
+      this.dataSource2 = new ExampleDataSource2(this.exampleDatabase2, this.sort2);
+    }));
+  }
 
   @ViewChild(MdSort) sort: MdSort
   @ViewChild(MdSort) sort2: MdSort
-
-  ngOnInit() {
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.sort);
-    this.dataSource2 = new ExampleDataSource2(this.exampleDatabase2, this.sort2);
-  }
-}
-
-export interface ActiveTrainingData {
-  courseName: string;
-  mainTrainer: string;
-  backupTrainer: string;
-  startDate: string;
-  endDate: string;
-  office: string;
 }
 
 export class ExampleDatabase {
-  dataChange: BehaviorSubject<ActiveTrainingData[]> = new BehaviorSubject<ActiveTrainingData[]>([]);
-  get data(): ActiveTrainingData[] { return this.dataChange.value; }
-
-  constructor() {
-    for (let i = 0; i < 10; i++) { this.addRow(); }
+  dataChange: BehaviorSubject<DashboardAT[]> = new BehaviorSubject<DashboardAT[]>([]);
+  get data(): DashboardAT[] { 
+    return this.dataChange.value; 
   }
 
-  addRow() {
-    const copiedData = this.data.slice();
-    copiedData.push(this.createNewRow());
-    this.dataChange.next(copiedData);
-  }
-
-  private createNewRow() {
-    return {
-      courseName: 'Business Writing 1 #1',
-      mainTrainer: 'Facsi Pramujuwono',
-      backupTrainer: 'Herdiawan Fajar',
-      startDate: '07-08-2017',
-      endDate: '07-09-2017',
-      office: 'Bali'
-    };
+  constructor(private dataAT: DashboardAT[]) {
+    for (let i = 0; i < dataAT.length; i++) { 
+      const copiedData = this.data.slice();
+      copiedData.push({
+        courseName: this.dataAT[i].courseName,
+        mainTrainer: this.dataAT[i].mainTrainer,
+        backupTrainer: this.dataAT[i].backupTrainer,
+        startDate: this.dataAT[i].startDate,
+        endDate: this.dataAT[i].endDate,
+        office: this.dataAT[i].office
+      });
+      this.dataChange.next(copiedData);
+    }
   }
 }
 
@@ -71,7 +78,7 @@ export class ExampleDataSource extends DataSource<any> {
     super();
   }
 
-  connect(): Observable<ActiveTrainingData[]> {
+  connect(): Observable<DashboardAT[]> {
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
       this._sort.mdSortChange,
@@ -84,7 +91,7 @@ export class ExampleDataSource extends DataSource<any> {
 
   disconnect() {}
 
-  getSortedData(): ActiveTrainingData[] {
+  getSortedData(): DashboardAT[] {
     const data = this._exampleDatabase.data.slice();
     if (!this._sort.active || this._sort.direction == '') { return data; }
 
@@ -110,38 +117,25 @@ export class ExampleDataSource extends DataSource<any> {
 }
 
 
-export interface BCCScheduleData {
-  trainer: string;
-  monday: string;
-  tuesday: string;
-  wednesday: string;
-  thursday: string;
-  friday: string;
-}
-
 export class ExampleDatabase2 {
-  dataChange: BehaviorSubject<BCCScheduleData[]> = new BehaviorSubject<BCCScheduleData[]>([]);
-  get data(): BCCScheduleData[] { return this.dataChange.value; }
-
-  constructor() {
-    for (let i = 0; i < 10; i++) { this.addRow(); }
+  dataChange: BehaviorSubject<DashboardBCCS[]> = new BehaviorSubject<DashboardBCCS[]>([]);
+  get data(): DashboardBCCS[] { 
+    return this.dataChange.value; 
   }
 
-  addRow() {
-    const copiedData = this.data.slice();
-    copiedData.push(this.createNewRow());
-    this.dataChange.next(copiedData);
-  }
-
-  private createNewRow() {
-    return {
-      trainer: 'Reny Mulyaningsih',
-      monday: 'Communication Effectively 2 #2, Jakarta A',
-      tuesday: 'Beginning #2, Bandung A',
-      wednesday: 'Intermediate 1 #2, Bandung B',
-      thursday: 'Presentation Skills 2 #3, Saraswasti',
-      friday: 'Low Intermediate 2 #2, Kresna'
-    };
+  constructor(private dataBCCS: DashboardBCCS[]) {
+    for (let i = 0; i < dataBCCS.length; i++) { 
+      const copiedData = this.data.slice();
+      copiedData.push({
+        trainer: this.dataBCCS[i].trainer,
+        mon: this.dataBCCS[i].mon,
+        tue: this.dataBCCS[i].tue,
+        wed: this.dataBCCS[i].wed,
+        thu: this.dataBCCS[i].thu,
+        fri: this.dataBCCS[i].fri
+      });
+      this.dataChange.next(copiedData);
+    }
   }
 }
 
@@ -150,7 +144,7 @@ export class ExampleDataSource2 extends DataSource<any> {
     super();
   }
 
-  connect(): Observable<BCCScheduleData[]> {
+  connect(): Observable<DashboardBCCS[]> {
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
       this._sort.mdSortChange,
@@ -163,7 +157,7 @@ export class ExampleDataSource2 extends DataSource<any> {
 
   disconnect() {}
 
-  getSortedData(): BCCScheduleData[] {
+  getSortedData(): DashboardBCCS[] {
     const data = this._exampleDatabase.data.slice();
     if (!this._sort.active || this._sort.direction == '') { return data; }
 
@@ -173,11 +167,11 @@ export class ExampleDataSource2 extends DataSource<any> {
 
       switch (this._sort.active) {
         case 'trainer': [propertyA, propertyB] = [a.trainer, b.trainer]; break;
-        case 'monday': [propertyA, propertyB] = [a.monday, b.monday]; break;
-        case 'tuesday': [propertyA, propertyB] = [a.tuesday, b.tuesday]; break;
-        case 'wednesday': [propertyA, propertyB] = [a.wednesday, b.wednesday]; break;
-        case 'thursday': [propertyA, propertyB] = [a.thursday, b.thursday]; break;
-        case 'friday': [propertyA, propertyB] = [a.friday, b.friday]; break;
+        case 'monday': [propertyA, propertyB] = [a.mon, b.mon]; break;
+        case 'tuesday': [propertyA, propertyB] = [a.tue, b.tue]; break;
+        case 'wednesday': [propertyA, propertyB] = [a.wed, b.wed]; break;
+        case 'thursday': [propertyA, propertyB] = [a.thu, b.thu]; break;
+        case 'friday': [propertyA, propertyB] = [a.fri, b.fri]; break;
       }
 
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;

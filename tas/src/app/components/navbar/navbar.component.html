@@ -9,10 +9,10 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="#" style="color:#FEFEFE">{{getTitle()}}</a>
         </div>
-        <div class="navbar-right">
-            <button md-button style="height:50px; background-color:transparent; border:0" (click)="toChangeRole()"><i class="material-icons" style="margin-right:10px">group</i>Change Role</button>
-            <button md-button style="height:50px; background-color:transparent; border:0" (click)="toLogin()">Logout<i class="material-icons">keyboard_arrow_right</i></button>
-            <h6 class="copyright pull-right" style="margin-right:20px; margin-top:15px">{{test | date: 'dd/MM/yyyy'}} | Mitrais</h6>
+        <div class="navbar-right" style="padding:0; margin:0">
+            <button md-button mdTooltip="Change Role" style="height:50px; background-color:transparent" (click)="toChangeRole()"><i class="material-icons" style="margin-right:10px">group</i></button>
+            <button md-button mdTooltip="Home" style="height:50px; background-color:transparent" (click)="toDashboard()"><i class="material-icons">home</i></button>
+            <button md-button mdTooltip="Logout" style="height:50px; background-color:transparent" (click)="toLogin()"><i class="material-icons">exit_to_app</i></button>
         </div>
     </md-card>
     <router-outlet></router-outlet> 
