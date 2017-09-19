@@ -43,12 +43,13 @@ public class ScheduleController {
 	@RequestMapping (value="/update",method = RequestMethod.POST)
 	public void update (@RequestBody Schedule scheduleParam) {
 		Schedule schedule= scheduleRepository.findOne(scheduleParam.getIdSchedule());
-		schedule.setIdTraining(scheduleParam.getIdTraining());
 		schedule.setIdRoom(scheduleParam.getIdRoom());
 		schedule.setStart_date(scheduleParam.getStart_date());
 		schedule.setEnd_date(scheduleParam.getEnd_date());
 		schedule.setCapacity(schedule.getCapacity());
 		schedule.setIdCourse(scheduleParam.getIdCourse());
+		schedule.setIdMainTrainer(scheduleParam.getIdMainTrainer());
+		schedule.setIdBackupTrainer(scheduleParam.getIdBackupTrainer());
 		scheduleRepository.save(schedule);
 	}
 	

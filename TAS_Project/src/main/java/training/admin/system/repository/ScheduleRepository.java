@@ -11,5 +11,7 @@ import training.admin.system.model.Schedule;
 @Component
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	List<Schedule> findByStartDateBeforeAndEndDateAfter(Date startDate, Date endDate);
-
+	List<Schedule> findByStartDateAfterAndEndDateBefore(Date startDate, Date endDate);
 }
+
+

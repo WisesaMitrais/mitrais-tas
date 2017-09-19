@@ -2,6 +2,7 @@ package training.admin.system.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,14 +42,14 @@ public class User {
 	private String grade;
 	
 	@Column (name = "id_office")
-	private long idOffice;
+	private Long idOffice;
 	
 	public User() {
 		
 	}
 	
 	public User(Long idUser, String name, String email, String username, String password, Boolean active, String jobFamilyStream,
-			String grade, long idOffice) {
+			String grade, Long idOffice) {
 		this.name = name;
 		this.email = email;
 		this.username = username;
@@ -60,11 +61,11 @@ public class User {
 	}
 	
 	
-	public long getOffice() {
+	public Long getOffice() {
 		return idOffice;
 	}
 
-	public void setOffice(long office) {
+	public void setOffice(Long office) {
 		this.idOffice = office;
 	}
 

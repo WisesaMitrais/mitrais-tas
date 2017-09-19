@@ -26,10 +26,7 @@ public class Schedule {
 	
 	@Column (name = "capacity")
 	private Integer capacity;
-	
-	@Column (name= "id_training")
-	private Long idTraining;
-	
+		
 	@Column (name = "id_course")
 	private Long idCourse;
 	
@@ -45,23 +42,6 @@ public class Schedule {
 	public Schedule() {
 		
 	}
-
-
-
-	public Schedule(long idSchedule, Date startDate, Date endDate, Integer capacity, Long idTraining, Long idCourse,
-			Long idRoom, Long idMainTrainer, Long idBackupTrainer) {
-		super();
-		this.idSchedule = idSchedule;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.capacity = capacity;
-		this.idTraining = idTraining;
-		this.idCourse = idCourse;
-		this.idRoom = idRoom;
-		this.idMainTrainer = idMainTrainer;
-		this.idBackupTrainer = idBackupTrainer;
-	}
-
 
 	public long getIdSchedule() {
 		return idSchedule;
@@ -94,15 +74,7 @@ public class Schedule {
 	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
-
-	public Long getIdTraining() {
-		return idTraining;
-	}
-
-	public void setIdTraining(Long idTraining) {
-		this.idTraining = idTraining;
-	}
-
+	
 	public Long getIdCourse() {
 		return idCourse;
 	}

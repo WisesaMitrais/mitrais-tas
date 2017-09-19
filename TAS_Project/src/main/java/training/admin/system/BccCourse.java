@@ -4,16 +4,20 @@ public class BccCourse {
 
 	private String trainer;
 	private String mon;
-	private String teu;
+	private String tue;
 	private String wed;
 	private String thu;
 	private String fri;
 	
-	public BccCourse(String trainer, String mon, String teu, String wed, String thu, String fri) {
+	public BccCourse() {
+		
+	}
+	
+	public BccCourse(String trainer, String mon, String tue, String wed, String thu, String fri) {
 		super();
 		this.trainer = trainer;
 		this.mon = mon;
-		this.teu = teu;
+		this.tue = tue;
 		this.wed = wed;
 		this.thu = thu;
 		this.fri = fri;
@@ -31,11 +35,11 @@ public class BccCourse {
 	public void setMon(String mon) {
 		this.mon = mon;
 	}
-	public String getTeu() {
-		return teu;
+	public String getTue() {
+		return tue;
 	}
-	public void setTeu(String teu) {
-		this.teu = teu;
+	public void setTue(String tue) {
+		this.tue = tue;
 	}
 	public String getWed() {
 		return wed;
