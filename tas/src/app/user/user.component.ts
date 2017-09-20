@@ -3,6 +3,9 @@ import { DataSource } from '@angular/cdk/collections';
 import { MdPaginator, MdSort, SelectionModel } from '@angular/material';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
+import { User } from '../services/user';
+import { UserService } from '../services/user.service';
+
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
@@ -18,87 +21,79 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent {
-
-displayedColumns = ['employeeId', 'fullName', 'email', 'jobFamilyStream', 'grade', 'accountName', 'active', 'role', 'action'];
-  exampleDatabase = new ExampleDatabase();
-  selection = new SelectionModel<string>(true, []);
+  displayedColumns = ['idUser', 'name', 'email', 'jobFamilyStream', 'grade', 'accountName', 'active', 'role', 'action'];
+  user: User[];
+  exampleDatabase;
   dataSource: ExampleDataSource | null;
+  // selection = new SelectionModel<string>(true, []);
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
 
-  ngOnInit() {
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-        .debounceTime(150)
-        .distinctUntilChanged()
-        .subscribe(() => {
-          if (!this.dataSource) { return; }
-          this.dataSource.filter = this.filter.nativeElement.value;
-        });
+  constructor(private userService: UserService) {  }
+
+  ngOnInit(){
+    this.userService.getDataUsers().subscribe(((user) => {
+      this.user = user;
+      this.exampleDatabase = new ExampleDatabase(this.user); 
+      this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
+
+      // Observable.fromEvent(this.filter.nativeElement, 'keyup')
+      // .debounceTime(150)
+      // .distinctUntilChanged()
+      // .subscribe(() => {
+      //   if (!this.dataSource) { return; }
+      //   this.dataSource.filter = this.filter.nativeElement.value;
+      // });
+    }));
   }
 
-  isAllSelected(): boolean {
-    if (!this.dataSource) { return false; }
-    if (this.selection.isEmpty()) { return false; }
+  // isAllSelected(): boolean {
+  //   if (!this.dataSource) { return false; }
+  //   if (this.selection.isEmpty()) { return false; }
 
-    if (this.filter.nativeElement.value) {
-      return this.selection.selected.length == this.dataSource.renderedData.length;
-    } else {
-      return this.selection.selected.length == this.exampleDatabase.data.length;
-    }
-  }
+  //   if (this.filter.nativeElement.value) {
+  //     return this.selection.selected.length == this.dataSource.renderedData.length;
+  //   } else {
+  //     return this.selection.selected.length == this.exampleDatabase.data.length;
+  //   }
+  // }
 
-  masterToggle() {
-    if (!this.dataSource) { return; }
+  // masterToggle() {
+  //   if (!this.dataSource) { return; }
 
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else if (this.filter.nativeElement.value) {
-      this.dataSource.renderedData.forEach(data => this.selection.select(data.id));
-    } else {
-      this.exampleDatabase.data.forEach(data => this.selection.select(data.id));
-    }
-  }
-}
-
-export interface UserData {
-  id: string;
-  fullName: string;
-  email: string;
-  jobFamilyStream: string;
-  grade: string;
-  accountName: string;
-  active: string;
-  role: string;
+  //   if (this.isAllSelected()) {
+  //     this.selection.clear();
+  //   } else if (this.filter.nativeElement.value) {
+  //     this.dataSource.renderedData.forEach(data => this.selection.select(data.idUser));
+  //   } else {
+  //     this.exampleDatabase.data.forEach(data => this.selection.select(data.idUser));
+  //   }
+  // }
 }
 
 export class ExampleDatabase {
-  dataChange: BehaviorSubject<UserData[]> = new BehaviorSubject<UserData[]>([]);
-  get data(): UserData[] { return this.dataChange.value; }
-
-  constructor() {
-    for (let i = 0; i < 100; i++) { this.addUser(); }
+  dataChange: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+  get data(): User[] { 
+    return this.dataChange.value; 
   }
 
-  addUser() {
-    const copiedData = this.data.slice();
-    copiedData.push(this.createNewUser());
-    this.dataChange.next(copiedData);
-  }
-
-  private createNewUser() {
-    return {
-      id: (this.data.length + 1).toString(),
-      fullName: 'full name',
-      email: 'email',
-      jobFamilyStream: 'job family stream',
-      grade: 'grade',
-      accountName: 'account name',
-      active: 'active',
-      role: 'role'
-    };
+  constructor(private dataUser: User[]) {
+    for (let i = 0; i < dataUser.length; i++) { 
+      const copiedData = this.data.slice();
+      copiedData.push({
+        idUser: this.dataUser[i].idUser,
+        name: this.dataUser[i].name,
+        email: this.dataUser[i].email,
+        jobFamilyStream: this.dataUser[i].jobFamilyStream,
+        accountName: this.dataUser[i].accountName,
+        active: this.dataUser[i].active,
+        role: this.dataUser[i].role,
+        grade: this.dataUser[i].grade
+      });
+      this.dataChange.next(copiedData);
+    }
   }
 }
 
@@ -107,8 +102,8 @@ export class ExampleDataSource extends DataSource<any> {
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
 
-  filteredData: UserData[] = [];
-  renderedData: UserData[] = [];
+  filteredData: User[] = [];
+  renderedData: User[] = [];
 
   constructor(private _exampleDatabase: ExampleDatabase,
               private _paginator: MdPaginator,
@@ -118,7 +113,7 @@ export class ExampleDataSource extends DataSource<any> {
     this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
   }
 
-  connect(): Observable<UserData[]> {
+  connect(): Observable<User[]> {
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
       this._sort.mdSortChange, 
@@ -127,8 +122,8 @@ export class ExampleDataSource extends DataSource<any> {
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
-      this.filteredData = this._exampleDatabase.data.slice().filter((item: UserData) => {
-        let searchStr = (item.fullName).toLowerCase();
+      this.filteredData = this._exampleDatabase.data.slice().filter((item: User) => {
+        let searchStr = (item.name).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
 
@@ -142,16 +137,16 @@ export class ExampleDataSource extends DataSource<any> {
 
   disconnect() {}
 
-  sortData(data: UserData[]): UserData[] {
+  sortData(data: User[]): User[] {
     if (!this._sort.active || this._sort.direction == '') { return data; }
 
     return data.sort((a, b) => {
-      let propertyA: number|string = '';
-      let propertyB: number|string = '';
+      let propertyA: number|string|boolean = '';
+      let propertyB: number|string|boolean = '';
 
       switch (this._sort.active) {
-        case 'userId': [propertyA, propertyB] = [a.id, b.id]; break;
-        case 'fullName': [propertyA, propertyB] = [a.fullName, b.fullName]; break;
+        case 'idUser': [propertyA, propertyB] = [a.idUser, b.idUser]; break;
+        case 'name': [propertyA, propertyB] = [a.name, b.name]; break;
         case 'email': [propertyA, propertyB] = [a.email, b.email]; break;
         case 'jobFamilyStream': [propertyA, propertyB] = [a.jobFamilyStream, b.jobFamilyStream]; break;
         case 'grade': [propertyA, propertyB] = [a.grade, b.grade]; break;

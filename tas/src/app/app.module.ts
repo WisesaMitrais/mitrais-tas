@@ -23,11 +23,14 @@ import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PeriodComponent } from './period/period.component';
 import { AddPeriodComponent } from './period/period-add.component';
+import { PeriodEligibleParticipantComponent } from './period/period-eligibleparticipant.component';
+import { PeriodScheduleComponent } from './period/period-schedule.component';
 import { UserComponent } from './user/user.component';
 
 import { AlertService } from './services/alert.service';
 import { LoginService } from './services/login.service';
 import { DashboardService } from './services/dashboard.service';
+import { UserService } from './services/user.service';
 import { UrlService } from './services/url.service';
 
 @NgModule({
@@ -50,6 +53,8 @@ export class MaterialModule {}
     DashboardComponent,
     PeriodComponent,
     AddPeriodComponent,
+    PeriodEligibleParticipantComponent,
+    PeriodScheduleComponent,
     UserComponent
   ],
   imports: [
@@ -69,7 +74,8 @@ export class MaterialModule {}
     AlertService,
     LoginService,
     UrlService,
-    DashboardService
+    DashboardService,
+    UserService
   ],
   bootstrap: [
     AppComponent

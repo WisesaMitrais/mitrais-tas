@@ -1,13 +1,12 @@
 export class User { 
     constructor ( 
-       public idUser: number,  
+       public idUser: string,  
        public name: string,
        public email: string,
-       public username: string,
-       public password: string,
-       public active: number,
-       public jobFamilyStream: number,
-       public grade: string,
-       public office: object 
+       public jobFamilyStream: string,
+       public accountName: string,
+       public active: boolean,
+       public role: string,
+       public grade: string 
     ) {  } 
  }

@@ -11,13 +11,13 @@
         </md-card-header>
         <md-card-content>
             <md-table #table [dataSource]="dataSource" mdSort style="background-color:#F2F2F2; height:375px">
-                <ng-container mdColumnDef="employeeId">
+                <ng-container mdColumnDef="idUser">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Employee ID </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.id}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.idUser}} </md-cell>
                 </ng-container>
-                <ng-container mdColumnDef="fullName">
+                <ng-container mdColumnDef="name">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Full Name </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.fullName}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.name}} </md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="email">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Email </b></md-header-cell>
@@ -43,6 +43,10 @@
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Role </b></md-header-cell>
                     <md-cell *mdCellDef="let row"> {{row.role}} </md-cell>
                 </ng-container>
+                <ng-container mdColumnDef="grade">
+                    <md-header-cell *mdHeaderCellDef md-sort-header><b> Grade </b></md-header-cell>
+                    <md-cell *mdCellDef="let row"> {{row.grade}} </md-cell>
+                </ng-container>
                 <ng-container mdColumnDef="action">
                     <md-header-cell *mdHeaderCellDef><b> Action </b></md-header-cell>
                     <md-cell *mdCellDef="let row">
@@ -54,8 +58,8 @@
                 </ng-container>
                 <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
                 <md-row *mdRowDef="let row; columns: displayedColumns;"
-                        [class.example-selected-row]="selection.isSelected(row.id)"
-                        (click)="selection.toggle(row.id)">
+                        [class.example-selected-row]="selection.isSelected(row.idUser)"
+                        (click)="selection.toggle(row.idUser)">
                 </md-row>
             </md-table>
             <div class="example-no-results"

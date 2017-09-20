@@ -11,13 +11,13 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
-  selector: 'tas-period-eligibleparticipant',
-  templateUrl: './period-eligibleparticipant.component.html',
-  styleUrls: ['./period-eligibleparticipant.component.css']
+  selector: 'tas-period-schedule',
+  templateUrl: './period-schedule.component.html',
+  styleUrls: ['./period-schedule.component.css']
 })
-export class PeriodEligibleParticipantComponent {
+export class PeriodScheduleComponent {
 
-    displayedColumns = ['userId', 'employeeName', 'action'];
+    displayedColumns = ['checkbox', 'name', 'trainer', 'backupTrainer', 'classroom', 'day', 'startTime', 'endTime', 'capacity', 'allParticipantList', 'action'];
     exampleDatabase = new ExampleDatabase();
     selection = new SelectionModel<string>(true, []);
     dataSource: ExampleDataSource | null;
@@ -65,7 +65,15 @@ export class PeriodEligibleParticipantComponent {
     
     export interface UserData {
       id: string;
-      employeeName: string;
+      name: string;
+      trainer: string;
+      backupTrainer: string;
+      classroom: string;
+      day: string;
+      startTime: string;
+      endTime: string;
+      capacity: string;
+      allParticipantList: string;
     }
     
     export class ExampleDatabase {
@@ -85,7 +93,15 @@ export class PeriodEligibleParticipantComponent {
       private createNewUser() {
         return {
           id: (this.data.length + 1).toString(),
-          employeeName: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))]
+          name: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))],
+          trainer: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))],
+          backupTrainer: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))],
+          classroom: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))],
+          day: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))],
+          startTime: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))],
+          endTime: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))],
+          capacity: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))],
+          allParticipantList: EMPLOYEENAMES[Math.round(Math.random() * (EMPLOYEENAMES.length - 1))]
         };
       }
     }
@@ -116,7 +132,7 @@ export class PeriodEligibleParticipantComponent {
     
         return Observable.merge(...displayDataChanges).map(() => {
           this.filteredData = this._exampleDatabase.data.slice().filter((item: UserData) => {
-            let searchStr = (item.employeeName).toLowerCase();
+            let searchStr = (item.trainer).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) != -1;
           });
     
@@ -138,8 +154,15 @@ export class PeriodEligibleParticipantComponent {
           let propertyB: number|string = '';
     
           switch (this._sort.active) {
-            case 'userId': [propertyA, propertyB] = [a.id, b.id]; break;
-            case 'employeeName': [propertyA, propertyB] = [a.employeeName, b.employeeName]; break;
+            case 'name': [propertyA, propertyB] = [a.name, b.name]; break;
+            case 'trainer': [propertyA, propertyB] = [a.trainer, b.trainer]; break;
+            case 'backupTrainer': [propertyA, propertyB] = [a.backupTrainer, b.backupTrainer]; break;
+            case 'classroom': [propertyA, propertyB] = [a.classroom, b.classroom]; break;
+            case 'day': [propertyA, propertyB] = [a.day, b.day]; break;
+            case 'startTime': [propertyA, propertyB] = [a.startTime, b.startTime]; break;
+            case 'endTime': [propertyA, propertyB] = [a.endTime, b.endTime]; break;
+            case 'capacity': [propertyA, propertyB] = [a.capacity, b.capacity]; break;
+            case 'allParticipantList': [propertyA, propertyB] = [a.allParticipantList, b.allParticipantList]; break;
           }
     
           let valueA = isNaN(+propertyA) ? propertyA : +propertyA;

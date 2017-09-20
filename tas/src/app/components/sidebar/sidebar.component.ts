@@ -42,13 +42,14 @@ const menuStaff: RouteInfo[] = [
 
 export var ROUTES: RouteInfo[] = menuAdmin;
 
+declare var $: any;
+
 @Component({
   selector: 'tas-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  test : Date = new Date();
   menuItems: any[];
   currentUser;
 
@@ -60,10 +61,19 @@ export class SidebarComponent implements OnInit {
       this.currentUser = JSON.parse(this.cookieService.get('currentUser'));
     } else { 
       this.router.navigate(['/login']) 
-      alert("You are not logged in!");
+      $.notify({
+          icon: "notifications",
+          message: "<b>Information</b> - Your are not logged in"
+      },{
+          type: 'info',
+          timer: 3000,
+          placement: {
+              from: 'bottom',
+              align: 'center'
+          }
+      });
     };
 
-    console.log(this.currentUser.roleActive);
     if(this.currentUser.roleActive == "admin"){
       ROUTES = menuAdmin;
     }else if(this.currentUser.roleActive == "manager"){
