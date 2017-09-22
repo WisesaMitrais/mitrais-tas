@@ -3,29 +3,29 @@
     <form>
         <md-form-field style="width:100%;">
             <h4>Name :</h4>
-            <input mdInput type="text">
+            <input mdInput type="text" [(ngModel)]="newPeriod.trainingName">
         </md-form-field>
     </form>
     <form>
         <md-form-field style="margin-right:50px">
             <h4>Start Date :</h4>
-            <input mdInput [mdDatepicker]="startDate">
-            <md-datepicker-toggle mdSuffix [for]="startDate"></md-datepicker-toggle>
-            <md-datepicker #startDate></md-datepicker>
+            <input mdInput [mdDatepicker]="newPeriod.startDate">
+            <md-datepicker-toggle mdSuffix [for]="newPeriod.startDate"></md-datepicker-toggle>
+            <md-datepicker #newPeriod.startDate></md-datepicker>
         </md-form-field>
         <md-form-field>
             <h4>End Date :</h4>
-            <input mdInput [mdDatepicker]="endDate">
-            <md-datepicker-toggle mdSuffix [for]="endDate"></md-datepicker-toggle>
-            <md-datepicker #endDate></md-datepicker>
+            <input mdInput [mdDatepicker]="newPeriod.endData">
+            <md-datepicker-toggle mdSuffix [for]="newPeriod.endDate"></md-datepicker-toggle>
+            <md-datepicker #newPeriod.endDate></md-datepicker>
         </md-form-field>
     </form>
     <br>
-    <md-checkbox style="margin-right:10px">Is this Enrollment Open ?</md-checkbox>
-    <md-checkbox>Is this BCC Training ?</md-checkbox>
+    <md-checkbox style="margin-right:10px" [(ngModel)]="newPeriod.openEnrollment">Is this Enrollment Open ?</md-checkbox>
+    <md-checkbox [(ngModel)]="newPeriod.bccTraining">Is this BCC Training ?</md-checkbox>
 </div>
 <br>
 <form>
-    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE"><md-icon style="padding-right:50px">check</md-icon>Save</button>
-    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE"><md-icon style="padding-right:50px">close</md-icon>Cancel</button>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="createNewPeriod()"><md-icon style="padding-right:50px">check</md-icon>Save</button>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="closeDialog()"><md-icon style="padding-right:50px">close</md-icon>Cancel</button>
 </form>

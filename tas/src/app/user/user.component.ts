@@ -21,56 +21,34 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent {
-  displayedColumns = ['idUser', 'name', 'email', 'jobFamilyStream', 'grade', 'accountName', 'active', 'role', 'action'];
+  displayedColumns = ['idUser', 'name', 'email', 'jobFamilyStream', 'accountName', 'active', 'role', 'grade', 'action'];
   user: User[];
   exampleDatabase;
   dataSource: ExampleDataSource | null;
-  // selection = new SelectionModel<string>(true, []);
+  selection = new SelectionModel<string>(true, []);
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private userService: UserService) {  }
-
-  ngOnInit(){
+  constructor(private userService: UserService) {  
     this.userService.getDataUsers().subscribe(((user) => {
       this.user = user;
-      this.exampleDatabase = new ExampleDatabase(this.user); 
+      this.exampleDatabase = new ExampleDatabase(this.user);
+      this.paginator.length = this.exampleDatabase.data.length;
+      this.paginator.pageSize = 10;
+      this.paginator._pageIndex = 0; 
+      
       this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
-
-      // Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      // .debounceTime(150)
-      // .distinctUntilChanged()
-      // .subscribe(() => {
-      //   if (!this.dataSource) { return; }
-      //   this.dataSource.filter = this.filter.nativeElement.value;
-      // });
+      Observable.fromEvent(this.filter.nativeElement, 'keyup')
+      .debounceTime(150)
+      .distinctUntilChanged()
+      .subscribe(() => {
+        if (!this.dataSource) { return; }
+        this.dataSource.filter = this.filter.nativeElement.value;
+      });
     }));
   }
-
-  // isAllSelected(): boolean {
-  //   if (!this.dataSource) { return false; }
-  //   if (this.selection.isEmpty()) { return false; }
-
-  //   if (this.filter.nativeElement.value) {
-  //     return this.selection.selected.length == this.dataSource.renderedData.length;
-  //   } else {
-  //     return this.selection.selected.length == this.exampleDatabase.data.length;
-  //   }
-  // }
-
-  // masterToggle() {
-  //   if (!this.dataSource) { return; }
-
-  //   if (this.isAllSelected()) {
-  //     this.selection.clear();
-  //   } else if (this.filter.nativeElement.value) {
-  //     this.dataSource.renderedData.forEach(data => this.selection.select(data.idUser));
-  //   } else {
-  //     this.exampleDatabase.data.forEach(data => this.selection.select(data.idUser));
-  //   }
-  // }
 }
 
 export class ExampleDatabase {
@@ -126,9 +104,8 @@ export class ExampleDataSource extends DataSource<any> {
         let searchStr = (item.name).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
-
+      
       const sortedData = this.sortData(this.filteredData.slice());
-
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
       return this.renderedData;
@@ -139,22 +116,22 @@ export class ExampleDataSource extends DataSource<any> {
 
   sortData(data: User[]): User[] {
     if (!this._sort.active || this._sort.direction == '') { return data; }
-
+    
     return data.sort((a, b) => {
       let propertyA: number|string|boolean = '';
       let propertyB: number|string|boolean = '';
-
+      
       switch (this._sort.active) {
         case 'idUser': [propertyA, propertyB] = [a.idUser, b.idUser]; break;
         case 'name': [propertyA, propertyB] = [a.name, b.name]; break;
         case 'email': [propertyA, propertyB] = [a.email, b.email]; break;
         case 'jobFamilyStream': [propertyA, propertyB] = [a.jobFamilyStream, b.jobFamilyStream]; break;
-        case 'grade': [propertyA, propertyB] = [a.grade, b.grade]; break;
         case 'accountName': [propertyA, propertyB] = [a.accountName, b.accountName]; break;
         case 'active': [propertyA, propertyB] = [a.active, b.active]; break;
         case 'role': [propertyA, propertyB] = [a.role, b.role]; break;
+        case 'grade': [propertyA, propertyB] = [a.grade, b.grade]; break;
       }
-
+      
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
       let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
 

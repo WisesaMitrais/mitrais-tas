@@ -30,6 +30,7 @@ import { UserComponent } from './user/user.component';
 import { AlertService } from './services/alert.service';
 import { LoginService } from './services/login.service';
 import { DashboardService } from './services/dashboard.service';
+import { PeriodService } from './services/period.service';
 import { UserService } from './services/user.service';
 import { UrlService } from './services/url.service';
 
@@ -75,6 +76,7 @@ export class MaterialModule {}
     LoginService,
     UrlService,
     DashboardService,
+    PeriodService,
     UserService
   ],
   bootstrap: [

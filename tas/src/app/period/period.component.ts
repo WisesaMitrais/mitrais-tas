@@ -5,6 +5,9 @@ import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 import { AddPeriodComponent } from './period-add.component';
 
+import { Period } from '../services/period';
+import { PeriodService } from '../services/period.service';
+
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
@@ -20,7 +23,34 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./period.component.css']
 })
 export class PeriodComponent {
-  constructor(public dialog: MdDialog) {}
+  displayedColumns = ['idTraining', 'name', 'active', 'courses', 'startDate', 'endDate', 'createdBy', 'updatedBy', 'action'];
+  period: Period[];
+  exampleDatabase;
+  dataSource: ExampleDataSource | null;
+  selection = new SelectionModel<string>(true, []);
+
+  @ViewChild(MdPaginator) paginator: MdPaginator;
+  @ViewChild(MdSort) sort: MdSort;
+  @ViewChild('filter') filter: ElementRef;
+
+  constructor(private periodService: PeriodService, public dialog: MdDialog) {  
+    this.periodService.getDataPeriod().subscribe(((period) => {
+      this.period = period;
+      this.exampleDatabase = new ExampleDatabase(this.period);
+      this.paginator.length = this.exampleDatabase.data.length;
+      this.paginator.pageSize = 10;
+      this.paginator._pageIndex = 0; 
+      
+      this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
+      Observable.fromEvent(this.filter.nativeElement, 'keyup')
+      .debounceTime(150)
+      .distinctUntilChanged()
+      .subscribe(() => {
+        if (!this.dataSource) { return; }
+        this.dataSource.filter = this.filter.nativeElement.value;
+      });
+    }));
+  }
 
   openDialog(): void {
     let dialogRef = this.dialog.open(AddPeriodComponent, {
@@ -28,95 +58,29 @@ export class PeriodComponent {
       height: '430px'
     });
   }
-
-displayedColumns = ['userId', 'name', 'active', 'courses', 'startDate', 'endDate', 'createdBy', 'updateBy', 'action'];
-  exampleDatabase = new ExampleDatabase();
-  selection = new SelectionModel<string>(true, []);
-  dataSource: ExampleDataSource | null;
-
-  @ViewChild(MdPaginator) paginator: MdPaginator;
-  @ViewChild(MdSort) sort: MdSort;
-  @ViewChild('filter') filter: ElementRef;
-
-  ngOnInit() {
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-        .debounceTime(150)
-        .distinctUntilChanged()
-        .subscribe(() => {
-          if (!this.dataSource) { return; }
-          this.dataSource.filter = this.filter.nativeElement.value;
-        });
-  }
-
-  isAllSelected(): boolean {
-    if (!this.dataSource) { return false; }
-    if (this.selection.isEmpty()) { return false; }
-
-    if (this.filter.nativeElement.value) {
-      return this.selection.selected.length == this.dataSource.renderedData.length;
-    } else {
-      return this.selection.selected.length == this.exampleDatabase.data.length;
-    }
-  }
-
-  masterToggle() {
-    if (!this.dataSource) { return; }
-
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else if (this.filter.nativeElement.value) {
-      this.dataSource.renderedData.forEach(data => this.selection.select(data.id));
-    } else {
-      this.exampleDatabase.data.forEach(data => this.selection.select(data.id));
-    }
-  }
-}
-
-const NAMES = ['aaa', 'bbb', 'ccc', 'ddd', 'eee'];
-const ACTIVES = ['yes', 'no'];
-const COURSES = ['ffff', 'gggg', 'hhhh'];
-const STARTDATES = ['01-January-2017', '02-March-2017'];
-const ENDDATES = ['30-July-2017', '31-December-2017'];
-const CREATEDBY = ['vv', 'xx'];
-const UPDATEBY = ['yyyyy', 'zzzzz'];
-
-export interface UserData {
-  id: string;
-  name: string;
-  active: string;
-  courses: string;
-  startDate: string;
-  endDate: string;
-  createdBy: string;
-  updateBy: string;
 }
 
 export class ExampleDatabase {
-  dataChange: BehaviorSubject<UserData[]> = new BehaviorSubject<UserData[]>([]);
-  get data(): UserData[] { return this.dataChange.value; }
-
-  constructor() {
-    for (let i = 0; i < 100; i++) { this.addUser(); }
+  dataChange: BehaviorSubject<Period[]> = new BehaviorSubject<Period[]>([]);
+  get data(): Period[] { 
+    return this.dataChange.value; 
   }
 
-  addUser() {
-    const copiedData = this.data.slice();
-    copiedData.push(this.createNewUser());
-    this.dataChange.next(copiedData);
-  }
-
-  private createNewUser() {
-    return {
-      id: (this.data.length + 1).toString(),
-      name: NAMES[Math.round(Math.random() * (NAMES.length - 1))],
-      active: ACTIVES[Math.round(Math.random() * (ACTIVES.length - 1))],
-      courses: COURSES[Math.round(Math.random() * (COURSES.length - 1))],
-      startDate: STARTDATES[Math.round(Math.random() * (STARTDATES.length - 1))],
-      endDate: ENDDATES[Math.round(Math.random() * (ENDDATES.length - 1))],
-      createdBy: CREATEDBY[Math.round(Math.random() * (CREATEDBY.length - 1))],
-      updateBy: UPDATEBY[Math.round(Math.random() * (UPDATEBY.length - 1))]
-    };
+  constructor(private dataPeriod: Period[]) {
+    for (let i = 0; i < dataPeriod.length; i++) { 
+      const copiedData = this.data.slice();
+      copiedData.push({
+        idTraining: this.dataPeriod[i].idTraining,
+        name: this.dataPeriod[i].name,
+        active: this.dataPeriod[i].active,
+        startDate: this.dataPeriod[i].startDate,
+        endDate: this.dataPeriod[i].endDate,
+        createdBy: this.dataPeriod[i].createdBy,
+        updatedBy: this.dataPeriod[i].updatedBy,
+        courses: this.dataPeriod[i].courses
+      });
+      this.dataChange.next(copiedData);
+    }
   }
 }
 
@@ -125,18 +89,18 @@ export class ExampleDataSource extends DataSource<any> {
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
 
-  filteredData: UserData[] = [];
-  renderedData: UserData[] = [];
+  filteredData: Period[] = [];
+  renderedData: Period[] = [];
 
   constructor(private _exampleDatabase: ExampleDatabase,
               private _paginator: MdPaginator,
               private _sort: MdSort) {
     super();
-    
+  
     this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
   }
 
-  connect(): Observable<UserData[]> {
+  connect(): Observable<Period[]> {
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
       this._sort.mdSortChange, 
@@ -145,13 +109,12 @@ export class ExampleDataSource extends DataSource<any> {
     ];
 
     return Observable.merge(...displayDataChanges).map(() => {
-      this.filteredData = this._exampleDatabase.data.slice().filter((item: UserData) => {
+      this.filteredData = this._exampleDatabase.data.slice().filter((item: Period) => {
         let searchStr = (item.name).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
-
+      
       const sortedData = this.sortData(this.filteredData.slice());
-
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
       return this.renderedData;
@@ -160,22 +123,22 @@ export class ExampleDataSource extends DataSource<any> {
 
   disconnect() {}
 
-  sortData(data: UserData[]): UserData[] {
+  sortData(data: Period[]): Period[] {
     if (!this._sort.active || this._sort.direction == '') { return data; }
 
     return data.sort((a, b) => {
-      let propertyA: number|string = '';
-      let propertyB: number|string = '';
+      let propertyA: number|string|boolean = '';
+      let propertyB: number|string|boolean = '';
 
       switch (this._sort.active) {
-        case 'userId': [propertyA, propertyB] = [a.id, b.id]; break;
+        case 'idTraining': [propertyA, propertyB] = [a.idTraining, b.idTraining]; break;
         case 'name': [propertyA, propertyB] = [a.name, b.name]; break;
         case 'active': [propertyA, propertyB] = [a.active, b.active]; break;
-        case 'courses': [propertyA, propertyB] = [a.courses, b.courses]; break;
         case 'startDate': [propertyA, propertyB] = [a.startDate, b.startDate]; break;
         case 'endDate': [propertyA, propertyB] = [a.endDate, b.endDate]; break;
         case 'createdBy': [propertyA, propertyB] = [a.createdBy, b.createdBy]; break;
-        case 'updateBy': [propertyA, propertyB] = [a.updateBy, b.updateBy]; break;
+        case 'updateBy': [propertyA, propertyB] = [a.updatedBy, b.updatedBy]; break;
+        case 'courses': [propertyA, propertyB] = [a.courses, b.courses]; break;
       }
 
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
