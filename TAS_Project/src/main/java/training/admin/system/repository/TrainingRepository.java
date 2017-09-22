@@ -10,5 +10,5 @@ import training.admin.system.model.Training;
 @Component
 public interface TrainingRepository extends JpaRepository<Training, Long>{
 	List<Training> findByOpenEnrollment(Boolean openEnrollment);
-
+	List<Training> findByActive(Boolean active);
 }

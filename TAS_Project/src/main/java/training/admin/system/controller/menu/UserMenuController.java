@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,12 +38,22 @@ public class UserMenuController {
 	
 	@GetMapping("/all")
 	public List <UserData> findAll() {
-		return createUserData();
+		List<UserData> usersData = new ArrayList<UserData>(); 
+		List<User> users = userRepository.findAll();
+		for (User user:users) {
+			usersData.add(convertUserToUserData(user));
+		}
+		return usersData;
+	}
+	
+	@GetMapping ("/{id}")
+	public UserData findOne(@PathVariable ("id") Long idUser) {
+		return convertUserToUserData(userRepository.findOne(idUser));
 	}
 	
 	
 	@RequestMapping (value="/create", method=RequestMethod.POST)
-	public String add(@RequestBody User user) {
+	public Boolean add(@RequestBody User user) {
 		String password = user.getPassword();
 		MD5Hash md5Hash = new MD5Hash(password);
 		try {
@@ -52,50 +63,66 @@ public class UserMenuController {
 			e.printStackTrace();
 		}
 				
-		userRepository.save(user);
-		return "Test";
-	}
-	
-	@RequestMapping (value="/update",method = RequestMethod.POST)
-	public void update (@RequestBody User userParam) {
-		User user = userRepository.findOne(userParam.getIdUser());
-		user.setName(userParam.getName());
-		user.setEmail(userParam.getEmail());
-		user.setGrade(userParam.getGrade());
-		user.setJobFamilyStream(userParam.getJobFamilyStream());
-		user.setOffice(userParam.getOffice());
-		user.setUsername(userParam.getUsername());
-		user.setPassword(userParam.getPassword());
-		userRepository.save(user);
-	}
-	
-	@RequestMapping (value="/delete", method = RequestMethod.GET)
-	public void delete (@RequestParam ("id") Long idUser) {
-		userRepository.delete(idUser);
-	}
-	
-	private List<UserData> createUserData(){
-		List<UserData> usersData = new ArrayList<UserData>(); 
-		List<User> users = userRepository.findAll();
-		for (User user:users) {
-			UserData newUserData = new UserData();
-			newUserData.setIdUser(user.getIdUser());
-			newUserData.setName(user.getName());
-			newUserData.setActive(user.isActive());
-			newUserData.setJobFamilyStream(user.getJobFamilyStream());
-			newUserData.setEmail(user.getEmail());
-			newUserData.setAccountName(user.getUsername());
-			newUserData.setGrade(user.getGrade());
-			
-			List <UserRole> userRoles = userRoleRepository.findByIdUser(user.getIdUser());
-			String roles ="";
-			for (UserRole userRole:userRoles) {
-				roles = roles + roleRepository.findOne(userRole.getIdRole()).getName() + ", ";
-			}
-			
-			newUserData.setRole(roles);
-			usersData.add(newUserData);
+		try {
+			userRepository.save(user);
+			return Boolean.TRUE;
+		}catch (Exception e){
+			System.out.println(e);
+			return Boolean.FALSE;
 		}
-		return usersData;
+	}
+	
+	@RequestMapping (value="/{id}/update",method = RequestMethod.POST)
+	public Boolean update (@RequestBody User userParam,
+						@PathVariable ("id") Long idUser) {
+		try {
+			User user = userRepository.findOne(idUser);
+			user.setName(userParam.getName());
+			user.setEmail(userParam.getEmail());
+			user.setGrade(userParam.getGrade());
+			user.setJobFamilyStream(userParam.getJobFamilyStream());
+			user.setOffice(userParam.getOffice());
+			user.setUsername(userParam.getUsername());
+			user.setPassword(userParam.getPassword());
+			user.setActive(userParam.isActive());
+			userRepository.save(user);
+			return Boolean.TRUE;
+		} catch (Exception e) {
+			return Boolean.FALSE;
+		}
+	}
+	
+	@RequestMapping (value="/{id}/delete", method = RequestMethod.GET)
+	public Boolean delete (@PathVariable ("id") Long idUser) {
+		try {
+			userRepository.delete(idUser);
+			return Boolean.TRUE;
+		}catch (Exception e) {
+			System.out.println(e);
+			return Boolean.FALSE;
+		}
+	}
+	
+	
+	//============================================//
+
+	private UserData convertUserToUserData(User user) {
+		UserData userData = new UserData();
+		userData.setIdUser(user.getIdUser());
+		userData.setName(user.getName());
+		userData.setActive(user.isActive());
+		userData.setJobFamilyStream(user.getJobFamilyStream());
+		userData.setEmail(user.getEmail());
+		userData.setAccountName(user.getUsername());
+		userData.setGrade(user.getGrade());
+		
+		List <UserRole> userRoles = userRoleRepository.findByIdUser(user.getIdUser());
+		String roles ="";
+		for (UserRole userRole:userRoles) {
+			roles = roles + roleRepository.findOne(userRole.getIdRole()).getName() + ", ";
+		}
+		userData.setRole(roles);
+		
+		return userData;
 	}
 }

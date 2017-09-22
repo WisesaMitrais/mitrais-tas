@@ -33,6 +33,9 @@ public class Schedule {
 	@Column (name = "id_room")
 	private Long idRoom;
 	
+	@Column (name = "id_training")
+	private Long idTraining;
+	
 	@Column (name = "id_trainer1")
 	private Long idMainTrainer;
 	
@@ -51,19 +54,19 @@ public class Schedule {
 		this.idSchedule = idSchedule;
 	}
 
-	public Date getStart_date() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStart_date(Date start_date) {
+	public void setStartDate(Date start_date) {
 		this.startDate = start_date;
 	}
 
-	public Date getEnd_date() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEnd_date(Date end_date) {
+	public void setEndDate(Date end_date) {
 		this.endDate = end_date;
 	}
 
@@ -105,6 +108,14 @@ public class Schedule {
 
 	public void setIdBackupTrainer(Long idBackupTrainer) {
 		this.idBackupTrainer = idBackupTrainer;
+	}
+
+	public Long getIdTraining() {
+		return idTraining;
+	}
+
+	public void setIdTraining(Long idTraining) {
+		this.idTraining = idTraining;
 	}
 	
 

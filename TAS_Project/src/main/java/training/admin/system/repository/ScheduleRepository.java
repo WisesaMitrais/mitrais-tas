@@ -12,7 +12,8 @@ import training.admin.system.model.Schedule;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	List<Schedule> findByStartDateBeforeAndEndDateAfter(Date startDate, Date endDate);
 	List<Schedule> findByStartDateAfterAndEndDateBefore(Date startDate, Date endDate);
-	List<Schedule> findByEndDateAfter(Date today);
+	List<Schedule> findByEndDateAfterAndIdTraining(Date today, Long idTraining);
+	List<Schedule> findByIdTraining(Long idTraining);
 }
 
 

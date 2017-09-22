@@ -41,7 +41,7 @@ public class TrainingController {
 	public void update (@RequestBody Training trainingParam) {
 		Training training = trainingRepository.findOne(trainingParam.getIdTraining());
 		training.setTrainingName(trainingParam.getTrainingName());
-		training.setStratDate(trainingParam.getStratDate());
+		training.setStartDate(trainingParam.getStartDate());
 		training.setEndDate(trainingParam.getEndDate());
 		training.setOpenEnrollment(trainingParam.isOpenEnrollment());
 		trainingRepository.save(training);

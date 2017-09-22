@@ -22,7 +22,7 @@ public class Training {
 	private String trainingName;
 
 	@Column (name="start_date")
-	private Date stratDate;
+	private Date startDate;
 
 	@Column (name="end_date")
 	private Date endDate;
@@ -44,7 +44,11 @@ public class Training {
 	
 	@Column (name="open_enrollment")
 	private Boolean openEnrollment;
+	
+	@Column (name="bcc_training")
+	private Boolean bccTraining;
 
+	
 	public Training() {
 		
 	}
@@ -53,7 +57,7 @@ public class Training {
 			Date createdDate, Long updatedBy, Date updatedDate) {
 		this.idTraining = idTraining;
 		this.trainingName = trainingName;
-		this.stratDate = stratDate;
+		this.startDate = stratDate;
 		this.endDate = endDate;
 		this.active = active;
 		this.createdBy = createdBy;
@@ -78,12 +82,12 @@ public class Training {
 		this.trainingName = trainingName;
 	}
 
-	public Date getStratDate() {
-		return stratDate;
+	public Date getStartDate() {
+		return startDate;
 	}
 
-	public void setStratDate(Date stratDate) {
-		this.stratDate = stratDate;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 
 	public Date getEndDate() {
@@ -146,5 +150,13 @@ public class Training {
 		this.openEnrollment = openEnrollment;
 	}
 	
+	public Boolean getBccTraining() {
+		return bccTraining;
+	}
+
+	public void isBccTraining(Boolean bccTraining) {
+		this.bccTraining = bccTraining;
+	}
+
 	
 }

@@ -15,10 +15,12 @@ import training.admin.system.ActiveTraining;
 import training.admin.system.BccCourse;
 import training.admin.system.model.Course;
 import training.admin.system.model.Schedule;
+import training.admin.system.model.Training;
 import training.admin.system.model.User;
 import training.admin.system.repository.CourseRepository;
 import training.admin.system.repository.RoomRepository;
 import training.admin.system.repository.ScheduleRepository;
+import training.admin.system.repository.TrainingRepository;
 import training.admin.system.repository.UserRepository;
 import training.admin.system.repository.OfficeRepository;
 
@@ -36,47 +38,54 @@ public class DashboardMenuController {
 	RoomRepository roomRepository;
 	@Autowired
 	OfficeRepository officeRepository;
+	@Autowired
+	TrainingRepository trainingRepository;
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping (value="/activeTraining", method = RequestMethod.GET)
 	public List<ActiveTraining> getActiveTraining(){
 		System.out.println("\nProcessing for ActiveTraining Request");
 		System.out.println("---------------------------------");
+
+		List <ActiveTraining> activeTrainings = new ArrayList<ActiveTraining>();
 		
-		Date startDay = new Date(System.currentTimeMillis());
+		Date today = new Date(System.currentTimeMillis());
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(startDay);
+		calendar.setTime(today);
 		calendar.add(Calendar.DATE, -1);
 		
-		startDay.setDate(startDay.getDate()-1);
-		startDay.setHours(23); startDay.setMinutes(59); startDay.setSeconds(59);
-		System.out.println ("StartDay: " + startDay);
-		List<Schedule> schedules = scheduleRepository.findByEndDateAfter(startDay);
-		System.out.println("size = " + schedules.size());
-		
-		List <ActiveTraining> activeTrainings = new ArrayList<ActiveTraining>();
-		for (Schedule schedule:schedules) {
-			ActiveTraining activeTraining = new ActiveTraining();
-			activeTraining.setCourseName(courseRepository.findOne(schedule.getIdCourse()).getName());
-			activeTraining.setMainTrainer(userRepository.findOne(schedule.getIdMainTrainer()).getName());
+		today.setDate(today.getDate()-1);
+		today.setHours(23); today.setMinutes(59); today.setSeconds(59);
+		System.out.println ("StartDay: " + today);
+
+		List<Training> trainings = trainingRepository.findByActive(true);
+		for (Training training:trainings) {
+	
+			List<Schedule> schedules = scheduleRepository.findByEndDateAfterAndIdTraining(today, training.getIdTraining());
+			System.out.println("size = " + schedules.size());
 			
-			if (schedule.getIdBackupTrainer() != null) {
-					activeTraining.setBackupTrainer(userRepository.findOne(schedule.getIdBackupTrainer()).getName());
+			for (Schedule schedule:schedules) {
+				ActiveTraining activeTraining = new ActiveTraining();
+				activeTraining.setCourseName(courseRepository.findOne(schedule.getIdCourse()).getName());
+				activeTraining.setMainTrainer(userRepository.findOne(schedule.getIdMainTrainer()).getName());
+				
+				if (schedule.getIdBackupTrainer() != null) {
+						activeTraining.setBackupTrainer(userRepository.findOne(schedule.getIdBackupTrainer()).getName());
+				}
+				
+				Date startDate = schedule.getStartDate();
+				activeTraining.setStartDate(new SimpleDateFormat("d MMMM yyyy").format(startDate));
+				
+				Date endDate = schedule.getEndDate();
+				activeTraining.setEndDate(new SimpleDateFormat("d MMMM yyyy").format(endDate));
+				
+				Long idRoom = schedule.getIdRoom();
+				Long idOffice = roomRepository.findOne(idRoom).getIdOffice();
+				activeTraining.setOffice(officeRepository.findOne(idOffice).getCity());
+				
+				activeTrainings.add(activeTraining);
 			}
-			
-			Date startDate = schedule.getStart_date();
-			activeTraining.setStartDate(new SimpleDateFormat("dd-MMM-yyyy").format(startDate));
-			
-			Date endDate = schedule.getEnd_date();
-			activeTraining.setEndDate(new SimpleDateFormat("dd-MMM-yyyy").format(endDate));
-			
-			Long idRoom = schedule.getIdRoom();
-			Long idOffice = roomRepository.findOne(idRoom).getIdOffice();
-			activeTraining.setOffice(officeRepository.findOne(idOffice).getCity());
-			
-			activeTrainings.add(activeTraining);
 		}
-		
 		return activeTrainings;
 	}
 	
@@ -130,8 +139,8 @@ public class DashboardMenuController {
 			
 			newBccCourse.setTrainer(trainerName);
 			for (Integer i=1; i<=5; i++) {
-				Integer startCourse = schedule.getStart_date().getDay();
-				Integer endCourse = schedule.getEnd_date().getDay();
+				Integer startCourse = schedule.getStartDate().getDay();
+				Integer endCourse = schedule.getEndDate().getDay();
 				String data;
 				
 				if(i>=startCourse && i<=endCourse) {

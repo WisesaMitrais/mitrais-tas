@@ -19,7 +19,7 @@ import training.admin.system.model.Training;
 import training.admin.system.repository.ScheduleRepository;
 
 @RestController
-@RequestMapping("/schedule")
+//@RequestMapping("/schedule")
 public class ScheduleController {
 
 	@Autowired
@@ -44,8 +44,8 @@ public class ScheduleController {
 	public void update (@RequestBody Schedule scheduleParam) {
 		Schedule schedule= scheduleRepository.findOne(scheduleParam.getIdSchedule());
 		schedule.setIdRoom(scheduleParam.getIdRoom());
-		schedule.setStart_date(scheduleParam.getStart_date());
-		schedule.setEnd_date(scheduleParam.getEnd_date());
+		schedule.setStartDate(scheduleParam.getStartDate());
+		schedule.setEndDate(scheduleParam.getEndDate());
 		schedule.setCapacity(schedule.getCapacity());
 		schedule.setIdCourse(scheduleParam.getIdCourse());
 		schedule.setIdMainTrainer(scheduleParam.getIdMainTrainer());
