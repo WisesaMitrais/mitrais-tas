@@ -1,20 +1,102 @@
-Login
-. localhost:8080/login/auth?username=xxxx&password=xxxx
+# LOGIN
+. localhost:8080/login/auth?username=xxx&password=xxx
 
-Dashboard
-. localhost:8080/dashboard/activeTraining
-. localhost:8080/dashboard/bccCourse
 
-Training
+# DASHBOARD
+. localhost:8080/dashboard/activeTraining 	(GET)
+. localhost:8080/dashboard/bccCourse		(GET)
 
-User
+
+# PERIOD
+. localhost:8080/period/all			(GET)
+. localhost:8080/period/{idPeriod}		(GET)
+. localhost:8080/period/create		(POST)
+	{
+	
+		"trainingName":"Training Testing",
+	
+		"startDate":"YYYY-DD-MM",
+	
+		"endDate":"YYYY-DD-MM",
+		
+		"openEnrollment":"true",
+
+		"bccTraining":"false",	
+		"createdBy":3,
+	
+		"updatedBy":3,
+	
+		"active":"true"
+	}
+
+. localhost:8080/period/{idPeriod}/update	(POST) 
+. localhost:8080/period/{idPeriod}/delete	(GET)
+
+
+# Schedule
+. localhost:8080/schedule/all			(GET)
+. localhost:8080/schedule/{idSchedule}		(GET)
+. localhost:8080/schedule/create		(POST)
+	{
+	
+		"idCourse":1,
+	
+		"idRoom":1,
+	
+		"idTraining":1,
+	
+		"idMainTrainer":1,
+	
+		"idBackupTrainer":2,
+	
+		"startDate":"2017-21-12",
+	
+		"endDate":"2017-30-12",
+	
+		"capacity":10
+
+	}
+. localhost:8080/schedule/{idSchedule}/update	(POST) 
+. localhost:8080/schedule/{idSchedule}/delete	(GET)
+
+
+# USER
+. localhost:8080/user/all			(GET)
+. localhost:8080/user/{idUser}			(GET)
+. localhost:8080/user/create			(POST)
+	{
+	
+		"name":"User Testing",
+	
+		"username":"userTesting",
+	
+		"password":"userTesting",
+	
+		"email":"userTesting@mitrais.com",
+	
+		"jobFamilyStream":"SE.SE-JWT",
+	
+		"grade":"JP",
+	
+		"idOffice":2,
+	
+		"active":"true"
+	}
+. localhost:8080/user/{idUser}/update		(POST)
+. localhost:8080/user/{idUser}/delete		(GET)
+
 
 Achievement
 
+
 Enrollment
+
 
 Training Maintenance
 
+
+
+============================
 List 
 . localhost:8080/user/all
 . localhost:8080/course/all
