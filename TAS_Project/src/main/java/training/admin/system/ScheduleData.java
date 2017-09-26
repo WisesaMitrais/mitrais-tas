@@ -12,6 +12,8 @@ public class ScheduleData {
 	private String endTime;
 	private Integer capacity;
 	private Integer participantNumber;
+	private Boolean periodic;
+	private String periodicTime;
 	
 	public ScheduleData() {
 		
@@ -79,5 +81,22 @@ public class ScheduleData {
 	public void setParticipantNumber(Integer participantNumber) {
 		this.participantNumber = participantNumber;
 	}
+
+	public Boolean getPeriodic() {
+		return periodic;
+	}
+
+	public void setPeriodic(Boolean periodic) {
+		this.periodic = periodic;
+	}
+
+	public String getPeriodicTime() {
+		return periodicTime;
+	}
+
+	public void setPeriodicTime(String periodicTime) {
+		this.periodicTime = periodicTime;
+	}
 		
+	
 }

@@ -11,6 +11,8 @@ public class PeriodData {
 	private String endDate;
 	private String createdBy;
 	private String updatedBy;
+	private Boolean openEnrollment;
+	private Boolean bccTraining;
 	
 	public PeriodData() {
 		
@@ -63,6 +65,22 @@ public class PeriodData {
 	}
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public Boolean getOpenEnrollment() {
+		return openEnrollment;
+	}
+
+	public void setOpenEnrollment(Boolean openEnrollment) {
+		this.openEnrollment = openEnrollment;
+	}
+
+	public Boolean getBccTraining() {
+		return bccTraining;
+	}
+
+	public void setBccTraining(Boolean bccTraining) {
+		this.bccTraining = bccTraining;
 	}
 	
 	

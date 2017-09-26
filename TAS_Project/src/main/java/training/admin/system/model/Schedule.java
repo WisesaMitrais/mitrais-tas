@@ -42,6 +42,12 @@ public class Schedule {
 	@Column (name = "id_trainer2")
 	private Long idBackupTrainer;
 	
+	@Column (name = "periodic")
+	private Boolean periodic;
+	
+	@Column (name = "periodic_time")
+	private String periodicTime;
+	
 	public Schedule() {
 		
 	}
@@ -117,6 +123,21 @@ public class Schedule {
 	public void setIdTraining(Long idTraining) {
 		this.idTraining = idTraining;
 	}
-	
 
+	public Boolean getPeriodic() {
+		return periodic;
+	}
+
+	public void setPeriodic(Boolean periodic) {
+		this.periodic = periodic;
+	}
+
+	public String getPeriodicTime() {
+		return periodicTime;
+	}
+
+	public void setPeriodicTime(String periodicTime) {
+		this.periodicTime = periodicTime;
+	}
+		
 }

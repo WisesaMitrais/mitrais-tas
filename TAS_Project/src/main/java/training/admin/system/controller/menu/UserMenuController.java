@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import training.admin.system.UserData;
+import training.admin.system.model.EligibleParticipant;
 import training.admin.system.model.User;
 import training.admin.system.model.UserRole;
+import training.admin.system.repository.EligibleParticipantRepository;
 import training.admin.system.repository.RoleRepository;
 import training.admin.system.repository.UserRepository;
 import training.admin.system.repository.UserRoleRepository;
@@ -36,6 +38,9 @@ public class UserMenuController {
 	@Autowired
 	RoleRepository roleRepository;
 	
+	@Autowired
+	EligibleParticipantRepository eligibleParticipantRepository;
+	
 	@GetMapping("/all")
 	public List <UserData> findAll() {
 		List<UserData> usersData = new ArrayList<UserData>(); 
@@ -47,8 +52,14 @@ public class UserMenuController {
 	}
 	
 	@GetMapping ("/{id}")
-	public UserData findOne(@PathVariable ("id") Long idUser) {
-		return convertUserToUserData(userRepository.findOne(idUser));
+	public Object findOne(@PathVariable ("id") Long idUser) {
+		try {
+			return convertUserToUserData(userRepository.findOne(idUser));
+		}
+		catch (Exception exp){
+			System.out.println(exp);
+			return false;
+		}
 	}
 	
 	
@@ -92,7 +103,7 @@ public class UserMenuController {
 		}
 	}
 	
-	@RequestMapping (value="/{id}/delete", method = RequestMethod.GET)
+	@RequestMapping (value="/{id}/delete", method = RequestMethod.DELETE)
 	public Boolean delete (@PathVariable ("id") Long idUser) {
 		try {
 			userRepository.delete(idUser);
@@ -103,6 +114,18 @@ public class UserMenuController {
 		}
 	}
 	
+	@GetMapping (value="/findByTrainingNot/{idTraining}")
+	public List<UserData> findByTrainingNot (@PathVariable Long idTraining){
+		List<UserData> usersData = new ArrayList<UserData>(); 
+		List<User> users = userRepository.findAll();
+		for (User user:users) {
+			List <EligibleParticipant> tmp = eligibleParticipantRepository.findByIdTrainingAndIdUser(idTraining, user.getIdUser());
+			if (tmp.size()<=0) {
+				usersData.add(convertUserToUserData(user));
+			}
+		}
+		return usersData;
+	}
 	
 	//============================================//
 

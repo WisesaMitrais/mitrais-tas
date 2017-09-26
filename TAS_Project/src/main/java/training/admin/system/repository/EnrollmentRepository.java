@@ -9,5 +9,6 @@ import training.admin.system.model.Enrollment;
 
 @Component
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long>{
-	List<Enrollment> findByIdSchedule(Long idSchedule);
+	List <Enrollment> findByIdSchedule(Long idSchedule);
+	List <Enrollment> findByIdUser (Long idUser);
 }

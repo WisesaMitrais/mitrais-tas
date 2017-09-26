@@ -57,9 +57,14 @@ public class ScheduleMenuController {
 	}
 	
 	@GetMapping("/{id}")
-	public ScheduleData findOne(@PathVariable ("id") Long idSchedule){
-		Schedule schedule = scheduleRepository.findOne(idSchedule);
-		return ConvertSchedulesToScheduleData(schedule);	
+	public Object findOne(@PathVariable ("id") Long idSchedule){
+		try {
+			return ConvertSchedulesToScheduleData(scheduleRepository.findOne(idSchedule));
+		}
+		catch (Exception exp){
+			System.out.println(exp);
+			return false;
+		}
 	}
 	
 	@PostMapping ("/create")
@@ -85,6 +90,8 @@ public class ScheduleMenuController {
 			schedule.setIdMainTrainer(schedule.getIdMainTrainer());
 			schedule.setIdBackupTrainer(scheduleParam.getIdBackupTrainer());
 			schedule.setCapacity(scheduleParam.getCapacity());
+			schedule.setPeriodic(scheduleParam.getPeriodic());
+			schedule.setPeriodicTime(scheduleParam.getPeriodicTime());
 			scheduleRepository.save(schedule);
 			return Boolean.TRUE;
 		} catch (Exception e) {
@@ -92,7 +99,7 @@ public class ScheduleMenuController {
 		}
 	}
 	
-	@RequestMapping (value="/{id}/delete", method = RequestMethod.GET)
+	@RequestMapping (value="/{id}/delete", method = RequestMethod.DELETE)
 	public Boolean delete (@PathVariable ("id") Long idSchedule) {
 		try {
 			scheduleRepository.delete(idSchedule);
@@ -113,11 +120,14 @@ public class ScheduleMenuController {
 		scheduleData.setRoom(room.getName() + " - " + officeRepository.findOne(room.getIdOffice()).getCity());
 		scheduleData.setDay("-");
 		Date startDate = schedule.getStartDate();
-		scheduleData.setStartTime(new SimpleDateFormat("d MMMM yyyy HH:mm").format(startDate));
+		scheduleData.setStartTime(new SimpleDateFormat("d MMMM yyyy").format(startDate));
 		Date endDate = schedule.getStartDate();
-		scheduleData.setEndTime(new SimpleDateFormat("d MMMM yyyy HH:mm").format(endDate));
+		scheduleData.setEndTime(new SimpleDateFormat("d MMMM yyyy").format(endDate));
 		scheduleData.setCapacity(schedule.getCapacity());
 		scheduleData.setParticipantNumber(enrollmentRepository.findByIdSchedule(schedule.getIdSchedule()).size());
+		scheduleData.setPeriodic(schedule.getPeriodic());
+		scheduleData.setPeriodicTime(schedule.getPeriodicTime());
+		
 		return scheduleData;
 	}
 }

@@ -46,6 +46,16 @@ public class EligibleParticipant {
 	public void setIdUser(long idUser) {
 		this.idUser = idUser;
 	}
+
+	public long getIdEligibleParticipant() {
+		return idEligibleParticipant;
+	}
+
+	public void setIdEligibleParticipant(long idEligibleParticipant) {
+		this.idEligibleParticipant = idEligibleParticipant;
+	}
+	
+	
 	
 	
 }

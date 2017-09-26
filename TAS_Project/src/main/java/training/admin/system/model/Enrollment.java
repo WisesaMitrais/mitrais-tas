@@ -15,10 +15,7 @@ public class Enrollment {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column (name="id_enrollment")
 	private long idEnrollment;
-	
-	@Column (name="status")
-	private String status;
-	
+		
 	@Column (name="id_schedule")
 	private long idSchedule;
 	
@@ -29,9 +26,8 @@ public class Enrollment {
 		
 	}
 	
-	public Enrollment(long idEnrollment, String status, long idSchedule, long idUser) {
+	public Enrollment(long idEnrollment, long idSchedule, long idUser) {
 		this.idEnrollment = idEnrollment;
-		this.status = status;
 		this.idSchedule = idSchedule;
 		this.idUser = idUser;
 	}
@@ -42,14 +38,6 @@ public class Enrollment {
 
 	public void setIdEnrollment(long idEnrollment) {
 		this.idEnrollment = idEnrollment;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public long getIdSchedule() {

@@ -47,7 +47,7 @@ public class TrainingController {
 		trainingRepository.save(training);
 	}
 	
-	@RequestMapping (value="/delete", method = RequestMethod.GET)
+	@RequestMapping (value="/delete", method = RequestMethod.DELETE)
 	public void delete (@RequestParam ("id") Long idTraining) {
 		trainingRepository.delete(idTraining);
 	}

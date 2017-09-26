@@ -1,6 +1,7 @@
 package training.admin.system.controller.menu;
 
 import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,8 +55,13 @@ public class PeriodMenuController {
 	}
 	
 	@GetMapping ("/{id}")
-	public PeriodData findOne(@PathVariable ("id") Long idTraining) {
-		return  convertTrainingToPeriodData(trainingRepository.findOne(idTraining));
+	public Object findOne(@PathVariable ("id") Long idTraining) {
+		try {
+			return convertTrainingToPeriodData(trainingRepository.findOne(idTraining));
+		}catch (Exception e) {
+			System.out.println(e);
+			return false;
+		} 
 	}
 	
 	@PostMapping ("/create")
@@ -94,7 +100,7 @@ public class PeriodMenuController {
 		}
 	}
 	
-	@RequestMapping (value="/{id}/delete", method = RequestMethod.GET)
+	@RequestMapping (value="/{id}/delete", method = RequestMethod.DELETE)
 	public Boolean delete (@PathVariable ("id") Long idTraining) {
 		try {
 			trainingRepository.delete(idTraining);
@@ -114,10 +120,12 @@ public class PeriodMenuController {
 		periodData.setCourses(scheduleRepository.findByIdTraining(training.getIdTraining()).size());
 		Date startDate = training.getStartDate();
 		periodData.setStartDate(new SimpleDateFormat("d MMMM yyyy").format(startDate));
-		Date endDate = training.getStartDate();
-		periodData.setEndDate(new SimpleDateFormat("dMMMM yyyy").format(endDate));
+		Date endDate = training.getEndDate();
+		periodData.setEndDate(new SimpleDateFormat("d MMMM yyyy").format(endDate));
 		periodData.setCreatedBy(userRepository.findOne(training.getCreatedBy()).getName());
 		periodData.setUpdatedBy(userRepository.findOne(training.getUpdatedBy()).getName());
+		periodData.setBccTraining(training.getBccTraining());
+		periodData.setOpenEnrollment(training.isOpenEnrollment());
 		return periodData;
 	}
 	
