@@ -24,6 +24,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PeriodComponent } from './period/period.component';
 import { AddPeriodComponent } from './period/period-add.component';
 import { PeriodEligibleParticipantComponent } from './period/period-eligibleparticipant.component';
+import { PeriodEligibleParticipantAddComponent } from './period/period-eligibleparticipant-add.component';
 import { PeriodScheduleComponent } from './period/period-schedule.component';
 import { UserComponent } from './user/user.component';
 
@@ -33,6 +34,7 @@ import { DashboardService } from './services/dashboard.service';
 import { PeriodService } from './services/period.service';
 import { UserService } from './services/user.service';
 import { UrlService } from './services/url.service';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   exports: [ MdAutocompleteModule, MdButtonModule, MdButtonToggleModule,
@@ -55,6 +57,7 @@ export class MaterialModule {}
     PeriodComponent,
     AddPeriodComponent,
     PeriodEligibleParticipantComponent,
+    PeriodEligibleParticipantAddComponent,
     PeriodScheduleComponent,
     UserComponent
   ],
@@ -75,6 +78,7 @@ export class MaterialModule {}
     AlertService,
     LoginService,
     UrlService,
+    NotificationService,
     DashboardService,
     PeriodService,
     UserService

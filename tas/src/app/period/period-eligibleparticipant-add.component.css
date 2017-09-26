@@ -1,0 +1,28 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .mat-header-row,  .mat-row {
+    min-height: 56px;
+    max-height: 56px;
+    display: table-row;
+    font-size: 20px;
+    border-bottom: 1px solid transparent;
+  }
+  
+  .mat-header-cell, .mat-cell {
+    display: table-cell;
+    height: 48px;
+    padding: 0px 61px 0px 13px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  
+  .mat-table {
+    overflow: auto;
+    min-height: 333px;
+    max-height: 333px;
+    width: 100%;
+  }

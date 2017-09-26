@@ -48,8 +48,8 @@
                     <md-cell *mdCellDef="let row">
                         <button md-button [mdMenuTriggerFor]="menu"><md-icon>more_horiz</md-icon></button>
                         <md-menu #menu="mdMenu">
-                            <button md-menu-item>Schedule List</button>
-                            <button md-menu-item>Eligible Participant</button>
+                            <button md-menu-item (click)="toEligibleParticipant(row.idTraining, row.name)">Eligible Participant</button>
+                            <button md-menu-item (click)="toScheduleList()">Schedule List</button>
                             <button md-menu-item>Edit</button>
                             <button md-menu-item>Deleted</button>
                         </md-menu>
@@ -67,4 +67,6 @@
             <button md-button style="margin-left:30px; margin-bottom:10px; width:150px; background-color:#6100BF; color:#FEFEFE" (click)="openDialog()"><md-icon style="margin-right:10px">add</md-icon>Add Period</button>
         </md-card-content>
     </md-card>
+    <br>
+    <router-outlet></router-outlet>
 </div>

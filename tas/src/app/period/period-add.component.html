@@ -3,26 +3,26 @@
     <form>
         <md-form-field style="width:100%;">
             <h4>Name :</h4>
-            <input mdInput type="text" [(ngModel)]="newPeriod.trainingName">
+            <input mdInput type="text" [(ngModel)]="newPeriod.trainingName" #trainingName = "ngModel" [ngModelOptions]="{standalone: true}">
         </md-form-field>
     </form>
     <form>
         <md-form-field style="margin-right:50px">
             <h4>Start Date :</h4>
-            <input mdInput [mdDatepicker]="newPeriod.startDate">
-            <md-datepicker-toggle mdSuffix [for]="newPeriod.startDate"></md-datepicker-toggle>
-            <md-datepicker #newPeriod.startDate></md-datepicker>
+            <input mdInput [mdDatepicker]="start" [(ngModel)]="newPeriod.startDate" #startDate = "ngModel" [ngModelOptions]="{standalone: true}">
+            <md-datepicker-toggle mdSuffix [for]="start"></md-datepicker-toggle>
+            <md-datepicker #start></md-datepicker>
         </md-form-field>
         <md-form-field>
             <h4>End Date :</h4>
-            <input mdInput [mdDatepicker]="newPeriod.endData">
-            <md-datepicker-toggle mdSuffix [for]="newPeriod.endDate"></md-datepicker-toggle>
-            <md-datepicker #newPeriod.endDate></md-datepicker>
+            <input mdInput [mdDatepicker]="end" [(ngModel)]="newPeriod.endDate" #endDate = "ngModel" [ngModelOptions]="{standalone: true}">
+            <md-datepicker-toggle mdSuffix [for]="end"></md-datepicker-toggle>
+            <md-datepicker #end></md-datepicker>
         </md-form-field>
     </form>
     <br>
-    <md-checkbox style="margin-right:10px" [(ngModel)]="newPeriod.openEnrollment">Is this Enrollment Open ?</md-checkbox>
-    <md-checkbox [(ngModel)]="newPeriod.bccTraining">Is this BCC Training ?</md-checkbox>
+    <md-checkbox style="margin-right:10px" [(ngModel)]="newPeriod.openEnrollment" #openEnrollment = "ngModel" [ngModelOptions]="{standalone: true}">Is this Enrollment Open ?</md-checkbox>
+    <md-checkbox [(ngModel)]="newPeriod.bccTraining" #bccTraining = "ngModel" [ngModelOptions]="{standalone: true}">Is this BCC Training ?</md-checkbox>
 </div>
 <br>
 <form>

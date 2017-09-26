@@ -1,0 +1,150 @@
+<md-toolbar style="background-color:#6100BF; color:#FEFEFE">
+    Select Employee(s)
+    <button md-button style="margin-left:700px; width:150px; background-color:#FEFEFE; color:#6100BF" (click)="sendEligibleParticipant()"><md-icon style="margin-right:20px">done_all</md-icon>Done</button>
+</md-toolbar>
+<md-card-header style="background-color:#6100BF; color:#FEFEFE; padding-left:0px; height:45px">
+    Search by:
+    <div style="padding-left:10px">
+        <md-input-container floatPlaceholder="never" style="color:#FEFEFE; width:150px">
+            <input mdInput #filter placeholder="name">
+        </md-input-container>
+    </div>
+    <div style="padding-left:20px">
+        <md-input-container floatPlaceholder="never" style="color:#FEFEFE; width:150px">
+            <input mdInput #filter placeholder="job family & stream">
+        </md-input-container>
+    </div>
+    <div style="padding-left:10px">
+        <md-input-container floatPlaceholder="never" style="color:#FEFEFE; width:150px">
+            <input mdInput #filter placeholder="grade">
+        </md-input-container>
+    </div>
+    <div style="padding-left:10px">
+        <md-input-container floatPlaceholder="never" style="color:#FEFEFE; width:150px">
+            <input mdInput #filter placeholder="email">
+        </md-input-container>
+    </div>
+    <div style="padding-left:10px">
+        <md-input-container floatPlaceholder="never" style="color:#FEFEFE; width:150px">
+            <input mdInput #filter placeholder="account name">
+        </md-input-container>
+    </div>    
+</md-card-header>
+<md-card-content>
+    <md-table #table [dataSource]="dataSource" mdSort style="background-color:#F2F2F2">
+        <ng-container mdColumnDef="action">
+            <md-header-cell *mdHeaderCellDef></md-header-cell>
+            <md-cell *mdCellDef="let row">
+                    <md-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row.idUser) : null"
+                    [checked]="selection.isSelected(row.idUser)"></md-checkbox>
+            </md-cell>
+        </ng-container>
+        <ng-container mdColumnDef="name">
+            <md-header-cell *mdHeaderCellDef md-sort-header><b> Full Name </b></md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.name}} </md-cell>
+        </ng-container>
+        <ng-container mdColumnDef="jobFamilyStream">
+            <md-header-cell *mdHeaderCellDef md-sort-header><b> Job Family & Stream </b></md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.jobFamilyStream}} </md-cell>
+        </ng-container>
+        <ng-container mdColumnDef="grade">
+            <md-header-cell *mdHeaderCellDef md-sort-header><b> Grade </b></md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.grade}} </md-cell>
+        </ng-container>
+        <ng-container mdColumnDef="email">
+            <md-header-cell *mdHeaderCellDef md-sort-header><b> Email </b></md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.email}} </md-cell>
+        </ng-container>
+        <ng-container mdColumnDef="accountName">
+            <md-header-cell *mdHeaderCellDef md-sort-header><b> Account Name </b></md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.accountName}} </md-cell>
+        </ng-container>
+        <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+        <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+    </md-table>
+    <b>Total selected employee(s) : {{selection.selected.length}}</b>
+    <md-paginator #paginator
+                    [length]="0"
+                    [pageIndex]="0"
+                    [pageSize]="0"
+                    [pageSizeOptions]="[10, 25, 50, 100]">
+    </md-paginator>
+</md-card-content>
+
+
+
+
+
+
+
+
+<!-- <div class="example-container mat-elevation-z8">
+        <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
+          <md-input-container floatPlaceholder="never">
+            <input mdInput #filter placeholder="Filter users">
+          </md-input-container>
+        </div>
+        <div class="example-header example-selection-header"
+             *ngIf="!selection.isEmpty()">
+          {{selection.selected.length}}
+          {{selection.selected.length == 1 ? 'user' : 'users'}}
+          selected
+        </div>
+      
+        <md-table #table [dataSource]="dataSource" mdSort>
+      
+          <ng-container mdColumnDef="select">
+            <md-header-cell *mdHeaderCellDef>
+              <md-checkbox (change)="$event ? masterToggle() : null"
+                           [checked]="isAllSelected()"
+                           [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </md-checkbox>
+            </md-header-cell>
+            <md-cell *mdCellDef="let row">
+              <md-checkbox (click)="$event.stopPropagation()"
+                           (change)="$event ? selection.toggle(row.id) : null"
+                           [checked]="selection.isSelected(row.id)">
+              </md-checkbox>
+            </md-cell>
+          </ng-container>
+      
+          <ng-container mdColumnDef="userId">
+            <md-header-cell *mdHeaderCellDef md-sort-header> ID </md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.id}} </md-cell>
+          </ng-container>
+      
+          <ng-container mdColumnDef="progress">
+            <md-header-cell *mdHeaderCellDef md-sort-header> Progress </md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.progress}}% </md-cell>
+          </ng-container>
+      
+          <ng-container mdColumnDef="userName">
+            <md-header-cell *mdHeaderCellDef md-sort-header> Name </md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.name}} </md-cell>
+          </ng-container>
+      
+          <ng-container mdColumnDef="color">
+            <md-header-cell *mdHeaderCellDef md-sort-header> Color </md-header-cell>
+            <md-cell *mdCellDef="let row" [style.color]="row.color"> {{row.color}} </md-cell>
+          </ng-container>
+      
+          <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+          <md-row *mdRowDef="let row; columns: displayedColumns;"
+                   [class.example-selected-row]="selection.isSelected(row.id)"
+                   (click)="selection.toggle(row.id)">
+          </md-row>
+        </md-table>
+      
+        <div class="example-no-results"
+             [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+          No users found matching filter.
+        </div>
+      
+        <md-paginator #paginator
+                      [length]="dataSource.filteredData.length"
+                      [pageIndex]="0"
+                      [pageSize]="25"
+                      [pageSizeOptions]="[5, 10, 25, 100]">
+        </md-paginator>
+      </div> -->

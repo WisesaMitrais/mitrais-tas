@@ -8,13 +8,12 @@ import { RoleComponent } from '../login/role.component';
 import { Login } from './login';
 import { Observable } from 'rxjs/Rx';
 import { UrlService } from '../services/url.service';
+import { NotificationService } from '../services/notification.service';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/throw';
-
-declare var $: any;
 
 @Injectable() 
  export class LoginService {
@@ -22,15 +21,19 @@ declare var $: any;
      username: string;
      password: string;
      checkLogin: Login;
+     headers;
 
     constructor(private http: Http, 
         private cookieService: CookieService,
         private urlService: UrlService,
-        public dialog: MdDialog,) { }
+        private notificationService: NotificationService,
+        public dialog: MdDialog,) { 
+            this.headers = this.urlService.getHeaderSecurity();
+        }
 
     public checkUserData(): Observable<Login>{
         this.url = this.urlService.loginUrl(this.username, this.password);
-        return this.http.get(this.url)
+        return this.http.get(this.url, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -49,14 +52,14 @@ declare var $: any;
 
     public loginProcess(u: string, p: string, v: boolean){
         if(u.length == 0 || p.length == 0){
-            this.showAlert('bottom', 'center', 1);
+            this.notificationService.setNotificationWarning('Username and password required !');
         }else{
             this.username = u;
             this.password = p;
             this.checkUserData().subscribe(((checkLogin) => {
                 this.checkLogin = checkLogin;
                 if(this.checkLogin[0].idUser == 0){
-                    this.showAlert('bottom', 'center', 2);
+                    this.notificationService.setNotificationError('Login failed ! invalid username or password');
                 }else{
                     if(v == true){
                         this.cookieService.put('loginData',JSON.stringify({'username': u, 'password': p}));
@@ -68,34 +71,6 @@ declare var $: any;
                         });
                 }
               }));
-        }
-    }
-
-    private showAlert(from, align, status : number){
-        if(status == 1){
-            $.notify({
-                icon: "notifications",
-                message: "<b>WARNING</b> - username and password required !"
-            },{
-                type: 'warning',
-                timer: 3000,
-                placement: {
-                    from: from,
-                    align: align
-                }
-            });
-        }else{
-            $.notify({
-                icon: "notifications",
-                message: "<b>Error</b> - Login failed ! invalid username or password"
-            },{
-                type: 'danger',
-                timer: 3000,
-                placement: {
-                    from: from,
-                    align: align
-                }
-            });
         }
     }
  }

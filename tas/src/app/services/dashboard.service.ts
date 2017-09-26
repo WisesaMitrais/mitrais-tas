@@ -16,20 +16,23 @@ import 'rxjs/add/observable/throw';
 @Injectable() 
  export class DashboardService {
      url: string;
+     headers;
 
     constructor(private http: Http,
-        private urlService: UrlService) { }
+        private urlService: UrlService) { 
+            this.headers = this.urlService.getHeaderSecurity();
+        }
 
     public getDataAT(): Observable<DashboardAT[]>{
         this.url = this.urlService.getDataActiveTraining();
-        return this.http.get(this.url)
+        return this.http.get(this.url, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     public getDataBCCS(): Observable<DashboardBCCS[]>{
         this.url = this.urlService.getDataBCCSchedule();
-        return this.http.get(this.url)
+        return this.http.get(this.url, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);
     }

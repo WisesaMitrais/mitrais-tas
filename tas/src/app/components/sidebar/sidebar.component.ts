@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CookieService } from 'angular2-cookie/core';
 import { Router } from '@angular/router';
+import { MdSidenav } from '@angular/material';
+
+import { NotificationService } from '.../../app/services/notification.service';
 
 declare interface RouteInfo {
     path: string;
@@ -42,8 +45,6 @@ const menuStaff: RouteInfo[] = [
 
 export var ROUTES: RouteInfo[] = menuAdmin;
 
-declare var $: any;
-
 @Component({
   selector: 'tas-sidebar',
   templateUrl: './sidebar.component.html',
@@ -52,26 +53,19 @@ declare var $: any;
 export class SidebarComponent implements OnInit {
   menuItems: any[];
   currentUser;
+  
+  @ViewChild('sidenav') public sideNav: MdSidenav;
 
   constructor(private cookieService: CookieService,
+    private notificationService: NotificationService,
     private router: Router) { }
 
   ngOnInit() {
     if (this.cookieService.get('currentUser')){
       this.currentUser = JSON.parse(this.cookieService.get('currentUser'));
     } else { 
-      this.router.navigate(['/login']) 
-      $.notify({
-          icon: "notifications",
-          message: "<b>Information</b> - Your are not logged in"
-      },{
-          type: 'info',
-          timer: 3000,
-          placement: {
-              from: 'bottom',
-              align: 'center'
-          }
-      });
+      this.router.navigate(['/login']);
+      this.notificationService.setNotificationInfo('Your are not logged in');
     };
 
     if(this.currentUser.roleActive == "admin"){
@@ -84,6 +78,10 @@ export class SidebarComponent implements OnInit {
       ROUTES = menuStaff;
     }
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+  }
+
+  closeSideNav(){
+    this.sideNav.close();
   }
 
 }

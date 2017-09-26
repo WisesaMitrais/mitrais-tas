@@ -11,6 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PeriodComponent } from './period/period.component';
 import { AddPeriodComponent } from './period/period-add.component';
 import { PeriodEligibleParticipantComponent } from './period/period-eligibleparticipant.component';
+import { PeriodEligibleParticipantAddComponent } from './period/period-eligibleparticipant-add.component';
 import { PeriodScheduleComponent } from './period/period-schedule.component';
 import { UserComponent } from './user/user.component';
 
@@ -23,7 +24,7 @@ const routes: Routes =[
       { path: 'period', component: PeriodComponent, children: [
         { path: 'add', component: AddPeriodComponent },
         { path: 'eligible-participant', component: PeriodEligibleParticipantComponent, children: [
-          { path: 'add', component: PeriodComponent }
+          { path: 'add', component: PeriodEligibleParticipantAddComponent }
         ]},
         { path: 'schedule-list', component: PeriodScheduleComponent, children: [
           { path: 'details', component: PeriodComponent },

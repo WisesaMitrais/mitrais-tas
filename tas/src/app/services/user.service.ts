@@ -13,13 +13,16 @@ import 'rxjs/add/observable/throw';
 @Injectable() 
  export class UserService {
      url: string;
+     headers;
 
     constructor(private http: Http,
-        private urlService: UrlService) { }
+        private urlService: UrlService) { 
+            this.headers = this.urlService.getHeaderSecurity();
+        }
 
     public getDataUsers(): Observable<User[]>{
         this.url = this.urlService.getAllUserData();
-        return this.http.get(this.url)
+        return this.http.get(this.url, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);
     }

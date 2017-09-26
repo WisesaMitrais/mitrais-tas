@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
-import { MdPaginator, MdSort, SelectionModel } from '@angular/material';
-import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdPaginator, MdSort, SelectionModel, MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 import { AddPeriodComponent } from './period-add.component';
 
@@ -33,8 +33,8 @@ export class PeriodComponent {
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private periodService: PeriodService, public dialog: MdDialog) {  
-    this.periodService.getDataPeriod().subscribe(((period) => {
+  constructor(private periodService: PeriodService, public dialog: MdDialog, private router: Router) {  
+      this.periodService.getDataPeriod().subscribe(((period) => {
       this.period = period;
       this.exampleDatabase = new ExampleDatabase(this.period);
       this.paginator.length = this.exampleDatabase.data.length;
@@ -57,6 +57,16 @@ export class PeriodComponent {
       width: '600px',
       height: '430px'
     });
+  }
+
+  toEligibleParticipant(id: number, name: string){
+    //console.log(name);
+    window.location.reload();
+    this.router.navigate(['home/period/eligible-participant'], { queryParams: { id: id } });
+  }
+
+  toScheduleList(){
+    this.router.navigate(['home/period/schedule-list']);
   }
 }
 
