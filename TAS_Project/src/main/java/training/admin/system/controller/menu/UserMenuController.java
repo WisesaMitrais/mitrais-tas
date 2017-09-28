@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,12 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import training.admin.system.Trainer;
 import training.admin.system.UserData;
 import training.admin.system.model.EligibleParticipant;
+import training.admin.system.model.Office;
+import training.admin.system.model.Role;
+import training.admin.system.model.Training;
 import training.admin.system.model.User;
 import training.admin.system.model.UserRole;
 import training.admin.system.repository.EligibleParticipantRepository;
 import training.admin.system.repository.RoleRepository;
+import training.admin.system.repository.TrainingRepository;
 import training.admin.system.repository.UserRepository;
 import training.admin.system.repository.UserRoleRepository;
 import training.admin.system.security.MD5Hash;
@@ -37,6 +43,9 @@ public class UserMenuController {
 	
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	TrainingRepository trainingRepository;
 	
 	@Autowired
 	EligibleParticipantRepository eligibleParticipantRepository;
@@ -119,12 +128,34 @@ public class UserMenuController {
 		List<UserData> usersData = new ArrayList<UserData>(); 
 		List<User> users = userRepository.findAll();
 		for (User user:users) {
-			List <EligibleParticipant> tmp = eligibleParticipantRepository.findByIdTrainingAndIdUser(idTraining, user.getIdUser());
+			Training training = trainingRepository.findOne(idTraining);
+			List <EligibleParticipant> tmp = eligibleParticipantRepository.findByTrainingAndUser(training, user);
 			if (tmp.size()<=0) {
 				usersData.add(convertUserToUserData(user));
 			}
 		}
 		return usersData;
+	}
+	
+	@GetMapping (value="/{idUser}/office")
+	public User getOffice (@PathVariable Long idUser) {
+		User user = userRepository.findOne(idUser);
+		Hibernate.initialize(user.getOffice());
+		return user;
+	}
+	
+	@GetMapping (value="/findTrainer")
+	public List<Trainer> findTrainer(){
+		List<Trainer> trainers = new ArrayList<Trainer>();
+		Role trainerRole = roleRepository.findOne(new Long(3)); 
+		List<UserRole> userRoles = userRoleRepository.findByRole(trainerRole);
+		for (UserRole userRole:userRoles) {
+			Trainer trainer = new Trainer();
+			trainer.setIdTrainer(userRole.getUser().getIdUser());
+			trainer.setName(userRole.getUser().getName());
+			trainers.add(trainer);
+		}
+		return trainers;
 	}
 	
 	//============================================//
@@ -139,10 +170,10 @@ public class UserMenuController {
 		userData.setAccountName(user.getUsername());
 		userData.setGrade(user.getGrade());
 		
-		List <UserRole> userRoles = userRoleRepository.findByIdUser(user.getIdUser());
+		List <UserRole> userRoles = userRoleRepository.findByUser(user);
 		String roles ="";
 		for (UserRole userRole:userRoles) {
-			roles = roles + roleRepository.findOne(userRole.getIdRole()).getName() + ", ";
+			roles = roles + userRole.getRole().getName() + ", ";
 		}
 		userData.setRole(roles);
 		

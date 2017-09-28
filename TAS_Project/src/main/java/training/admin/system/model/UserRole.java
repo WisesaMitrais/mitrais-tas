@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,23 +19,18 @@ public class UserRole {
 	@Column (name = "id_user_role")
 	private long idUserRole;
 	
-	@Column (name = "id_user")
-	private long idUser;
+	@ManyToOne
+	@JoinColumn (name = "id_user")
+	private User user;
 
-	@Column (name = "id_role")
-	private long idRole;
+	@ManyToOne
+	@JoinColumn (name = "id_role")
+	private Role role;
 
 	public UserRole() {
 		
 	}
 	
-	public UserRole(long idUserRole, long idUser, long idRole) {
-		super();
-		this.idUserRole = idUserRole;
-		this.idUser = idUser;
-		this.idRole = idRole;
-	}
-
 	public long getIdUserRole() {
 		return idUserRole;
 	}
@@ -42,20 +39,22 @@ public class UserRole {
 		this.idUserRole = idUserRole;
 	}
 
-	public long getIdUser() {
-		return idUser;
+	public User getUser() {
+		return user;
 	}
 
-	public void setIdUser(long idUser) {
-		this.idUser = idUser;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public long getIdRole() {
-		return idRole;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setIdRole(long idRole) {
-		this.idRole = idRole;
+	public void setRole(Role role) {
+		this.role = role;
 	}
+
+
 		
 }

@@ -31,8 +31,13 @@ public class AchievementController {
 	OfficeRepository officeRepository;
 	
 	@RequestMapping(value="/all", method=RequestMethod.GET)
-	public List<Achievement> findAll( ) {
-		return achievementRepository.findAll();
+	public List<AchievementData> findAll( ) {
+		List <AchievementData> listAchievment = new ArrayList<AchievementData>();
+		List <Achievement> achievements = achievementRepository.findAll();
+		for (Achievement achievement:achievements) {
+			listAchievment.add(convertAchievementToAchievementData(achievement));
+		}
+		return listAchievment;
 	}
 	
 	@RequestMapping(value="/allPage", method=RequestMethod.GET)
@@ -43,6 +48,10 @@ public class AchievementController {
 	@GetMapping(value="/findByUser/{idUser}")
 	public List<AchievementData> findByUser(@PathVariable Long idUser){
 		List <AchievementData> listAchievment = new ArrayList<AchievementData>();
+		List <Achievement> achievements = achievementRepository.findByIdUser(idUser);
+		for (Achievement achievement:achievements) {
+			listAchievment.add(convertAchievementToAchievementData(achievement));
+		}
 		return listAchievment;
 	}
 	
@@ -53,23 +62,23 @@ public class AchievementController {
 		achievementData.setEmployeeName(user.getName());
 		achievementData.setJobFamily(user.getJobFamilyStream());
 		achievementData.setGrade(user.getGrade());
-		achievementData.setOffice(officeRepository.findOne(user.getOffice()).getCity());
+		achievementData.setOffice(user.getOffice().getCity());
 		
 		String beginning = "-";
 		List<Achievement> beginningAchievement = achievementRepository.findByIdUserAndIdCourse(achievement.getIdUser(), achievement.getIdCourse());
-		if (beginningAchievement.size()<=0){
+		if (beginningAchievement.size()>0){
 			
 		}
 		
 		achievementData.setBeginning(beginning);
-		achievementData.setLI1("LI1");
-		achievementData.setLI2("LI2");
+		achievementData.setLI1("LI. 1");
+		achievementData.setLI2("LI. 2");
 		achievementData.setInt1("Int. 2");
 		achievementData.setInt2("Int. 2");
-		achievementData.setBW1("BW1");
-		achievementData.setCE1("CE1");
-		achievementData.setBW2("BW2");
-		achievementData.setCE2("CE2");
+		achievementData.setBW1("BW1. ");
+		achievementData.setCE1("CE1. ");
+		achievementData.setBW2("BW2. ");
+		achievementData.setCE2("CE2. ");
 		achievementData.setPresentationSkill2("Presentation Skills 2");
 		return achievementData;
 	}

@@ -30,12 +30,12 @@ public class CourseController {
 	}
 	
 	@RequestMapping(value="/bcc", method = RequestMethod.GET)
-	public Page<Course> findBcc (Pageable pageable){
-		return courseRepository.findByBccCourse(pageable,true);
+	public List<Course> findBcc (){
+		return courseRepository.findByBccCourse(true);
 	}
 	
 	@RequestMapping(value="/notBcc", method = RequestMethod.GET)
-	public Page<Course> findNotBcc (Pageable pageable){
-		return courseRepository.findByBccCourse(pageable,false);
+	public List<Course> findNotBcc (){
+		return courseRepository.findByBccCourse(false);
 	}
 }

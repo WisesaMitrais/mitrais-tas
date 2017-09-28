@@ -52,6 +52,7 @@ public class PeriodMenuController {
 			periodsData.add(convertTrainingToPeriodData(training));
 		}
 		return periodsData;
+//		return trainingRepository._findAllPeriod();
 	}
 	
 	@GetMapping ("/{id}")
@@ -117,7 +118,7 @@ public class PeriodMenuController {
 		periodData.setName(training.getTrainingName());
 		String active = training.isActive() ? "Yes" : "No";
 		periodData.setActive(active);
-		periodData.setCourses(scheduleRepository.findByIdTraining(training.getIdTraining()).size());
+		periodData.setCourses(scheduleRepository.findByTraining(training).size());
 		Date startDate = training.getStartDate();
 		periodData.setStartDate(new SimpleDateFormat("d MMMM yyyy").format(startDate));
 		Date endDate = training.getEndDate();

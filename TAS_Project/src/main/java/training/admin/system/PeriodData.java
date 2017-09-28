@@ -2,6 +2,8 @@ package training.admin.system;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+
 public class PeriodData {
 	private Long idTraining;
 	private String name;
@@ -14,6 +16,22 @@ public class PeriodData {
 	private Boolean openEnrollment;
 	private Boolean bccTraining;
 	
+
+	public PeriodData(Long idTraining, String name, String active, Integer courses, String startDate, String endDate,
+			String createdBy, String updatedBy, Boolean openEnrollment, Boolean bccTraining) {
+		super();
+		this.idTraining = idTraining;
+		this.name = name;
+		this.active = active;
+		Courses = courses;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.createdBy = createdBy;
+		this.updatedBy = updatedBy;
+		this.openEnrollment = openEnrollment;
+		this.bccTraining = bccTraining;
+	}
+
 	public PeriodData() {
 		
 	}
@@ -82,6 +100,5 @@ public class PeriodData {
 	public void setBccTraining(Boolean bccTraining) {
 		this.bccTraining = bccTraining;
 	}
-	
-	
+		
 }

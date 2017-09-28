@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import training.admin.system.AddSchedule;
 import training.admin.system.PeriodData;
 import training.admin.system.ScheduleData;
+import training.admin.system.model.Course;
 import training.admin.system.model.Room;
 import training.admin.system.model.Schedule;
 import training.admin.system.model.Training;
+import training.admin.system.model.User;
 import training.admin.system.repository.CourseRepository;
 import training.admin.system.repository.EnrollmentRepository;
 import training.admin.system.repository.OfficeRepository;
@@ -26,6 +29,7 @@ import training.admin.system.repository.RoomRepository;
 import training.admin.system.repository.ScheduleRepository;
 import training.admin.system.repository.TrainingRepository;
 import training.admin.system.repository.UserRepository;
+import training_admin_system.model.create.CreateSchedule;
 
 @RestController
 @RequestMapping("/schedule")
@@ -51,7 +55,7 @@ public class ScheduleMenuController {
 		List<ScheduleData> schedulesData = new ArrayList<ScheduleData>(); 
 		List<Schedule> schedules= scheduleRepository.findAll();
 		for (Schedule schedule:schedules) {
-			schedulesData.add(ConvertSchedulesToScheduleData(schedule));	
+			schedulesData.add(ConvertSchedulesToScheduleData(schedule, false));	
 		}
 		return schedulesData;
 	}
@@ -59,7 +63,7 @@ public class ScheduleMenuController {
 	@GetMapping("/{id}")
 	public Object findOne(@PathVariable ("id") Long idSchedule){
 		try {
-			return ConvertSchedulesToScheduleData(scheduleRepository.findOne(idSchedule));
+			return ConvertSchedulesToScheduleData(scheduleRepository.findOne(idSchedule), false);
 		}
 		catch (Exception exp){
 			System.out.println(exp);
@@ -67,10 +71,34 @@ public class ScheduleMenuController {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@PostMapping ("/create")
-	public Boolean create(@RequestBody Schedule schedule) {
+	public Boolean create(@RequestBody AddSchedule newSchedule) {
+	
 		try {
-			scheduleRepository.save(schedule);
+			Course course = courseRepository.findOne(newSchedule.getIdCourse());
+			Room room = roomRepository.findOne(newSchedule.getIdRoom());
+			User mainTrainer= userRepository.findOne(newSchedule.getIdMainTrainer()); 
+			Training training = trainingRepository.findOne(newSchedule.getIdTraining());
+			Integer number = scheduleRepository.findByCourseAndTraining(course, training).size() + 1;
+			Schedule schedule = new Schedule();
+			schedule.setCapacity(newSchedule.getCapacity());
+			schedule.setStartDate(newSchedule.getStartDate());
+			schedule.setEndDate(newSchedule.getEndDate());
+			schedule.setTraining(training);
+			schedule.setIdBackupTrainer(newSchedule.getIdBackupTrainer());
+			schedule.setPeriodic(newSchedule.getPeriodic());
+			schedule.setPeriodicTime(newSchedule.getPeriodicTime());
+			schedule.setCourse(course);
+			schedule.setRoom(room);
+			schedule.setMainTrainer(mainTrainer);
+			schedule.setScheduleNumber(number);
+			schedule.setCreatedBy(Long.parseLong(newSchedule.getCreatedBy()));
+			schedule.setUpdatedBy(Long.parseLong(newSchedule.getCreatedBy()));
+			Date today = new Date(System.currentTimeMillis());
+			schedule.setCreatedAt(today);
+			schedule.setUpdatedAt(today);
+			scheduleRepository.save(schedule); 
 			return Boolean.TRUE;
 		}catch (Exception e){
 			System.out.println(e);
@@ -78,20 +106,41 @@ public class ScheduleMenuController {
 		}
 	}
 	
+	@GetMapping("/{id}/edit")
+	public Object edit (@PathVariable ("id") Long idSchedule){
+		try {
+			return ConvertSchedulesToScheduleData(scheduleRepository.findOne(idSchedule), true);
+		}
+		catch (Exception exp){
+			System.out.println(exp);
+			return false;
+		}
+	}
 	@RequestMapping (value="/{id}/update",method = RequestMethod.POST)
-	public Boolean update (@RequestBody Schedule scheduleParam,
+	public Boolean update (@RequestBody AddSchedule newSchedule,
 						@PathVariable ("id") Long idSchedule) {
 		try {
-			Schedule schedule= scheduleRepository.findOne(idSchedule);
-			schedule.setIdCourse(scheduleParam.getIdCourse());
-			schedule.setIdRoom(scheduleParam.getIdRoom());
-			schedule.setStartDate(scheduleParam.getStartDate());
-			schedule.setEndDate(scheduleParam.getEndDate());
-			schedule.setIdMainTrainer(schedule.getIdMainTrainer());
-			schedule.setIdBackupTrainer(scheduleParam.getIdBackupTrainer());
-			schedule.setCapacity(scheduleParam.getCapacity());
-			schedule.setPeriodic(scheduleParam.getPeriodic());
-			schedule.setPeriodicTime(scheduleParam.getPeriodicTime());
+			Course course = courseRepository.findOne(newSchedule.getIdCourse());
+			Room room = roomRepository.findOne(newSchedule.getIdRoom());
+			User mainTrainer= userRepository.findOne(newSchedule.getIdMainTrainer()); 
+			Training training = trainingRepository.findOne(newSchedule.getIdTraining());
+			Integer number = scheduleRepository.countSchedule(newSchedule.getIdTraining(), newSchedule.getIdCourse());			
+			Schedule schedule = scheduleRepository.findOne(idSchedule);
+			schedule.setCapacity(newSchedule.getCapacity());
+			schedule.setStartDate(newSchedule.getStartDate());
+			schedule.setEndDate(newSchedule.getEndDate());
+			schedule.setTraining(training);
+			schedule.setIdBackupTrainer(newSchedule.getIdBackupTrainer());
+			schedule.setPeriodic(newSchedule.getPeriodic());
+			schedule.setPeriodicTime(newSchedule.getPeriodicTime());
+			schedule.setCourse(course);
+			schedule.setRoom(room);
+			schedule.setMainTrainer(mainTrainer);
+			schedule.setScheduleNumber(number);
+			
+			schedule.setUpdatedBy(Long.parseLong(newSchedule.getCreatedBy()));
+			Date now = new Date(System.currentTimeMillis());
+			schedule.setUpdatedAt(now);
 			scheduleRepository.save(schedule);
 			return Boolean.TRUE;
 		} catch (Exception e) {
@@ -109,25 +158,83 @@ public class ScheduleMenuController {
 			return Boolean.FALSE;
 		}
 	}
+	
+	@GetMapping (value="/findByTraining/{idTraining}")
+	public List <ScheduleData> findByTraining(@PathVariable Long idTraining){
+		List <ScheduleData> scheduleDatas = new ArrayList<ScheduleData>();
+		Training training = trainingRepository.findOne(idTraining);
+		List <Schedule> schedules = scheduleRepository.findByTraining(training);
+		for (Schedule schedule:schedules) {
+			scheduleDatas.add(ConvertSchedulesToScheduleData(schedule, false));
+		}
+		return scheduleDatas;
+	}
+	
+	@GetMapping (value="/count/{idTraining}/{idCourse}")
+	public Integer countShcedule (@PathVariable ("idTraining") Long idTraining,
+									@PathVariable ("idCourse") Long idCourse){
+		return scheduleRepository.countSchedule(idTraining, idCourse);
+	}
+	
+	
+	
+	
 		
-	private ScheduleData ConvertSchedulesToScheduleData(Schedule schedule) {
+	private ScheduleData ConvertSchedulesToScheduleData(Schedule schedule, Boolean edit) {
 		ScheduleData scheduleData = new ScheduleData(); 
 		scheduleData.setIdSchedule(schedule.getIdSchedule());
-		scheduleData.setName(courseRepository.findOne(schedule.getIdCourse()).getName());
-		scheduleData.setMainTrainer(userRepository.findOne(schedule.getIdMainTrainer()).getName());
-		scheduleData.setBackupTrainer(userRepository.findOne(schedule.getIdBackupTrainer()).getName());
-		Room room = roomRepository.findOne(schedule.getIdRoom());
-		scheduleData.setRoom(room.getName() + " - " + officeRepository.findOne(room.getIdOffice()).getCity());
-		scheduleData.setDay("-");
+		
+		scheduleData.setName(schedule.getCourse().getName());
+		if (!edit) scheduleData.setName(scheduleData.getName() + " #" + schedule.getScheduleNumber());
+		
+		User mainTrainer =schedule.getMainTrainer();
+		scheduleData.setIdMainTrainer(mainTrainer.getIdUser());
+		scheduleData.setMainTrainer(mainTrainer.getName());
+		
+		User backupTrainer = userRepository.findOne(schedule.getIdBackupTrainer());
+		if(backupTrainer!=null) {
+			scheduleData.setIdBackupTrainer(backupTrainer.getIdUser());
+			scheduleData.setBackupTrainer(backupTrainer.getName());
+		} else {
+			scheduleData.setBackupTrainer("-");
+		}
+		
+		Room room = schedule.getRoom();
+		scheduleData.setIdRoom(room.getIdRoom());
+		scheduleData.setRoom(room.getName() + " - " + room.getDetail());
+		
+		scheduleData.setDay(schedule.getPeriodicTime());
+		
 		Date startDate = schedule.getStartDate();
 		scheduleData.setStartTime(new SimpleDateFormat("d MMMM yyyy").format(startDate));
-		Date endDate = schedule.getStartDate();
+		
+		Date endDate = schedule.getEndDate();
 		scheduleData.setEndTime(new SimpleDateFormat("d MMMM yyyy").format(endDate));
+		
 		scheduleData.setCapacity(schedule.getCapacity());
-		scheduleData.setParticipantNumber(enrollmentRepository.findByIdSchedule(schedule.getIdSchedule()).size());
+		Schedule tmpSchedule = scheduleRepository.findOne(schedule.getIdSchedule());
+		scheduleData.setParticipantNumber(enrollmentRepository.findBySchedule(tmpSchedule).size());
+		
+		if (schedule.getPeriodic())
+			scheduleData.setScheduleType("Periodic");
+		else
+			scheduleData.setScheduleType("Fixed");
+		 
 		scheduleData.setPeriodic(schedule.getPeriodic());
 		scheduleData.setPeriodicTime(schedule.getPeriodicTime());
 		
+		scheduleData.setIdCourse(schedule.getCourse().getIdCourse());
+		scheduleData.setIdTraining(schedule.getTraining().getIdTraining());
+		
+		scheduleData.setCreatedBy(userRepository.findOne(schedule.getCreatedBy()).getName());
+		scheduleData.setUpdatedBy(userRepository.findOne(schedule.getUpdatedBy()).getName());
+		
+		Date createdAt = scheduleRepository.findOne(schedule.getIdSchedule()).getCreatedAt();
+		Date updatedAt = scheduleRepository.findOne(schedule.getIdSchedule()).getUpdatedAt();
+		scheduleData.setCreatedAt(new SimpleDateFormat("d MMMM yyyy HH:mm:ss").format(createdAt));
+		scheduleData.setUpdatedAt(new SimpleDateFormat("d MMMM yyyy HH:mm:ss").format(updatedAt));
+		
+		scheduleData.setCity(schedule.getRoom().getOffice().getCity());
 		return scheduleData;
 	}
 }

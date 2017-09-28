@@ -1,5 +1,6 @@
 package training.admin.system.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,15 +42,16 @@ public class User {
 	@Column (name = "grade")
 	private String grade;
 	
-	@Column (name = "id_office")
-	private Long idOffice;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn (name = "id_office")
+	private Office office;
 	
 	public User() {
 		
 	}
 	
 	public User(Long idUser, String name, String email, String username, String password, Boolean active, String jobFamilyStream,
-			String grade, Long idOffice) {
+			String grade, Office office) {
 		this.name = name;
 		this.email = email;
 		this.username = username;
@@ -57,16 +59,16 @@ public class User {
 		this.active = active;
 		this.jobFamilyStream = jobFamilyStream;
 		this.grade = grade;
-		this.idOffice = idOffice;
+		this.office = office;
 	}
 	
 	
-	public Long getOffice() {
-		return idOffice;
+	public Office getOffice() {
+		return office;
 	}
 
-	public void setOffice(Long office) {
-		this.idOffice = office;
+	public void setOffice(Office office) {
+		this.office = office;
 	}
 
 	public Boolean getActive() {

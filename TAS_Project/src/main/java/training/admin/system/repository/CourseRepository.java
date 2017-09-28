@@ -12,5 +12,5 @@ import training.admin.system.model.Course;
 @Component
 public interface CourseRepository extends JpaRepository<Course, Long>{
 	Course findByName(String name);
-	Page<Course> findByBccCourse(Pageable pageable,Boolean bccCourse);
+	List<Course> findByBccCourse(Boolean bccCourse);
 }

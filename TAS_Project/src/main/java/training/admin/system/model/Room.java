@@ -2,6 +2,7 @@ package training.admin.system.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,17 +22,21 @@ public class Room {
 	@Column (name="name")
 	private String name;
 	
-	@Column (name="id_office")
-	private long idOffice;
+	@ManyToOne (fetch = FetchType.EAGER)
+	@JoinColumn (name="id_office")
+	private Office office;
+	
+	@Column (name="detail")
+	private String detail;
 	
 	public Room() {
 		
 	}
 	
-	public Room(long idRoom, String name, long idOffice) {
+	public Room(long idRoom, String name, Office office) {
 		this.idRoom = idRoom;
 		this.name = name;
-		this.idOffice = idOffice;
+		this.office = office;
 	}
 
 	public long getIdRoom() {
@@ -50,12 +55,20 @@ public class Room {
 		this.name = name;
 	}
 
-	public long getIdOffice() {
-		return idOffice;
+	public Office getOffice() {
+		return office;
 	}
 
-	public void setId_office(long idOffice) {
-		this.idOffice = idOffice;
+	public void setOffice(Office office) {
+		this.office = office;
+	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
 	
 	

@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,21 +18,18 @@ public class Enrollment {
 	@Column (name="id_enrollment")
 	private long idEnrollment;
 		
-	@Column (name="id_schedule")
-	private long idSchedule;
+	@ManyToOne
+	@JoinColumn (name="id_schedule")
+	private Schedule schedule;
 	
-	@Column (name="id_user")
-	private long idUser;
+	@ManyToOne
+	@JoinColumn (name="id_user")
+	private User user;
 
 	public Enrollment() {
 		
 	}
 	
-	public Enrollment(long idEnrollment, long idSchedule, long idUser) {
-		this.idEnrollment = idEnrollment;
-		this.idSchedule = idSchedule;
-		this.idUser = idUser;
-	}
 
 	public long getIdEnrollment() {
 		return idEnrollment;
@@ -40,21 +39,25 @@ public class Enrollment {
 		this.idEnrollment = idEnrollment;
 	}
 
-	public long getIdSchedule() {
-		return idSchedule;
+
+	public Schedule getSchedule() {
+		return schedule;
 	}
 
-	public void setIdSchedule(long idSchedule) {
-		this.idSchedule = idSchedule;
+
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
 	}
 
-	public long getIdUser() {
-		return idUser;
+
+	public User getUser() {
+		return user;
 	}
 
-	public void setIdUser(long idUser) {
-		this.idUser = idUser;
+
+	public void setUser(User user) {
+		this.user = user;
 	}
-	
+
 	
 }

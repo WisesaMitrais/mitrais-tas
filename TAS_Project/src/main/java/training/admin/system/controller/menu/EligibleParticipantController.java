@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import training.admin.system.AddEligibleParticipant;
 import training.admin.system.EligibleParticipantData;
 import training.admin.system.model.EligibleParticipant;
+import training.admin.system.model.Training;
+import training.admin.system.model.User;
 import training.admin.system.repository.EligibleParticipantRepository;
 import training.admin.system.repository.TrainingRepository;
 import training.admin.system.repository.UserRepository;
@@ -52,7 +54,8 @@ public class EligibleParticipantController {
 	@GetMapping ("/findByTraining/{idTraining}")
 	public List<EligibleParticipantData> findByTraining (@PathVariable ("idTraining") Long idTraining){
 		List <EligibleParticipantData> result = new ArrayList<EligibleParticipantData>(); 
-		List <EligibleParticipant> list = eligibleParticipantRepository.findByIdTraining(idTraining);
+		Training training = trainingRepository.findOne(idTraining);
+		List <EligibleParticipant> list = eligibleParticipantRepository.findByTraining(training);
 		for (EligibleParticipant eligibleParticipant:list) {
 			result.add(convertEligibleParticipantToEligibleParticipantData(eligibleParticipant));
 		}
@@ -62,7 +65,8 @@ public class EligibleParticipantController {
 	@GetMapping ("/findByUser/{idUser}")
 	public List<EligibleParticipantData> findByUser (@PathVariable ("idUser") Long idUser){
 		List <EligibleParticipantData> result = new ArrayList<EligibleParticipantData>(); 
-		List <EligibleParticipant> list = eligibleParticipantRepository.findByIdUser(idUser);
+		User user = userRepository.findOne(idUser);
+		List <EligibleParticipant> list = eligibleParticipantRepository.findByUser(user);
 		for (EligibleParticipant eligibleParticipant:list) {
 			result.add(convertEligibleParticipantToEligibleParticipantData(eligibleParticipant));
 		}
@@ -71,13 +75,15 @@ public class EligibleParticipantController {
 	
 	@PostMapping ("/add")
 	public Boolean addEligibleParticipant (@RequestBody AddEligibleParticipant addEligibleParticipant) {
-		System.out.println("ID Training: " + addEligibleParticipant.getIdTraining());
-		System.out.println("ID User    : " + addEligibleParticipant.getIdUser());
+//		System.out.println("ID Training: " + addEligibleParticipant.getIdTraining());
+//		System.out.println("ID User    : " + addEligibleParticipant.getIdUser());
 		try {
 			for (int i = 0; i< addEligibleParticipant.getIdUser().size(); i++) {
 				EligibleParticipant eligibleParticipant = new EligibleParticipant();
-				eligibleParticipant.setIdTraining(addEligibleParticipant.getIdTraining());
-				eligibleParticipant.setIdUser(addEligibleParticipant.getIdUser().get(i));
+				Training training = trainingRepository.findOne(addEligibleParticipant.getIdTraining());
+				User user = userRepository.findOne(addEligibleParticipant.getIdTraining());
+				eligibleParticipant.setTraining(training);
+				eligibleParticipant.setUser(user);
 				eligibleParticipantRepository.save(eligibleParticipant);	
 			}
 			return Boolean.TRUE;	
@@ -102,10 +108,9 @@ public class EligibleParticipantController {
 	
 	public EligibleParticipantData convertEligibleParticipantToEligibleParticipantData(EligibleParticipant eligibleParticipant) {
 		EligibleParticipantData eligibleParticipantData = new EligibleParticipantData();
-		eligibleParticipantData.setIdUser(eligibleParticipant.getIdUser());
+		eligibleParticipantData.setIdUser(eligibleParticipant.getUser().getIdUser());
 		eligibleParticipantData.setEligibleNumber(eligibleParticipant.getIdEligibleParticipant());
-//		eligibleParticipantData.setTrainingName(trainingRepository.findOne(eligibleParticipant.getIdTraining()).getTrainingName());
-		eligibleParticipantData.setName(userRepository.findOne(eligibleParticipant.getIdUser()).getName());
+		eligibleParticipantData.setName(eligibleParticipant.getUser().getName());
 		return eligibleParticipantData;
 	}
 }

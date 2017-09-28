@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import training.admin.system.AddEnrollment;
 import training.admin.system.EnrollmentData;
 import training.admin.system.model.Enrollment;
 import training.admin.system.model.Schedule;
+import training.admin.system.model.User;
 import training.admin.system.repository.CourseRepository;
 import training.admin.system.repository.EnrollmentRepository;
 import training.admin.system.repository.ScheduleRepository;
@@ -52,9 +54,16 @@ public class EnrollmentController {
 	}
 	
 	@PostMapping (value="/add")
-	public boolean add (@RequestBody Enrollment enrollment) {
+	public boolean add (@RequestBody AddEnrollment newEnrollmentData) {
 		try {
-			enrollmentRepository.save(enrollment);
+			for (int i=0; i<newEnrollmentData.getIdUser().size(); i++) {
+				Enrollment enrollment = new Enrollment ();
+				Schedule schedule = scheduleRepository.findOne(newEnrollmentData.getIdSchedule());
+				enrollment.setSchedule(schedule);
+				User user = userRepository.findOne(newEnrollmentData.getIdUser().get(i));
+				enrollment.setUser(user);
+				enrollmentRepository.save(enrollment);
+			}
 			return true;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -66,7 +75,8 @@ public class EnrollmentController {
 	@GetMapping (value="/findByUser/{idUser}")
 	public List <EnrollmentData> findByUser (@PathVariable Long idUser) {
 		List <EnrollmentData> result = new ArrayList<EnrollmentData>();
-		List <Enrollment> list = enrollmentRepository.findByIdUser(idUser);
+		User user = userRepository.findOne(idUser);
+		List <Enrollment> list = enrollmentRepository.findByUser(user);
 		for (Enrollment enrollment:list) {
 			result.add(convertEnrollmentToEnrollmentData(enrollment));
 		}
@@ -76,7 +86,8 @@ public class EnrollmentController {
 	@GetMapping (value="/findBySchedule/{idSchedule}")
 	public List <EnrollmentData> findBySchedule (@PathVariable Long idSchedule) {
 		List <EnrollmentData> result = new ArrayList<EnrollmentData>();
-		List <Enrollment> list = enrollmentRepository.findByIdSchedule(idSchedule);
+		Schedule schedule = scheduleRepository.findOne(idSchedule);
+		List <Enrollment> list = enrollmentRepository.findBySchedule(schedule);
 		for (Enrollment enrollment:list) {
 			result.add(convertEnrollmentToEnrollmentData(enrollment));
 		}
@@ -87,10 +98,10 @@ public class EnrollmentController {
 	
 	public EnrollmentData convertEnrollmentToEnrollmentData(Enrollment enrollment) {
 		EnrollmentData enrollmentData = new EnrollmentData();
-		Schedule schedule = scheduleRepository.findOne(enrollment.getIdSchedule());
-		String trainingName = trainingRepository.findOne(schedule.getIdTraining()).getTrainingName();
-		String courseName = courseRepository.findOne(schedule.getIdCourse()).getName();
-		String trainerName = userRepository.findOne(schedule.getIdMainTrainer()).getName();
+		Schedule schedule = enrollment.getSchedule();
+		String trainingName = schedule.getTraining().getTrainingName();
+		String courseName = schedule.getCourse().getName();
+		String trainerName = schedule.getMainTrainer().getName();
 		Date startTime = schedule.getStartDate();
 		Date endTime = schedule.getEndDate();
 		String status;

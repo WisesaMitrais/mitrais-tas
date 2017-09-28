@@ -2,6 +2,9 @@ package training.admin.system;
 
 public class EnrollmentData {
 
+	private Long idEnrollment; 
+	private Long idUser;
+	private Long idSchedule;
 	private String periodName;
 	private String courseName;
 	private String trainer;
@@ -45,6 +48,24 @@ public class EnrollmentData {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public Long getIdEnrollment() {
+		return idEnrollment;
+	}
+	public void setIdEnrollment(Long idEnrollment) {
+		this.idEnrollment = idEnrollment;
+	}
+	public Long getIdUser() {
+		return idUser;
+	}
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
+	}
+	public Long getIdSchedule() {
+		return idSchedule;
+	}
+	public void setIdSchedule(Long idSchedule) {
+		this.idSchedule = idSchedule;
 	}
 	
 	

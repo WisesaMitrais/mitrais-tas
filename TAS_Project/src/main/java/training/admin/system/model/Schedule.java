@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,17 +29,21 @@ public class Schedule {
 	@Column (name = "capacity")
 	private Integer capacity;
 		
-	@Column (name = "id_course")
-	private Long idCourse;
+	@ManyToOne
+	@JoinColumn (name = "id_course")
+	private Course course;
 	
-	@Column (name = "id_room")
-	private Long idRoom;
+	@ManyToOne
+	@JoinColumn (name = "id_room")
+	private Room room;
 	
-	@Column (name = "id_training")
-	private Long idTraining;
+	@ManyToOne
+	@JoinColumn (name = "id_training")
+	private Training training;
 	
-	@Column (name = "id_trainer1")
-	private Long idMainTrainer;
+	@ManyToOne
+	@JoinColumn (name = "id_trainer1")
+	private User mainTrainer;
 	
 	@Column (name = "id_trainer2")
 	private Long idBackupTrainer;
@@ -47,6 +53,14 @@ public class Schedule {
 	
 	@Column (name = "periodic_time")
 	private String periodicTime;
+	
+	@Column (name = "schedule_number")
+	private Integer scheduleNumber;
+	
+	private Long createdBy;
+	private Date createdAt;
+	private Long updatedBy;
+	private Date updatedAt;
 	
 	public Schedule() {
 		
@@ -83,45 +97,45 @@ public class Schedule {
 	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
-	
-	public Long getIdCourse() {
-		return idCourse;
+
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setIdCourse(Long idCourse) {
-		this.idCourse = idCourse;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
-	public Long getIdRoom() {
-		return idRoom;
+	public Room getRoom() {
+		return room;
 	}
 
-	public void setIdRoom(Long idRoom) {
-		this.idRoom = idRoom;
+	public void setRoom(Room room) {
+		this.room = room;
 	}
 
-	public Long getIdMainTrainer() {
-		return idMainTrainer;
+	public User getMainTrainer() {
+		return mainTrainer;
 	}
 
-	public void setIdMainTrainer(Long idMainTrainer) {
-		this.idMainTrainer = idMainTrainer;
+	public void setMainTrainer(User mainTrainer) {
+		this.mainTrainer = mainTrainer;
 	}
 
 	public Long getIdBackupTrainer() {
 		return idBackupTrainer;
 	}
 
-	public void setIdBackupTrainer(Long idBackupTrainer) {
+	public void setIdBackupTrainer(long idBackupTrainer) {
 		this.idBackupTrainer = idBackupTrainer;
 	}
 
-	public Long getIdTraining() {
-		return idTraining;
+	public Training getTraining() {
+		return training;
 	}
 
-	public void setIdTraining(Long idTraining) {
-		this.idTraining = idTraining;
+	public void setTraining(Training training) {
+		this.training = training;
 	}
 
 	public Boolean getPeriodic() {
@@ -139,5 +153,51 @@ public class Schedule {
 	public void setPeriodicTime(String periodicTime) {
 		this.periodicTime = periodicTime;
 	}
+
+	public Integer getScheduleNumber() {
+		return scheduleNumber;
+	}
+
+	public void setScheduleNumber(Integer scheduleNumber) {
+		this.scheduleNumber = scheduleNumber;
+	}
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public void setIdBackupTrainer(Long idBackupTrainer) {
+		this.idBackupTrainer = idBackupTrainer;
+	}
 		
+	
+	
 }

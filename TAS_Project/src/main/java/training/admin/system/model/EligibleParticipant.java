@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,36 +18,43 @@ public class EligibleParticipant {
 	@Column (name = "id_eligible_participant")
 	private long idEligibleParticipant;
 	
-	@Column (name = "id_training")
-	private long idTraining;
+	@ManyToOne
+	@JoinColumn (name = "id_training")
+	private Training training;
 	
-	@Column (name = "id_user")
-	private long idUser;
+	@ManyToOne
+	@JoinColumn (name = "id_user")
+	private User user;
 
 	public EligibleParticipant() {
 		
 	}
 	
-	public EligibleParticipant(long idTraining, long idUser) {
-		this.idTraining = idTraining;
-		this.idUser = idUser;
+
+	
+	public Training getTraining() {
+		return training;
 	}
 
-	public long getIdTraining() {
-		return idTraining;
+
+
+	public void setTraining(Training training) {
+		this.training = training;
 	}
 
-	public void setIdTraining(long idTraining) {
-		this.idTraining = idTraining;
+
+
+	public User getUser() {
+		return user;
 	}
 
-	public long getIdUser() {
-		return idUser;
+
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public void setIdUser(long idUser) {
-		this.idUser = idUser;
-	}
+
 
 	public long getIdEligibleParticipant() {
 		return idEligibleParticipant;

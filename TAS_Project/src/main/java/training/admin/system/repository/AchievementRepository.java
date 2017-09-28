@@ -10,4 +10,5 @@ import training.admin.system.model.Achievement;
 @Component
 public interface AchievementRepository extends JpaRepository<Achievement, Long>{
 	List <Achievement> findByIdUserAndIdCourse(Long idUser, Long idCourse);
+	List <Achievement> findByIdUser(Long idUser);
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import training.admin.system.ActiveTraining;
 import training.admin.system.BccCourse;
 import training.admin.system.model.Course;
+import training.admin.system.model.Office;
 import training.admin.system.model.Schedule;
 import training.admin.system.model.Training;
 import training.admin.system.model.User;
@@ -56,32 +57,29 @@ public class DashboardMenuController {
 		
 		today.setDate(today.getDate()-1);
 		today.setHours(23); today.setMinutes(59); today.setSeconds(59);
-		System.out.println ("StartDay: " + today);
-
+		
 		List<Training> trainings = trainingRepository.findByActive(true);
 		for (Training training:trainings) {
 	
-			List<Schedule> schedules = scheduleRepository.findByEndDateAfterAndIdTraining(today, training.getIdTraining());
-			System.out.println("size = " + schedules.size());
-			
+			List<Schedule> schedules = scheduleRepository.findByEndDateAfterAndTraining(today, training);
+
 			for (Schedule schedule:schedules) {
 				ActiveTraining activeTraining = new ActiveTraining();
-				activeTraining.setCourseName(courseRepository.findOne(schedule.getIdCourse()).getName());
-				activeTraining.setMainTrainer(userRepository.findOne(schedule.getIdMainTrainer()).getName());
+				activeTraining.setCourseName(schedule.getCourse().getName());
+				activeTraining.setMainTrainer(schedule.getMainTrainer().getName());
 				
 				if (schedule.getIdBackupTrainer() != null) {
 						activeTraining.setBackupTrainer(userRepository.findOne(schedule.getIdBackupTrainer()).getName());
 				}
-				
+				 
 				Date startDate = schedule.getStartDate();
 				activeTraining.setStartDate(new SimpleDateFormat("d MMMM yyyy").format(startDate));
 				
 				Date endDate = schedule.getEndDate();
 				activeTraining.setEndDate(new SimpleDateFormat("d MMMM yyyy").format(endDate));
 				
-				Long idRoom = schedule.getIdRoom();
-				Long idOffice = roomRepository.findOne(idRoom).getIdOffice();
-				activeTraining.setOffice(officeRepository.findOne(idOffice).getCity());
+				Office office = schedule.getRoom().getOffice();
+				activeTraining.setOffice(office.getCity());
 				
 				activeTrainings.add(activeTraining);
 			}
@@ -102,24 +100,24 @@ public class DashboardMenuController {
 		cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
 		cal.add(Calendar.DATE, 1);
 		Date startDateWeek = cal.getTime();
-		System.out.println("StartDate = " + startDateWeek.toString());
+//		System.out.println("StartDate = " + startDateWeek.toString());
 		
 		cal.add(Calendar.DATE, 4);
 		Date endDateWeek = cal.getTime();
-		System.out.println("EndDate = " + endDateWeek.toString());
+//		System.out.println("EndDate = " + endDateWeek.toString());
 		
 		List<Schedule> schedules = scheduleRepository.findByStartDateAfterAndEndDateBefore(startDateWeek, endDateWeek);
-		System.out.println("schedules length = " + schedules.size());
+//		System.out.println("schedules length = " + schedules.size());
 		
 		for (Schedule schedule:schedules) {
-			System.out.println("schedules id = " + schedule.getIdSchedule());
-			Course course = courseRepository.findOne(schedule.getIdCourse());
+//			System.out.println("schedules id = " + schedule.getIdSchedule());
+			Course course = schedule.getCourse();
 
 			if(!course.isBccCourse()) continue;
 				
-			System.out.println("course = " + course.getName() + " " + course.isBccCourse());
+//			System.out.println("course = " + course.getName() + " " + course.isBccCourse());
 			
-			String trainerName = userRepository.findOne(schedule.getIdCourse()).getName();
+			String trainerName = schedule.getMainTrainer().getName();
 			BccCourse newBccCourse = new BccCourse();
 			
 			Boolean createNew = true;
@@ -135,7 +133,7 @@ public class DashboardMenuController {
 				iter++;
 			}
 			
-			System.out.println("createNew = " +createNew); 
+//			System.out.println("createNew = " +createNew); 
 			
 			newBccCourse.setTrainer(trainerName);
 			for (Integer i=1; i<=5; i++) {
@@ -144,8 +142,8 @@ public class DashboardMenuController {
 				String data;
 				
 				if(i>=startCourse && i<=endCourse) {
-					String courseName = courseRepository.findOne(schedule.getIdCourse()).getName();
-					String roomName = roomRepository.findOne(schedule.getIdRoom()).getName();
+					String courseName = schedule.getCourse().getName();
+					String roomName = schedule.getRoom().getName();
 					data = courseName + ", " + roomName;
 				} else {
 					data = "-";
