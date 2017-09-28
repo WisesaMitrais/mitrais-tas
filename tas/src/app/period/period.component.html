@@ -49,9 +49,9 @@
                         <button md-button [mdMenuTriggerFor]="menu"><md-icon>more_horiz</md-icon></button>
                         <md-menu #menu="mdMenu">
                             <button md-menu-item (click)="toEligibleParticipant(row.idTraining, row.name)">Eligible Participant</button>
-                            <button md-menu-item (click)="toScheduleList()">Schedule List</button>
+                            <button md-menu-item (click)="toScheduleList(row)">Schedule List</button>
                             <button md-menu-item>Edit</button>
-                            <button md-menu-item>Deleted</button>
+                            <button md-menu-item>Delete</button>
                         </md-menu>
                     </md-cell>
                 </ng-container>

@@ -13,6 +13,9 @@ import { AddPeriodComponent } from './period/period-add.component';
 import { PeriodEligibleParticipantComponent } from './period/period-eligibleparticipant.component';
 import { PeriodEligibleParticipantAddComponent } from './period/period-eligibleparticipant-add.component';
 import { PeriodScheduleComponent } from './period/period-schedule.component';
+import { PeriodScheduleAddComponent } from './period/period-schedule-add.component';
+import { PeriodScheduleDetailsComponent } from './period/period-schedule-details.component';
+import { PeriodEnrollParticipantComponent } from './period/period-schedule-enrollparticipant.component';
 import { UserComponent } from './user/user.component';
 
 const routes: Routes =[
@@ -27,8 +30,10 @@ const routes: Routes =[
           { path: 'add', component: PeriodEligibleParticipantAddComponent }
         ]},
         { path: 'schedule-list', component: PeriodScheduleComponent, children: [
-          { path: 'details', component: PeriodComponent },
-          { path: 'enroll-participant', component: PeriodComponent }
+          { path: 'add', component: PeriodScheduleAddComponent },
+          { path: 'details', component: PeriodScheduleDetailsComponent },
+          { path: 'enroll-participant', component: PeriodEnrollParticipantComponent },
+          { path: 'edit', component: PeriodComponent }
         ]},
         { path: 'edit', component: PeriodComponent }
       ]},

@@ -3,9 +3,15 @@ import { Http, Response } from '@angular/http';
 
 import { Period } from './period';
 import { User } from './user';
+import { Room } from './room';
+import { Course } from './course';
+import { Trainer } from './trainer';
 import { AddPeriod } from './period-add';
 import { EligibleParticipantPeriod } from './period-eligibleparticipant';
 import { AddUserEligibleParticipant } from '../services/period-eligibleparticipant-add';
+import { AddEnrollParticipant } from '../services/period-enrollparticipant';
+import { SchedulePeriod } from '../services/period-schedule';
+import { AddNewSchedule } from '../services/period-schedule-add';
 import { Observable } from 'rxjs/Rx';
 import { UrlService } from '../services/url.service';
 
@@ -55,6 +61,62 @@ import 'rxjs/add/observable/throw';
     public AddEligibleParticipant(eligibleParticipantData: AddUserEligibleParticipant): Observable<boolean>{
         this.url = this.urlService.postAddUserEligibleParticipant();
         return this.http.post(this.url, eligibleParticipantData, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public deleteEligibleParticipant(eligibleNumber: string): Observable<boolean>{
+        this.url = this.urlService.deleteEligibleParticipant(eligibleNumber);
+        return this.http.delete(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public getDataSchedule(idTraining: number): Observable<SchedulePeriod[]>{
+        this.url = this.urlService.getScheduleList(idTraining);
+        return this.http.get(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public getTrainerData(): Observable<Trainer[]>{
+        this.url = this.urlService.getTrainerData();
+        return this.http.get(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public getRoomData(): Observable<Room[]>{
+        this.url = this.urlService.getRoomData();
+        return this.http.get(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public getBCCCourseData(): Observable<Course[]>{
+        this.url = this.urlService.getBCCCourseData();
+        return this.http.get(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public getNotBCCCourseData(): Observable<Course[]>{
+        this.url = this.urlService.getNotBCCCourseData();
+        return this.http.get(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public AddNewSchedule(scheduleData: AddNewSchedule): Observable<boolean>{
+        this.url = this.urlService.postScheduleData();
+        return this.http.post(this.url, scheduleData, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public AddEnrollParticipant(enrollParticipantData: AddEnrollParticipant): Observable<boolean>{
+        this.url = this.urlService.postEnrollParticipant();
+        return this.http.post(this.url, enrollParticipantData, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);
     }

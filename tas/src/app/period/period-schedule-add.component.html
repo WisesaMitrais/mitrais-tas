@@ -1,0 +1,64 @@
+<md-toolbar style="background-color:#6100BF; color:#FEFEFE; margin-bottom:5px">Add New Schedule</md-toolbar>
+<div style="margin-left:10px">
+    <form style="margin-bottom:20px">
+        <md-select placeholder="Course Name" style="width:100%" [(ngModel)]="course"  [ngModelOptions]="{standalone: true}">
+            <md-option *ngFor="let c of courseData" [value]="c">
+                {{ c.name }}
+            </md-option>
+        </md-select>
+    </form>
+    <form style="margin-bottom:5px">
+        <md-radio-group [(ngModel)]="periodic" [ngModelOptions]="{standalone: true}">
+            <md-radio-button *ngIf="bccTrainingSelected === 'false'" value="fixed" style="margin-right:10px">Fixed</md-radio-button>
+            <md-radio-button value="periodic">Periodic</md-radio-button>
+        </md-radio-group>
+    </form>
+    <form style="margin-bottom:10px">
+        <md-select placeholder="Trainer" style="width:200px; margin-right:50px" [(ngModel)]="trainer1"  [ngModelOptions]="{standalone: true}">
+            <md-option *ngFor="let t1 of trainerData" [value]="t1">
+                {{ t1.name }}
+            </md-option>
+        </md-select>
+        <md-select placeholder="Backup Trainer" style="width:200px" [(ngModel)]="trainer2"  [ngModelOptions]="{standalone: true}">
+            <md-option *ngFor="let t2 of trainerData" [value]="t2">
+                {{ t2.name }}
+            </md-option>
+        </md-select>
+    </form>
+    <form style="margin-bottom:10px">
+        <md-select placeholder="Classroom" style="width:100%" [(ngModel)]="room"  [ngModelOptions]="{standalone: true}">
+            <md-option *ngFor="let r of roomData" [value]="r">
+                {{ r.name }}
+            </md-option>
+        </md-select>
+    </form>
+    <form>
+        <md-form-field style="margin-right:50px">
+            <h5>Start Time :</h5>
+            <input mdInput [mdDatepicker]="start" [(ngModel)]="newSchedule.startDate" #startDate = "ngModel" [ngModelOptions]="{standalone: true}">
+            <md-datepicker-toggle mdSuffix [for]="start"></md-datepicker-toggle>
+            <md-datepicker #start></md-datepicker>
+        </md-form-field>
+        <md-form-field>
+            <h5>End Time :</h5>
+            <input mdInput [mdDatepicker]="end" [(ngModel)]="newSchedule.endDate" #startDate = "ngModel" [ngModelOptions]="{standalone: true}">
+            <md-datepicker-toggle mdSuffix [for]="end"></md-datepicker-toggle>
+            <md-datepicker #end></md-datepicker>
+        </md-form-field>
+    </form>
+    <form>
+        <md-form-field style="width:330px; margin-right:15px">
+            <h5>Day/Time :</h5>
+            <input mdInput type="text" [(ngModel)]="newSchedule.daytime" #daytime = "ngModel" [ngModelOptions]="{standalone: true}">
+        </md-form-field>
+        <md-form-field style="width:100px">
+            <h5>Capacity :</h5>
+            <input mdInput type="text" [(ngModel)]="newSchedule.capacity" #capacity = "ngModel" [ngModelOptions]="{standalone: true}">
+        </md-form-field>
+    </form>
+</div>
+<br>
+<form>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="createNewSchedule()"><md-icon style="padding-right:50px">check</md-icon>Save</button>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="closeDialog()"><md-icon style="padding-right:50px">close</md-icon>Cancel</button>
+</form>

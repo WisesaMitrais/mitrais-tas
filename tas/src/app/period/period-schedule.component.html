@@ -1,9 +1,8 @@
-<hr>
 <div class="main-content" style="margin:0">
     <md-card style="padding:0; margin-left:20px; margin-right:20px">
         <md-card-header style="background-color:#6100BF;padding-top:25px; padding-left:20px; height:65px">
             <div md-card-avatar style="color:#FEFEFE"><md-icon>dvr</md-icon></div>
-            <md-card-title style="color:#FEFEFE">SCHEDULE LIST of (TRAINING NAME)</md-card-title>
+            <md-card-title style="color:#FEFEFE">SCHEDULE LIST - {{nameTrainingChoosed}}</md-card-title>
             <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'" style="position:absolute; right:0; margin-right:20px; padding-bottom:50px">
                 <md-input-container floatPlaceholder="never" style="color:#FEFEFE">
                     <input mdInput #filter placeholder="Filter users">
@@ -12,19 +11,13 @@
         </md-card-header>
         <md-card-content>
             <md-table #table [dataSource]="dataSource" mdSort style="background-color:#F2F2F2; height:375px">
-                <ng-container mdColumnDef="checkbox">
-                    <md-header-cell *mdHeaderCellDef><b></b></md-header-cell>
-                    <md-cell *mdCellDef="let row">
-                        <button md-menu-item>Deleted</button>
-                    </md-cell>
-                </ng-container>
                 <ng-container mdColumnDef="name">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Name </b></md-header-cell>
                     <md-cell *mdCellDef="let row"> {{row.name}} </md-cell>
                 </ng-container>
-                <ng-container mdColumnDef="trainer">
+                <ng-container mdColumnDef="mainTrainer">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Trainer </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.trainer}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.mainTrainer}} </md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="backupTrainer">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Backup Trainer </b></md-header-cell>
@@ -32,7 +25,11 @@
                 </ng-container>
                 <ng-container mdColumnDef="classroom">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Classroom </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.classroom}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.room}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="scheduleType">
+                    <md-header-cell *mdHeaderCellDef md-sort-header><b> Schedule Type </b></md-header-cell>
+                    <md-cell *mdCellDef="let row"> {{row.scheduleType}} </md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="day">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> Day </b></md-header-cell>
@@ -52,35 +49,30 @@
                 </ng-container>
                 <ng-container mdColumnDef="allParticipantList">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> All Participant List </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.allParticipantList}} </md-cell>
+                    <md-cell *mdCellDef="let row"> {{row.participantNumber}} </md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="action">
                     <md-header-cell *mdHeaderCellDef><b> Actions </b></md-header-cell>
                     <md-cell *mdCellDef="let row">
                         <button md-button [mdMenuTriggerFor]="menu"><md-icon>more_horiz</md-icon></button>
                         <md-menu #menu="mdMenu">
-                            <button md-menu-item>Deleted</button>
+                            <button md-menu-item (click)="openDetailsDialog(row)">Details</button>
+                            <button md-menu-item (click)="openEnrollParticipantDialog(row)">Enroll Participant</button>
+                            <button md-menu-item>Edit</button>
+                            <button md-menu-item>Delete</button>
                         </md-menu>
                     </md-cell>
                 </ng-container>
                 <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-                <md-row *mdRowDef="let row; columns: displayedColumns;"
-                        [class.example-selected-row]="selection.isSelected(row.id)"
-                        (click)="selection.toggle(row.id)">
-                </md-row>
+                <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
             </md-table>
-            <div class="example-no-results"
-                [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
-                Data not found.
-            </div>
             <md-paginator #paginator
-                            [length]="dataSource.filteredData.length"
+                            [length]="0"
                             [pageIndex]="0"
-                            [pageSize]="10"
+                            [pageSize]="0"
                             [pageSizeOptions]="[10, 25, 50, 100]">
             </md-paginator>
-            <button md-button style="margin-left:30px; margin-bottom:10px; width:210px; background-color:#6100BF; color:#FEFEFE" (click)="openDialog()"><md-icon style="margin-right:10px">add</md-icon>Add Schedule List</button>
+            <button md-button style="margin-left:30px; margin-bottom:10px; width:210px; background-color:#6100BF; color:#FEFEFE" (click)="openDialog()"><md-icon style="margin-right:10px">add</md-icon>Add New Schedule</button>
         </md-card-content>
     </md-card>
 </div>
-<hr>

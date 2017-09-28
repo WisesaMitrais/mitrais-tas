@@ -1,0 +1,18 @@
+<md-toolbar style="background-color:#6100BF; color:#FEFEFE; margin-bottom:5px">Schedule Details</md-toolbar>
+<md-list style="margin-bottom:40px">
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Name</b></div><b> :&ensp;</b>{{scheduleSelected.name}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Trainer</b></div><b> :&ensp;</b>{{scheduleSelected.mainTrainer}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Backup Trainer</b></div><b> :&ensp;</b>{{scheduleSelected.backupTrainer}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Classroom</b></div><b> :&ensp;</b>{{scheduleSelected.room}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Location</b></div><b> :&ensp;</b>{{scheduleSelected.city}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Day</b></div><b> :&ensp;</b>{{scheduleSelected.day}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Start Date</b></div><b> :&ensp;</b>{{scheduleSelected.startTime}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>End Date</b></div><b> :&ensp;</b>{{scheduleSelected.endTime}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Created By</b></div><b> :&ensp;</b>{{scheduleSelected.createdBy}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Created At</b></div><b> :&ensp;</b>{{scheduleSelected.createdAt}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Updated By</b></div><b> :&ensp;</b>{{scheduleSelected.updatedBy}}</md-list-item>
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Updated At</b></div><b> :&ensp;</b>{{scheduleSelected.updatedAt}}</md-list-item>
+</md-list>
+<form>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="closeDialog()"><md-icon style="padding-right:50px">close</md-icon>Close</button>
+</form>

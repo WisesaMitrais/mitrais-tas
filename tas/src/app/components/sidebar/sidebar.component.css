@@ -1,0 +1,40 @@
+.button {
+    background-color: transparent; /* Green */
+    border: none;
+    color: #FEFEFE;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button1 {
+    background-color: transparent; 
+    color: #6100BF;
+    border: none;
+}
+
+.button1:active {
+    background-color: #6100BF; 
+    color: #FEFEFE;
+    border: none;
+}
+
+.button1 .material-icons {
+    background-color: transparent;
+    border: none; 
+}
+
+.button1:hover {
+    background-color: #6100BF;
+    color: #FEFEFE;
+    border: none;
+}
+
+.button1 .material-icons:hover {
+    background-color: #6100BF;
+    color: #FEFEFE;
+    border: none;
+}

@@ -1,4 +1,4 @@
-<div class="logo">
+<div class="logo" style="margin-bottom:10px">
     <div class="card card-profile" style="width:100%; margin:0; padding-top:60px">
         <div class="card-avatar" style="width:70px; height:70px">
             <img src="../assets/img/icon.png"/>
@@ -14,8 +14,8 @@
             <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
                 <md-toolbar style="background-color:transparent">
                     <a  [routerLink]="[menuItem.path]" style="color:#6100BF; width:100%" (click)="closeSideNav()">
-                        <button md-button style="width:100%; height:50px; text-align:start">
-                        <i class="material-icons" style="margin-right:20px; color:#6100BF">{{menuItem.icon}}</i>{{menuItem.title}}
+                        <button md-button class="button button1" style="width:100%; height:50px; text-align:start">
+                        <i class="material-icons" style="margin-right:15px">{{menuItem.icon}}</i>{{menuItem.title}}
                     </button>
                     </a>
                 </md-toolbar>

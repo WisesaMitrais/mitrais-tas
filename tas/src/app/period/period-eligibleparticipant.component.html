@@ -2,7 +2,7 @@
     <md-card style="padding:0; margin-left:20px; margin-right:20px">
         <md-card-header style="background-color:#6100BF;padding-top:25px; padding-left:20px; height:65px">
             <div md-card-avatar style="color:#FEFEFE"><md-icon>dvr</md-icon></div>
-            <md-card-title style="color:#FEFEFE">ELIGIBLE PARTICIPANT LIST of (TRAINING NAME)</md-card-title>
+            <md-card-title style="color:#FEFEFE">ELIGIBLE PARTICIPANT LIST - {{nameTrainingChoosed}}</md-card-title>
             <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'" style="position:absolute; right:0; margin-right:20px; padding-bottom:50px">
                 <md-input-container floatPlaceholder="never" style="color:#FEFEFE">
                     <input mdInput #filter placeholder="Search eligible participant ...">
@@ -24,7 +24,7 @@
                     <md-cell *mdCellDef="let row">
                         <button md-button [mdMenuTriggerFor]="menu"><md-icon>more_horiz</md-icon></button>
                         <md-menu #menu="mdMenu">
-                            <button md-menu-item>Deleted</button>
+                            <button md-menu-item (click)="deleteEligibleParticipant(row)">Delete</button>
                         </md-menu>
                     </md-cell>
                 </ng-container>

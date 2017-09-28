@@ -60,13 +60,13 @@ export class PeriodComponent {
   }
 
   toEligibleParticipant(id: number, name: string){
-    //console.log(name);
-    window.location.reload();
-    this.router.navigate(['home/period/eligible-participant'], { queryParams: { id: id } });
+    //window.location.reload();
+    this.router.navigate(['home/period/eligible-participant'], { queryParams: { id: id, name: name } });
   }
 
-  toScheduleList(){
-    this.router.navigate(['home/period/schedule-list']);
+  toScheduleList(period: Period){
+    //window.location.reload();
+    this.router.navigate(['home/period/schedule-list'],  { queryParams: { id2: period.idTraining, name2: period.name, bcc2: period.bccTraining, start2: period.startDate, end2: period.endDate } });
   }
 }
 
@@ -87,7 +87,8 @@ export class ExampleDatabase {
         endDate: this.dataPeriod[i].endDate,
         createdBy: this.dataPeriod[i].createdBy,
         updatedBy: this.dataPeriod[i].updatedBy,
-        courses: this.dataPeriod[i].courses
+        courses: this.dataPeriod[i].courses,
+        bccTraining: this.dataPeriod[i].bccTraining
       });
       this.dataChange.next(copiedData);
     }
