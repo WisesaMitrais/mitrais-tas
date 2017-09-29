@@ -51,6 +51,24 @@ export class UrlService {
     public postEnrollParticipant(){
         return this.baseUrl+'enrollment/add';
     }
+    public getEnrollParticipant(idSchedule: number){
+        return this.baseUrl+'enrollment/findBySchedule/'+idSchedule;
+    }
+    public deleteEnrollParticipant(idEnrollment: number){
+        return this.baseUrl+'enrollment/'+idEnrollment+'/delete';
+    }
+    public updateSchedule(idSchedule: string){
+        return this.baseUrl+'schedule/'+idSchedule+'/update';
+    }
+    public deleteSchedule(idSchedule: string){
+        return this.baseUrl+'schedule/'+idSchedule+'/delete';
+    }
+    public updatePeriod(idTraining: number){
+        return this.baseUrl+'period/'+idTraining+'/update';
+    }
+    public deletePeriod(idTraining: string){
+        return this.baseUrl+'period/'+idTraining+'/delete';
+    }
 
 
     public getAllUserData(){

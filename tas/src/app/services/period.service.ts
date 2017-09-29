@@ -9,9 +9,10 @@ import { Trainer } from './trainer';
 import { AddPeriod } from './period-add';
 import { EligibleParticipantPeriod } from './period-eligibleparticipant';
 import { AddUserEligibleParticipant } from '../services/period-eligibleparticipant-add';
-import { AddEnrollParticipant } from '../services/period-enrollparticipant';
+import { AddEnrollParticipant } from '../services/period-enrollparticipant-add';
 import { SchedulePeriod } from '../services/period-schedule';
 import { AddNewSchedule } from '../services/period-schedule-add';
+import { ShowEnrollParticipant } from '../services/period-enrollparticipant-show';
 import { Observable } from 'rxjs/Rx';
 import { UrlService } from '../services/url.service';
 
@@ -117,6 +118,48 @@ import 'rxjs/add/observable/throw';
     public AddEnrollParticipant(enrollParticipantData: AddEnrollParticipant): Observable<boolean>{
         this.url = this.urlService.postEnrollParticipant();
         return this.http.post(this.url, enrollParticipantData, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public getEnrollParticipantData(idSchedule: number): Observable<ShowEnrollParticipant[]>{
+        this.url = this.urlService.getEnrollParticipant(idSchedule);
+        return this.http.get(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public deleteEnrollParticipant(idEnrollment: number): Observable<boolean>{
+        this.url = this.urlService.deleteEnrollParticipant(idEnrollment);
+        return this.http.delete(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public updateSchedule(scheduleData: AddNewSchedule, idSchedule: string): Observable<boolean>{
+        this.url = this.urlService.updateSchedule(idSchedule);
+        return this.http.post(this.url, scheduleData, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public deleteSchedule(idSchedule: string): Observable<boolean>{
+        this.url = this.urlService.deleteSchedule(idSchedule);
+        return this.http.delete(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public updatePeriod(trainingData: AddPeriod, idTraining: number): Observable<boolean>{
+        this.url = this.urlService.updatePeriod(idTraining);
+        return this.http.post(this.url, trainingData, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public deletePeriod(idTraining: string): Observable<boolean>{
+        this.url = this.urlService.deletePeriod(idTraining);
+        return this.http.delete(this.url, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);
     }

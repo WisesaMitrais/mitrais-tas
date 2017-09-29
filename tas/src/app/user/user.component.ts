@@ -5,6 +5,7 @@ import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 import { User } from '../services/user';
 import { UserService } from '../services/user.service';
+import { NotificationService } from '../services/notification.service';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -21,6 +22,7 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent {
+  result;
   displayedColumns = ['idUser', 'name', 'email', 'jobFamilyStream', 'accountName', 'active', 'role', 'grade', 'action'];
   user: User[];
   exampleDatabase;
@@ -31,7 +33,7 @@ export class UserComponent {
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private userService: UserService) {  
+  constructor(private userService: UserService, private notificationService: NotificationService) {  
     this.userService.getDataUsers().subscribe(((user) => {
       this.user = user;
       this.exampleDatabase = new ExampleDatabase(this.user);

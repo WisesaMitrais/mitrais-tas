@@ -4,9 +4,11 @@ import { DataSource } from '@angular/cdk/collections';
 import { MdPaginator, MdSort, SelectionModel, MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 import { AddPeriodComponent } from './period-add.component';
+import { EditPeriodComponent } from './period-edit.component';
 
 import { Period } from '../services/period';
 import { PeriodService } from '../services/period.service';
+import { NotificationService } from '../services/notification.service';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -23,6 +25,7 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./period.component.css']
 })
 export class PeriodComponent {
+  result;
   displayedColumns = ['idTraining', 'name', 'active', 'courses', 'startDate', 'endDate', 'createdBy', 'updatedBy', 'action'];
   period: Period[];
   exampleDatabase;
@@ -33,7 +36,7 @@ export class PeriodComponent {
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private periodService: PeriodService, public dialog: MdDialog, private router: Router) {  
+  constructor(private periodService: PeriodService, public dialog: MdDialog, private router: Router, private notificationService: NotificationService) {  
       this.periodService.getDataPeriod().subscribe(((period) => {
       this.period = period;
       this.exampleDatabase = new ExampleDatabase(this.period);
@@ -68,6 +71,26 @@ export class PeriodComponent {
     //window.location.reload();
     this.router.navigate(['home/period/schedule-list'],  { queryParams: { id2: period.idTraining, name2: period.name, bcc2: period.bccTraining, start2: period.startDate, end2: period.endDate } });
   }
+
+  deletePeriod(idTraining: string){
+    this.periodService.deletePeriod(idTraining).subscribe(((res) => {
+      this.result = res;
+      if(this.result == true){
+          this.notificationService.setNotificationInfo('Success to deleted');
+      }else{
+          this.notificationService.setNotificationError('Failed to deleted !');
+      }
+    }));
+    // window.location.reload();
+  }
+
+  editPeriod(period: Period){
+    let dialogRef = this.dialog.open(EditPeriodComponent, {
+      width: '600px',
+      height: '430px'
+    });
+    dialogRef.componentInstance.periodSelected = period;
+  }
 }
 
 export class ExampleDatabase {
@@ -88,7 +111,10 @@ export class ExampleDatabase {
         createdBy: this.dataPeriod[i].createdBy,
         updatedBy: this.dataPeriod[i].updatedBy,
         courses: this.dataPeriod[i].courses,
-        bccTraining: this.dataPeriod[i].bccTraining
+        bccTraining: this.dataPeriod[i].bccTraining,
+        _startDate: this.dataPeriod[i]._startDate,
+        _endDate: this.dataPeriod[i]._endDate,
+        openEnrollment: this.dataPeriod[i].openEnrollment
       });
       this.dataChange.next(copiedData);
     }

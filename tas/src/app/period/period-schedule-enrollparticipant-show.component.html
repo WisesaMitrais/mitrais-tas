@@ -1,0 +1,41 @@
+<md-toolbar style="background-color:#6100BF; color:#FEFEFE">
+    Enroll Participant(s) - {{nameScheduleSelected}}
+</md-toolbar>
+<md-card-header style="background-color:#6100BF; color:#FEFEFE; padding-left:0px; height:45px">
+    Search by:
+    <div style="padding-left:10px">
+        <md-input-container floatPlaceholder="never" style="color:#FEFEFE; width:250px">
+            <input mdInput #filter placeholder="name">
+        </md-input-container>
+    </div>    
+</md-card-header>
+<md-card-content>
+    <md-table #table [dataSource]="dataSource" mdSort style="background-color:#F2F2F2; margin-bottom:10px">
+        <ng-container mdColumnDef="idUser">
+            <md-header-cell *mdHeaderCellDef md-sort-header><b> Employee ID </b></md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.userNumber}} </md-cell>
+        </ng-container>
+        <ng-container mdColumnDef="name">
+            <md-header-cell *mdHeaderCellDef md-sort-header><b> Name </b></md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.userName}} </md-cell>
+        </ng-container>
+        <ng-container mdColumnDef="action">
+            <md-header-cell *mdHeaderCellDef><b> Actions </b></md-header-cell>
+            <md-cell *mdCellDef="let row">
+                <button md-button [mdMenuTriggerFor]="menu"><md-icon>more_horiz</md-icon></button>
+                <md-menu #menu="mdMenu">
+                    <button md-menu-item (click)="deleteEnrollParticipant(row)">Delete</button>
+                </md-menu>
+            </md-cell>
+        </ng-container>
+        <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+        <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+    </md-table>
+    <button md-button style="margin-left:10px; width:150px; background-color:#6100BF; color:#FEFEFE" (click)="closeDialog()"><md-icon style="margin-right:20px">close</md-icon>Close</button>
+    <md-paginator #paginator
+                    [length]="0"
+                    [pageIndex]="0"
+                    [pageSize]="0"
+                    [pageSizeOptions]="[10, 25, 50, 100]">
+    </md-paginator>
+</md-card-content>

@@ -29,6 +29,9 @@ import { PeriodScheduleComponent } from './period/period-schedule.component';
 import { PeriodScheduleAddComponent } from './period/period-schedule-add.component';
 import { PeriodScheduleDetailsComponent } from './period/period-schedule-details.component';
 import { PeriodEnrollParticipantComponent } from './period/period-schedule-enrollparticipant.component';
+import { PeriodEnrollParticipantShowComponent } from './period/period-schedule-enrollparticipant-show.component';
+import { PeriodScheduleEditComponent } from './period/period-schedule-edit.component';
+import { EditPeriodComponent } from './period/period-edit.component';
 import { UserComponent } from './user/user.component';
 
 import { AlertService } from './services/alert.service';
@@ -65,6 +68,9 @@ export class MaterialModule {}
     PeriodScheduleAddComponent,
     PeriodScheduleDetailsComponent,
     PeriodEnrollParticipantComponent,
+    PeriodEnrollParticipantShowComponent,
+    PeriodScheduleEditComponent,
+    EditPeriodComponent,
     UserComponent
   ],
   imports: [

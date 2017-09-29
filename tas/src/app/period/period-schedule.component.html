@@ -1,4 +1,5 @@
-<div class="main-content" style="margin:0">
+<br>
+<div class="main-content" style="margin:0; padding:0">
     <md-card style="padding:0; margin-left:20px; margin-right:20px">
         <md-card-header style="background-color:#6100BF;padding-top:25px; padding-left:20px; height:65px">
             <div md-card-avatar style="color:#FEFEFE"><md-icon>dvr</md-icon></div>
@@ -49,7 +50,7 @@
                 </ng-container>
                 <ng-container mdColumnDef="allParticipantList">
                     <md-header-cell *mdHeaderCellDef md-sort-header><b> All Participant List </b></md-header-cell>
-                    <md-cell *mdCellDef="let row"> {{row.participantNumber}} </md-cell>
+                    <md-cell *mdCellDef="let row"><button md-menu-item style="color:#43A047; font-size:14px; text-align:center" (click)="openShowEnrollParticipantDialog(row)"><u>  {{row.participantNumber}}  </u></button></md-cell>
                 </ng-container>
                 <ng-container mdColumnDef="action">
                     <md-header-cell *mdHeaderCellDef><b> Actions </b></md-header-cell>
@@ -58,8 +59,8 @@
                         <md-menu #menu="mdMenu">
                             <button md-menu-item (click)="openDetailsDialog(row)">Details</button>
                             <button md-menu-item (click)="openEnrollParticipantDialog(row)">Enroll Participant</button>
-                            <button md-menu-item>Edit</button>
-                            <button md-menu-item>Delete</button>
+                            <button md-menu-item (click)="openScheduleEditDialog(row)">Edit</button>
+                            <button md-menu-item (click)="deleteSchedule(row)">Delete</button>
                         </md-menu>
                     </md-cell>
                 </ng-container>

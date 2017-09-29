@@ -21,7 +21,6 @@ export class PeriodScheduleDetailsComponent implements OnInit{
     }
 
     ngOnInit(){
-        console.log(this.scheduleSelected);
     }
 
     closeDialog(){

@@ -16,6 +16,13 @@ export class SchedulePeriod {
        public createdAt: string,
        public updatedBy: string,
        public updatedAt: string,
-       public city: string
+       public city: string,
+       public _startDate: Date,
+       public _endDate: Date,
+       public _Course: number,
+       public _Room: number,
+       public _Training: number,
+       public _MainTrainer: number,
+       public _BackupTrainer: number,
     ) {  } 
  }

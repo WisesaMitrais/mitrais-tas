@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { PeriodScheduleAddComponent } from './period-schedule-add.component';
 import { PeriodScheduleDetailsComponent } from './period-schedule-details.component';
 import { PeriodEnrollParticipantComponent } from './period-schedule-enrollparticipant.component';
+import { PeriodEnrollParticipantShowComponent } from './period-schedule-enrollparticipant-show.component';
+import { PeriodScheduleEditComponent } from './period-schedule-edit.component';
 
 import { SchedulePeriod } from '../services/period-schedule';
 import { PeriodService } from '../services/period.service';
@@ -27,6 +29,7 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./period-schedule.component.css']
 })
 export class PeriodScheduleComponent {
+  result;
   idTrainingChoosed;
   nameTrainingChoosed;
   bccTrainingChoosed;
@@ -99,7 +102,38 @@ export class PeriodScheduleComponent {
       width: '800px',
       height: '585px'
     });
-    dialogRef.componentInstance.idTrainingSelected = +schedule.idSchedule;
+    dialogRef.componentInstance.idTrainingChoosed = this.idTrainingChoosed;
+    dialogRef.componentInstance.idScheduleChoosed = +schedule.idSchedule;
+  }
+
+  openShowEnrollParticipantDialog(schedule: SchedulePeriod){
+    let dialogRef = this.dialog.open(PeriodEnrollParticipantShowComponent, {
+      width: '700px',
+      height: '585px'
+    });
+    dialogRef.componentInstance.idScheduleSelected = +schedule.idSchedule;
+    dialogRef.componentInstance.nameScheduleSelected = schedule.name;
+  }
+
+  openScheduleEditDialog(schedule: SchedulePeriod){
+    let dialogRef = this.dialog.open(PeriodScheduleEditComponent, {
+      width: '520px',
+      height: '585px'
+    });
+    dialogRef.componentInstance.scheduleSelected = schedule;
+    dialogRef.componentInstance.bccTrainingSelected = this.bccTrainingChoosed;
+  }
+
+  deleteSchedule(schedule: SchedulePeriod){
+    this.periodService.deleteSchedule(schedule.idSchedule).subscribe(((res) => {
+      this.result = res;
+      if(this.result == true){
+          this.notificationService.setNotificationInfo('Success to deleted');
+      }else{
+          this.notificationService.setNotificationError('Failed to deleted !');
+      }
+    }));
+    // window.location.reload();
   }
 }
     
@@ -129,7 +163,14 @@ export class ExampleDatabase {
         createdAt: this.dataS[i].createdAt,
         updatedBy: this.dataS[i].updatedBy,
         updatedAt: this.dataS[i].updatedAt,
-        city: this.dataS[i].city
+        city: this.dataS[i].city,
+        _startDate: this.dataS[i]._startDate,
+        _endDate: this.dataS[i]._endDate,
+        _Course: this.dataS[i]._Course,
+        _Room: this.dataS[i]._Room,
+        _Training: this.dataS[i]._Training,
+        _MainTrainer: this.dataS[i]._MainTrainer,
+        _BackupTrainer: this.dataS[i]._BackupTrainer
       });
       this.dataChange.next(copiedData);
     }

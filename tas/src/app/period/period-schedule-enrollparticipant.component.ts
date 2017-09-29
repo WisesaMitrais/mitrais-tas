@@ -6,7 +6,7 @@ import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { PeriodEligibleParticipantComponent } from './period-eligibleparticipant.component';
 import { PeriodScheduleComponent } from './period-schedule.component';
 
-import { AddEnrollParticipant } from '../services/period-enrollparticipant';
+import { AddEnrollParticipant } from '../services/period-enrollparticipant-add';
 import { PeriodService } from '../services/period.service';
 import { NotificationService } from '../services/notification.service';
 import { EligibleParticipantPeriod } from '../services/period-eligibleparticipant';
@@ -28,7 +28,8 @@ import 'rxjs/add/operator/debounceTime';
 export class PeriodEnrollParticipantComponent{
     finalData;
     result;
-    idTrainingSelected: number;
+    idTrainingChoosed: number;
+    idScheduleChoosed: number;
     displayedColumns = ['action', 'idUser', 'name'];
     eligibleParticipant: EligibleParticipantPeriod[];
     exampleDatabase;
@@ -46,7 +47,8 @@ export class PeriodEnrollParticipantComponent{
     }
 
     ngOnInit(){
-        this.periodService.getDataEligibleParticipant(this.idTrainingSelected).subscribe(((eligibleParticipant) => {
+        console.log(this.idTrainingChoosed);
+        this.periodService.getDataEligibleParticipant(this.idTrainingChoosed).subscribe(((eligibleParticipant) => {
         this.eligibleParticipant = eligibleParticipant;
         this.exampleDatabase = new ExampleDatabase(this.eligibleParticipant);
         this.paginator.length = this.exampleDatabase.data.length;
@@ -54,6 +56,7 @@ export class PeriodEnrollParticipantComponent{
         this.paginator._pageIndex = 0; 
             
         this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
+        console.log(this.dataSource);
         Observable.fromEvent(this.filter.nativeElement, 'keyup')
         .debounceTime(150)
         .distinctUntilChanged()
@@ -90,7 +93,7 @@ export class PeriodEnrollParticipantComponent{
     }
 
     sendEnrollParticipant(){
-        this.finalData = new AddEnrollParticipant(this.idTrainingSelected, this.selection.selected);
+        this.finalData = new AddEnrollParticipant(this.idScheduleChoosed, this.selection.selected);
         this.periodService.AddEnrollParticipant(this.finalData).subscribe(((res) => {
             this.result = res;
             if(this.result == true){
