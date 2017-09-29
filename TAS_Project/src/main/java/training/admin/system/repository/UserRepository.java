@@ -18,4 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 			+ "LEFT JOIN tr_user_role ur ON u.id_user=ur.id_user "
 			+ "LEFT JOIN tbm_role r ON r.role_name='Trainer'", nativeQuery = true)
 	List <Trainer> findTrainer();
+	
+	@Query(value="SELECT id_user, name FROM tbm_user u ", nativeQuery = true)
+	List <Long> selectAllId();
 }

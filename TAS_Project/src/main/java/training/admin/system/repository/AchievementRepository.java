@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import training.admin.system.model.Achievement;
+import training.admin.system.model.Course;
+import training.admin.system.model.User;
 
 @Component
 public interface AchievementRepository extends JpaRepository<Achievement, Long>{
-	List <Achievement> findByIdUserAndIdCourse(Long idUser, Long idCourse);
-	List <Achievement> findByIdUser(Long idUser);
+	List <Achievement> findByUserAndCourse(User user, Course course);
+	List <Achievement> findByUser(User user);
 }

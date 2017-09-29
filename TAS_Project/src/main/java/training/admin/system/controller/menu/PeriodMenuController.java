@@ -121,8 +121,10 @@ public class PeriodMenuController {
 		periodData.setCourses(scheduleRepository.findByTraining(training).size());
 		Date startDate = training.getStartDate();
 		periodData.setStartDate(new SimpleDateFormat("d MMMM yyyy").format(startDate));
+		periodData.set_startDate(startDate);
 		Date endDate = training.getEndDate();
 		periodData.setEndDate(new SimpleDateFormat("d MMMM yyyy").format(endDate));
+		periodData.set_endDate(endDate);
 		periodData.setCreatedBy(userRepository.findOne(training.getCreatedBy()).getName());
 		periodData.setUpdatedBy(userRepository.findOne(training.getUpdatedBy()).getName());
 		periodData.setBccTraining(training.getBccTraining());

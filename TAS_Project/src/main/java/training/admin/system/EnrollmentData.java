@@ -3,15 +3,14 @@ package training.admin.system;
 public class EnrollmentData {
 
 	private Long idEnrollment; 
-	private Long idUser;
-	private Long idSchedule;
 	private String periodName;
 	private String courseName;
 	private String trainer;
 	private String startTime;
 	private String endTime;
 	private String status;
-	
+	private String userName;
+	private Long userNumber;
 	
 	public String getPeriodName() {
 		return periodName;
@@ -55,17 +54,17 @@ public class EnrollmentData {
 	public void setIdEnrollment(Long idEnrollment) {
 		this.idEnrollment = idEnrollment;
 	}
-	public Long getIdUser() {
-		return idUser;
+	public String getUserName() {
+		return userName;
 	}
-	public void setIdUser(Long idUser) {
-		this.idUser = idUser;
+	public void setUserName(String name) {
+		this.userName = name;
 	}
-	public Long getIdSchedule() {
-		return idSchedule;
+	public Long getUserNumber() {
+		return userNumber;
 	}
-	public void setIdSchedule(Long idSchedule) {
-		this.idSchedule = idSchedule;
+	public void setUserNumber(Long userNumber) {
+		this.userNumber = userNumber;
 	}
 	
 	

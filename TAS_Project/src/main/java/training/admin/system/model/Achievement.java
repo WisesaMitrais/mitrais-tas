@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,31 +22,22 @@ public class Achievement {
 	@Column (name = "status")
 	private String status;
 	
-	@Column (name = "id_user")
-	private long idUser;
+	@ManyToOne
+	@JoinColumn (name = "id_user")	
+	private User user;
+
+	@ManyToOne
+	@JoinColumn (name = "id_course")
+	private Course course;
 	
-	@Column (name = "id_course")
-	private long idCourse;
-	
-	@Column (name = "id_training")
-	private long idTraining;
+	@ManyToOne
+	@JoinColumn (name = "id_training")
+	private Training training;
 
 	public Achievement() {
 		
 	}
 	
-	
-	public Achievement(long idAchievement, String status, long idUser, long idCourse, long idTraining) {
-		this.idAchievement = idAchievement;
-		this.status = status;
-		this.idUser = idUser;
-		this.idCourse = idCourse;
-		this.idTraining = idTraining;
-	}
-
-
-
-
 	public long getIdAchievement() {
 		return idAchievement;
 	}
@@ -61,32 +54,28 @@ public class Achievement {
 		this.status = status;
 	}
 
-	public long getIdUser() {
-		return idUser;
+	public User getUser() {
+		return user;
 	}
 
-	public void setIdUser(long idUser) {
-		this.idUser = idUser;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public long getIdCourse() {
-		return idCourse;
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setIdCourse(long idCourse) {
-		this.idCourse = idCourse;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
-	public long getIdTraining() {
-		return idTraining;
+	public Training getTraining() {
+		return training;
 	}
 
-	public void setIdTraining(long idTraining) {
-		this.idTraining = idTraining;
+	public void setTraining(Training training) {
+		this.training = training;
 	}
-	
-	
-	
-	
 	
 }

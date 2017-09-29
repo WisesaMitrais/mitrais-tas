@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -94,7 +95,16 @@ public class EnrollmentController {
 		return result;
 	}
 	
-	
+	@DeleteMapping (value="/{idEnrollment}/delete")
+	public Boolean delete (@PathVariable Long idEnrollment) {
+		try {
+			enrollmentRepository.delete(idEnrollment);
+			return true;
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+	}
 	
 	public EnrollmentData convertEnrollmentToEnrollmentData(Enrollment enrollment) {
 		EnrollmentData enrollmentData = new EnrollmentData();
@@ -114,7 +124,9 @@ public class EnrollmentController {
 		} else {
 			status = "Done";
 		}
-		
+		enrollmentData.setIdEnrollment(enrollment.getIdEnrollment());
+		enrollmentData.setUserNumber(enrollment.getUser().getIdUser());
+		enrollmentData.setUserName(enrollment.getUser().getName());
 		enrollmentData.setPeriodName(trainingName);
 		enrollmentData.setCourseName(courseName);
 		enrollmentData.setStartTime(new SimpleDateFormat("d MMMM yyyy").format(startTime));

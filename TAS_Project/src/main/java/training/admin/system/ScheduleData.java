@@ -12,17 +12,19 @@ public class ScheduleData {
 	private String day;
 	private String startDate;
 	private String endDate;
+	private Date _startDate;
+	private Date _endDate;
 	private Integer capacity;
 	private Integer participantNumber;
  	private String scheduleType;
 	private Boolean periodic;
 	private String periodicTime;
 
-	private Long idMainTrainer;
-	private Long idBackupTrainer;
-	private Long idRoom;
-	private Long idCourse;
-	private Long idTraining;
+	private Long _MainTrainer;
+	private Long _BackupTrainer;
+	private Long _Room;
+	private Long _Course;
+	private Long _Training;
 	
 	private String createdBy;
 	private String createdAt;
@@ -105,44 +107,44 @@ public class ScheduleData {
 		this.scheduleType = periodic;
 	}
 
-	public Long getIdMainTrainer() {
-		return idMainTrainer;
+	public Long get_MainTrainer() {
+		return _MainTrainer;
 	}
 
-	public void setIdMainTrainer(Long idMaintrainer) {
-		this.idMainTrainer = idMaintrainer;
+	public void set_MainTrainer(Long _MainTrainer) {
+		this._MainTrainer = _MainTrainer;
 	}
 
-	public Long getIdBackupTrainer() {
-		return idBackupTrainer;
+	public Long get_BackupTrainer() {
+		return _BackupTrainer;
 	}
 
-	public void setIdBackupTrainer(Long idBackupTrainer) {
-		this.idBackupTrainer = idBackupTrainer;
+	public void set_BackupTrainer(Long _BackupTrainer) {
+		this._BackupTrainer = _BackupTrainer;
 	}
 
-	public Long getIdRoom() {
-		return idRoom;
+	public Long get_Room() {
+		return _Room;
 	}
 
-	public void setIdRoom(Long idRoom) {
-		this.idRoom = idRoom;
+	public void set_Room(Long _Room) {
+		this._Room = _Room;
 	}
 
-	public Long getIdCourse() {
-		return idCourse;
+	public Long get_Course() {
+		return _Course;
 	}
 
-	public void setIdCourse(Long idCourse) {
-		this.idCourse = idCourse;
+	public void set_Course(Long _Course) {
+		this._Course = _Course;
 	}
 
-	public Long getIdTraining() {
-		return idTraining;
+	public Long get_Training() {
+		return _Training;
 	}
 
-	public void setIdTraining(Long idTraining) {
-		this.idTraining = idTraining;
+	public void set_Training(Long _Training) {
+		this._Training = _Training;
 	}
 
 	public Boolean getPeriodic() {
@@ -216,7 +218,23 @@ public class ScheduleData {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
+
+	public Date get_startDate() {
+		return _startDate;
+	}
+
+	public void set_startDate(Date _startDate) {
+		this._startDate = _startDate;
+	}
+
+	public Date get_endDate() {
+		return _endDate;
+	}
+
+	public void set_endDate(Date _endDate) {
+		this._endDate = _endDate;
+	}
+
 	
 	
 }

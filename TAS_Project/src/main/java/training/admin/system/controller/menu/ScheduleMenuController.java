@@ -29,7 +29,6 @@ import training.admin.system.repository.RoomRepository;
 import training.admin.system.repository.ScheduleRepository;
 import training.admin.system.repository.TrainingRepository;
 import training.admin.system.repository.UserRepository;
-import training_admin_system.model.create.CreateSchedule;
 
 @RestController
 @RequestMapping("/schedule")
@@ -71,7 +70,6 @@ public class ScheduleMenuController {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@PostMapping ("/create")
 	public Boolean create(@RequestBody AddSchedule newSchedule) {
 	
@@ -123,8 +121,7 @@ public class ScheduleMenuController {
 			Course course = courseRepository.findOne(newSchedule.getIdCourse());
 			Room room = roomRepository.findOne(newSchedule.getIdRoom());
 			User mainTrainer= userRepository.findOne(newSchedule.getIdMainTrainer()); 
-			Training training = trainingRepository.findOne(newSchedule.getIdTraining());
-			Integer number = scheduleRepository.countSchedule(newSchedule.getIdTraining(), newSchedule.getIdCourse());			
+			Training training = trainingRepository.findOne(newSchedule.getIdTraining());		
 			Schedule schedule = scheduleRepository.findOne(idSchedule);
 			schedule.setCapacity(newSchedule.getCapacity());
 			schedule.setStartDate(newSchedule.getStartDate());
@@ -136,7 +133,6 @@ public class ScheduleMenuController {
 			schedule.setCourse(course);
 			schedule.setRoom(room);
 			schedule.setMainTrainer(mainTrainer);
-			schedule.setScheduleNumber(number);
 			
 			schedule.setUpdatedBy(Long.parseLong(newSchedule.getCreatedBy()));
 			Date now = new Date(System.currentTimeMillis());
@@ -188,28 +184,31 @@ public class ScheduleMenuController {
 		if (!edit) scheduleData.setName(scheduleData.getName() + " #" + schedule.getScheduleNumber());
 		
 		User mainTrainer =schedule.getMainTrainer();
-		scheduleData.setIdMainTrainer(mainTrainer.getIdUser());
+		scheduleData.set_MainTrainer(mainTrainer.getIdUser());
 		scheduleData.setMainTrainer(mainTrainer.getName());
 		
 		User backupTrainer = userRepository.findOne(schedule.getIdBackupTrainer());
 		if(backupTrainer!=null) {
-			scheduleData.setIdBackupTrainer(backupTrainer.getIdUser());
+			scheduleData.set_BackupTrainer(backupTrainer.getIdUser());
 			scheduleData.setBackupTrainer(backupTrainer.getName());
 		} else {
 			scheduleData.setBackupTrainer("-");
 		}
 		
 		Room room = schedule.getRoom();
-		scheduleData.setIdRoom(room.getIdRoom());
+		scheduleData.set_Room(room.getIdRoom());
 		scheduleData.setRoom(room.getName() + " - " + room.getDetail());
 		
 		scheduleData.setDay(schedule.getPeriodicTime());
 		
 		Date startDate = schedule.getStartDate();
 		scheduleData.setStartTime(new SimpleDateFormat("d MMMM yyyy").format(startDate));
+		scheduleData.set_startDate(startDate);
 		
 		Date endDate = schedule.getEndDate();
 		scheduleData.setEndTime(new SimpleDateFormat("d MMMM yyyy").format(endDate));
+		scheduleData.set_endDate(endDate);
+		
 		
 		scheduleData.setCapacity(schedule.getCapacity());
 		Schedule tmpSchedule = scheduleRepository.findOne(schedule.getIdSchedule());
@@ -223,8 +222,8 @@ public class ScheduleMenuController {
 		scheduleData.setPeriodic(schedule.getPeriodic());
 		scheduleData.setPeriodicTime(schedule.getPeriodicTime());
 		
-		scheduleData.setIdCourse(schedule.getCourse().getIdCourse());
-		scheduleData.setIdTraining(schedule.getTraining().getIdTraining());
+		scheduleData.set_Course(schedule.getCourse().getIdCourse());
+		scheduleData.set_Training(schedule.getTraining().getIdTraining());
 		
 		scheduleData.setCreatedBy(userRepository.findOne(schedule.getCreatedBy()).getName());
 		scheduleData.setUpdatedBy(userRepository.findOne(schedule.getUpdatedBy()).getName());
