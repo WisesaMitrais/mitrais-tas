@@ -42,34 +42,23 @@ public class User {
 	@Column (name = "grade")
 	private String grade;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn (name = "id_office")
-	private Office office;
+	@Column (name = "id_office")
+	private Long idOffice;
 	
 	public User() {
 		
 	}
 	
-	public User(Long idUser, String name, String email, String username, String password, Boolean active, String jobFamilyStream,
-			String grade, Office office) {
-		this.name = name;
-		this.email = email;
-		this.username = username;
-		this.password = password;
-		this.active = active;
-		this.jobFamilyStream = jobFamilyStream;
-		this.grade = grade;
-		this.office = office;
-	}
 	
-	
-	public Office getOffice() {
-		return office;
+	public Long getIdOffice() {
+		return idOffice;
 	}
 
-	public void setOffice(Office office) {
-		this.office = office;
+
+	public void setIdOffice(Long idOffice) {
+		this.idOffice = idOffice;
 	}
+
 
 	public Boolean getActive() {
 		return active;

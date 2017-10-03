@@ -12,7 +12,7 @@ import training.admin.system.model.UserRole;
 
 @Component
 public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
-	List<UserRole> findByUser(User user); 
+	List<UserRole> findByIdUser(Long idUser); 
 	UserRole findByIdUserRole (Long IdUserRole);
-	List<UserRole> findByRole (Role role);
+	List<UserRole> findByIdRole (Long idRole);
 }

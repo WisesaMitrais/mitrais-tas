@@ -154,7 +154,7 @@ public class Training {
 		return bccTraining;
 	}
 
-	public void isBccTraining(Boolean bccTraining) {
+	public void setBccTraining(Boolean bccTraining) {
 		this.bccTraining = bccTraining;
 	}
 

@@ -47,6 +47,7 @@ public class DashboardMenuController {
 	public List<ActiveTraining> getActiveTraining(){
 		System.out.println("\nProcessing for ActiveTraining Request");
 		System.out.println("---------------------------------");
+		System.out.println(System.currentTimeMillis());
 
 		List <ActiveTraining> activeTrainings = new ArrayList<ActiveTraining>();
 		
@@ -65,7 +66,7 @@ public class DashboardMenuController {
 
 			for (Schedule schedule:schedules) {
 				ActiveTraining activeTraining = new ActiveTraining();
-				activeTraining.setCourseName(schedule.getCourse().getName());
+				activeTraining.setCourseName(schedule.getCourse().getName() + " #" +schedule.getScheduleNumber());
 				activeTraining.setMainTrainer(schedule.getMainTrainer().getName());
 				
 				if (schedule.getIdBackupTrainer() != null) {
@@ -106,7 +107,7 @@ public class DashboardMenuController {
 		Date endDateWeek = cal.getTime();
 //		System.out.println("EndDate = " + endDateWeek.toString());
 		
-		List<Schedule> schedules = scheduleRepository.findByStartDateAfterAndEndDateBefore(startDateWeek, endDateWeek);
+		List<Schedule> schedules = scheduleRepository.findByStartDateBeforeAndEndDateAfter(endDateWeek, startDateWeek);
 //		System.out.println("schedules length = " + schedules.size());
 		
 		for (Schedule schedule:schedules) {
@@ -137,12 +138,11 @@ public class DashboardMenuController {
 			
 			newBccCourse.setTrainer(trainerName);
 			for (Integer i=1; i<=5; i++) {
-				Integer startCourse = schedule.getStartDate().getDay();
-				Integer endCourse = schedule.getEndDate().getDay();
+				Integer day = Integer.parseInt(schedule.getDay());
 				String data;
 				
-				if(i>=startCourse && i<=endCourse) {
-					String courseName = schedule.getCourse().getName();
+				if(i==day) {
+					String courseName = schedule.getCourse().getName() + " #" +schedule.getScheduleNumber();
 					String roomName = schedule.getRoom().getName();
 					data = courseName + ", " + roomName;
 				} else {

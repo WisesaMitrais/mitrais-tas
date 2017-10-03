@@ -51,8 +51,11 @@ public class Schedule {
 	@Column (name = "periodic")
 	private Boolean periodic;
 	
-	@Column (name = "periodic_time")
-	private String periodicTime;
+	@Column (name = "day")
+	private String day;
+	
+	@Column (name = "hour")
+	private String hour;
 	
 	@Column (name = "schedule_number")
 	private Integer scheduleNumber;
@@ -146,14 +149,6 @@ public class Schedule {
 		this.periodic = periodic;
 	}
 
-	public String getPeriodicTime() {
-		return periodicTime;
-	}
-
-	public void setPeriodicTime(String periodicTime) {
-		this.periodicTime = periodicTime;
-	}
-
 	public Integer getScheduleNumber() {
 		return scheduleNumber;
 	}
@@ -196,6 +191,22 @@ public class Schedule {
 
 	public void setIdBackupTrainer(Long idBackupTrainer) {
 		this.idBackupTrainer = idBackupTrainer;
+	}
+
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(String day) {
+		this.day = day;
+	}
+
+	public String getHour() {
+		return hour;
+	}
+
+	public void setHour(String hour) {
+		this.hour = hour;
 	}
 		
 	

@@ -7,7 +7,8 @@ public class AddSchedule {
 	private Date endDate;
 	private Integer capacity;
 	private Boolean periodic;
-	private String periodicTime;
+	private Integer day;
+	private String hour;
 	private Long idMainTrainer;
 	private Long idBackupTrainer;
 	private Long idRoom;
@@ -40,12 +41,7 @@ public class AddSchedule {
 	public void setPeriodic(Boolean periodic) {
 		this.periodic = periodic;
 	}
-	public String getPeriodicTime() {
-		return periodicTime;
-	}
-	public void setPeriodicTime(String periodicTime) {
-		this.periodicTime = periodicTime;
-	}
+	
 	public Long getIdMainTrainer() {
 		return idMainTrainer;
 	}
@@ -88,6 +84,19 @@ public class AddSchedule {
 	public void setCreatedAt(String createdAt) {
 		this.createdAt = createdAt;
 	}
+	public Integer getDay() {
+		return day;
+	}
+	public void setDay(Integer day) {
+		this.day = day;
+	}
+	public String getHour() {
+		return hour;
+	}
+	public void setHour(String hour) {
+		this.hour = hour;
+	}
+	
 	
 	
 }

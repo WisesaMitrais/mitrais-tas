@@ -86,7 +86,12 @@ public class ScheduleMenuController {
 			schedule.setTraining(training);
 			schedule.setIdBackupTrainer(newSchedule.getIdBackupTrainer());
 			schedule.setPeriodic(newSchedule.getPeriodic());
-			schedule.setPeriodicTime(newSchedule.getPeriodicTime());
+			if (newSchedule.getPeriodic()) {
+				schedule.setDay(newSchedule.getDay().toString());
+				schedule.setHour(newSchedule.getHour());
+			} else {
+				schedule.setHour(newSchedule.getHour());
+			}
 			schedule.setCourse(course);
 			schedule.setRoom(room);
 			schedule.setMainTrainer(mainTrainer);
@@ -129,7 +134,12 @@ public class ScheduleMenuController {
 			schedule.setTraining(training);
 			schedule.setIdBackupTrainer(newSchedule.getIdBackupTrainer());
 			schedule.setPeriodic(newSchedule.getPeriodic());
-			schedule.setPeriodicTime(newSchedule.getPeriodicTime());
+			if (newSchedule.getPeriodic()) {
+				schedule.setHour(newSchedule.getHour());
+			} else {
+				schedule.setDay(newSchedule.getDay().toString());
+				schedule.setHour(newSchedule.getHour());
+			}
 			schedule.setCourse(course);
 			schedule.setRoom(room);
 			schedule.setMainTrainer(mainTrainer);
@@ -199,7 +209,7 @@ public class ScheduleMenuController {
 		scheduleData.set_Room(room.getIdRoom());
 		scheduleData.setRoom(room.getName() + " - " + room.getDetail());
 		
-		scheduleData.setDay(schedule.getPeriodicTime());
+		scheduleData.setDay(schedule.getDay() + " " + schedule.getHour());
 		
 		Date startDate = schedule.getStartDate();
 		scheduleData.setStartTime(new SimpleDateFormat("d MMMM yyyy").format(startDate));
@@ -220,7 +230,39 @@ public class ScheduleMenuController {
 			scheduleData.setScheduleType("Fixed");
 		 
 		scheduleData.setPeriodic(schedule.getPeriodic());
-		scheduleData.setPeriodicTime(schedule.getPeriodicTime());
+		
+		String day = "";
+		
+		if(schedule.getPeriodic()) {
+			switch (schedule.getDay()) {
+			case "1":
+				day = "Monday";
+				break;
+			case "2":
+				day = "Tuesday";
+				break;
+			case "3":
+				day = "Wednesday";
+				break;
+			case "4":
+				day = "Thursday";
+				break;
+			case "5":
+				day = "Friday";
+				break;
+			case "6":
+				day = "Saturday";
+				break;
+			case "7":
+				day = "Sunday";
+				break;
+	
+			default:
+				break;
+			}
+		}
+		scheduleData.setDay(day);
+		scheduleData.setHour(schedule.getHour());
 		
 		scheduleData.set_Course(schedule.getCourse().getIdCourse());
 		scheduleData.set_Training(schedule.getTraining().getIdTraining());

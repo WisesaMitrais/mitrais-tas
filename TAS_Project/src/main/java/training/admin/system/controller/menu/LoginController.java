@@ -51,11 +51,11 @@ public class LoginController {
 			loginData.setName(user.getName());
 			
 			List <UserRole> userRoles = new ArrayList<UserRole>();
-			userRoles = userRoleRepository.findByUser(user);
+			userRoles = userRoleRepository.findByIdUser(user.getIdUser());
 
 			List <Role> roles = new ArrayList<Role>();
 			for (UserRole userRole:userRoles) {
-				roles.add(userRole.getRole());
+				roles.add(roleRepository.findOne(userRole.getIdRole()));
 			}
 			
 			loginData.setRoles(roles);
@@ -71,8 +71,7 @@ public class LoginController {
 //		System.out.println(userRoleRepository.findByIdUserRole(idUser).toString());
 //		return userRoleRepository.findByIdUserRole(idUser);
 //		return userRoleRepository.findByIdRole(idUser);
-		User user = userRepository.findOne(idUser);
- 		return userRoleRepository.findByUser(user);
+ 		return userRoleRepository.findByIdUser(idUser);
 	}
 	
 	@RequestMapping (value="/password", method=RequestMethod.GET)

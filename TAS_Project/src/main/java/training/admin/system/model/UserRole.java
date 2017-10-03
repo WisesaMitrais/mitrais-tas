@@ -19,13 +19,11 @@ public class UserRole {
 	@Column (name = "id_user_role")
 	private long idUserRole;
 	
-	@ManyToOne
-	@JoinColumn (name = "id_user")
-	private User user;
+	@Column (name = "id_user")
+	private Long idUser;
 
-	@ManyToOne
-	@JoinColumn (name = "id_role")
-	private Role role;
+	@Column (name = "id_role")
+	private Long idRole;
 
 	public UserRole() {
 		
@@ -39,21 +37,22 @@ public class UserRole {
 		this.idUserRole = idUserRole;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getIdUser() {
+		return idUser;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
 	}
 
-	public Role getRole() {
-		return role;
+	public Long getIdRole() {
+		return idRole;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setIdRole(Long idRole) {
+		this.idRole = idRole;
 	}
+
 
 
 		

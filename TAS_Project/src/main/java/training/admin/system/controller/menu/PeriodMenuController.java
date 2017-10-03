@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import training.admin.system.PeriodData;
 import training.admin.system.UserData;
+import training.admin.system.model.Course;
+import training.admin.system.model.Schedule;
 import training.admin.system.model.Training;
 import training.admin.system.model.User;
 import training.admin.system.model.UserRole;
@@ -82,6 +84,15 @@ public class PeriodMenuController {
 	@RequestMapping (value="/{id}/update",method = RequestMethod.POST)
 	public Boolean update (@RequestBody Training trainingParam,
 						@PathVariable ("id") Long idTraining) {
+		
+		List<Schedule> schedules = scheduleRepository.findByTraining(trainingParam);
+		for (Schedule schedule:schedules) {
+			if (schedule.getStartDate().before(trainingParam.getStartDate()) || schedule.getEndDate().after(trainingParam.getEndDate())) {
+				System.out.println("Training period is out of range!");
+				return Boolean.FALSE;
+			}
+		}
+		
 		Date currentDate = new Date(System.currentTimeMillis());
 		try {
 			Training training = trainingRepository.findOne(idTraining);
@@ -90,6 +101,7 @@ public class PeriodMenuController {
 			training.setEndDate(trainingParam.getEndDate());
 			training.setActive(trainingParam.isActive());
 			training.setOpenEnrollment(trainingParam.isOpenEnrollment());
+			training.setBccTraining(trainingParam.getBccTraining());
 			training.setCreatedBy(trainingParam.getCreatedBy());
 			training.setCreatedDate(currentDate);
 			training.setUpdatedBy(trainingParam.getUpdatedBy());

@@ -9,7 +9,6 @@ public class ScheduleData {
 	private String mainTrainer;
 	private String backupTrainer;
 	private String room;
-	private String day;
 	private String startDate;
 	private String endDate;
 	private Date _startDate;
@@ -18,7 +17,8 @@ public class ScheduleData {
 	private Integer participantNumber;
  	private String scheduleType;
 	private Boolean periodic;
-	private String periodicTime;
+	private String day;
+	private String hour;
 
 	private Long _MainTrainer;
 	private Long _BackupTrainer;
@@ -67,12 +67,6 @@ public class ScheduleData {
 	}
 	public void setRoom(String room) {
 		this.room = room;
-	}
-	public String getDay() {
-		return day;
-	}
-	public void setDay(String day) {
-		this.day = day;
 	}
 	public String getStartTime() {
 		return startDate;
@@ -155,12 +149,12 @@ public class ScheduleData {
 		this.periodic = periodic;
 	}
 
-	public String getPeriodicTime() {
-		return periodicTime;
+	public String getDay() {
+		return day;
 	}
 
-	public void setPeriodicTime(String periodicTime) {
-		this.periodicTime = periodicTime;
+	public void setDay(String periodicTime) {
+		this.day = periodicTime;
 	}
 
 	public String getCreatedBy() {
@@ -235,6 +229,12 @@ public class ScheduleData {
 		this._endDate = _endDate;
 	}
 
-	
-	
+	public String getHour() {
+		return hour;
+	}
+
+	public void setHour(String hour) {
+		this.hour = hour;
+	}
+
 }

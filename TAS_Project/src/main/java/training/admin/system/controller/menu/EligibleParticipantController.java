@@ -78,10 +78,10 @@ public class EligibleParticipantController {
 //		System.out.println("ID Training: " + addEligibleParticipant.getIdTraining());
 //		System.out.println("ID User    : " + addEligibleParticipant.getIdUser());
 		try {
+			Training training = trainingRepository.findOne(addEligibleParticipant.getIdTraining());
 			for (int i = 0; i< addEligibleParticipant.getIdUser().size(); i++) {
 				EligibleParticipant eligibleParticipant = new EligibleParticipant();
-				Training training = trainingRepository.findOne(addEligibleParticipant.getIdTraining());
-				User user = userRepository.findOne(addEligibleParticipant.getIdTraining());
+				User user = userRepository.findOne(addEligibleParticipant.getIdUser().get(i));
 				eligibleParticipant.setTraining(training);
 				eligibleParticipant.setUser(user);
 				eligibleParticipantRepository.save(eligibleParticipant);	
