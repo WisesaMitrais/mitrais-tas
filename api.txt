@@ -10,7 +10,7 @@
 # PERIOD
 . localhost:8080/period/all			(GET)
 . localhost:8080/period/{idPeriod}		(GET)
-. localhost:8080/period/create		(POST)
+. localhost:8080/period/create			(POST)
 	{
 	
 		"trainingName":"Training Testing",
@@ -30,7 +30,21 @@
 	}
 
 . localhost:8080/period/{idPeriod}/update	(POST) 
-. localhost:8080/period/{idPeriod}/delete	(GET)
+. localhost:8080/period/{idPeriod}/delete	(DELETE)
+
+
+# Eligible Participant
+. localhost:8080/eligibleparticipant/all	(GET)
+. localhost:8080/eligibleparticipant/add	(POST)
+	{
+	
+		"idTraining":1,
+		"idUser":[1,2,3]
+	
+}
+. localhost:8080/eligibleparticipant/findByTraining/{idTraining}	(GET)
+. localhost:8080/eligibleparticipant/findByUser/{idUser}		(GET)
+. localhost:8080/eligibleparticipant/{idEligible}/delete		(DELETE)
 
 
 # Schedule
@@ -53,11 +67,15 @@
 	
 		"endDate":"2017-30-12",
 	
-		"capacity":10
-
+		"capacity":10,
+		"periodic":true,
+		"periodicTime":"Monday 18:00-19:00",
+		"createdBy":2,
+		"updatedBy":2
 	}
 . localhost:8080/schedule/{idSchedule}/update	(POST) 
-. localhost:8080/schedule/{idSchedule}/delete	(GET)
+. localhost:8080/schedule/{idSchedule}/delete	(DELETE)
+. localhost:8080/schedule/findByTraining/{idTraining} (GET)
 
 
 # USER
@@ -83,16 +101,28 @@
 		"active":"true"
 	}
 . localhost:8080/user/{idUser}/update		(POST)
-. localhost:8080/user/{idUser}/delete		(GET)
+. localhost:8080/user/{idUser}/delete		(DELETE)
+
+
+# Enrollment
+. localhost:8080/enrollment/all			(GET)
+. localhost:8080/enrollment/add			(POST)
+	{
+		"idSchedule":1,
+		"idUser":[1,2,3]
+	}
+. localhost:8080/enrollment/{id}/delete		(DELETE)
+. localhost:8080/enrollment/findByUser/{idUser}	(POST)
 
 
 Achievement
-
-
-Enrollment
+. localhost:8080/achievement/all		(GET)
+. localhost:8080/achievement/findByUser/{idUser}(GET)
+. localhost:8080/achievement/download		(GET)
 
 
 Training Maintenance
+. http://localhost:8080/attendance/findBySchedule/1
 
 
 

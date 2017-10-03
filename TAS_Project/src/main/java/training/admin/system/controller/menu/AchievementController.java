@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jxl.Workbook;
@@ -80,7 +81,8 @@ public class AchievementController {
 	}
 	
 	@GetMapping (value="/download")
-	public void exportToExcel(HttpServletResponse response) { 
+	@ResponseBody
+	public Boolean exportToExcel(HttpServletResponse response) { 
 		try {
 			File newFile = new File("Achievement.xls");
 			WritableWorkbook workbook = Workbook.createWorkbook(newFile);
@@ -195,8 +197,10 @@ public class AchievementController {
             FileInputStream in = new FileInputStream(newFile);
             IOUtils.copy(in, response.getOutputStream());
             response.flushBuffer();
+            return true;
 		} catch (IOException | WriteException e) {
-		      throw new RuntimeException("IOError writing file to output stream");
+			System.out.println(e);
+		    return false;
 		}
 		
 	}
@@ -209,60 +213,75 @@ public class AchievementController {
 		achievementData.setGrade(user.getGrade());
 		achievementData.setOffice(officeRepository.getOne(user.getIdOffice()).getCity());
 		
-		String beginning = " ";
-		String LI1 = " ";
-		String LI2 = " ";
-		String Int1 = " ";
-		String Int2 = " ";
-		String BW1 = " ";
-		String BW2 = " ";
-		String CE1 = " ";
-		String CE2 = " ";
-		String PresentationSkill = " ";
+		String beginning = "-";
+		String LI1 = "-";
+		String LI2 = "-";
+		String Int1 = "-";
+		String Int2 = "-";
+		String BW1 = "-";
+		String BW2 = "-";
+		String CE1 = "-";
+		String CE2 = "-";
+		String PresentationSkill = "-";
+		
+		String beginningStatus = "";
+		String LI1Status = "-";
+		String LI2Status = "-";
+		String Int1Status = "-";
+		String Int2Status = "-";
+		String BW1Status = "-";
+		String BW2Status = "-";
+		String CE1Status = "-";
+		String CE2Status = "-";
+		String PresentationSkillStatus = "-";
 		
 		List<Achievement> userAchievement = achievementRepository.findByUser(user);
 		for (Achievement achievement:userAchievement) {
 						
 			switch (achievement.getCourse().getName()) {
 			case "Beginning":
+				beginningStatus = achievement.getStatus();
 				beginning = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 				break;
 			case "Low Intermediete 1":
+				LI1Status = achievement.getStatus();
 				LI1 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 				break;
 			case "Low Intermediete 2":
+				LI2Status = achievement.getStatus();
 				LI2 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 				break;
 			case "Intermediete 1":
+				Int1Status = achievement.getStatus();
 				Int1 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 				break;
 			case "Intermediete 2":
+				Int2Status = achievement.getStatus();
 				Int2 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 				break;
 			case "Business Writing 1":
+				BW1Status = achievement.getStatus();
 				BW1 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 				break;
 			case "Business Writing 2":
+				BW2Status = achievement.getStatus();
 				BW2 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 				break;
 			case "Communicating Effectively 1":
+				CE1Status = achievement.getStatus();
 				CE1 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 				break;
 			case "Communicating Effectively 2":
+				CE2Status = achievement.getStatus();
 				CE2 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 				break;
 			case "Presentation Skills 2":
-				CE2 = achievement.getStatus();
-				break;
+				PresentationSkillStatus = achievement.getStatus();
+				PresentationSkill = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
 			default:
 				break;
 			}
 		}
-		/*String beginning = "-";
-		List<Achievement> beginningAchievement = achievementRepository.findByIdUserAndIdCourse(user.getIdUser(), achievement.getIdCourse());
-		if (beginningAchievement.size()>0){
-			
-		}*/
 		
 		achievementData.setBeginning(beginning);
 		achievementData.setLI1(LI1);
@@ -274,6 +293,16 @@ public class AchievementController {
 		achievementData.setBW2(BW2);
 		achievementData.setCE2(CE2);
 		achievementData.setPresentationSkill2(PresentationSkill);
+		achievementData.setBeginningStatus(beginningStatus);
+		achievementData.setLI1Status(LI1Status);
+		achievementData.setLI2Status(LI2Status);
+		achievementData.setInt1Status(Int1Status);
+		achievementData.setInt2Status(Int2Status);
+		achievementData.setBW1Status(BW1Status);
+		achievementData.setCE1Status(CE1Status);
+		achievementData.setBW2Status(BW2Status);
+		achievementData.setCE2Status(CE2Status);
+		achievementData.setPresentationSkill2Status(PresentationSkillStatus);
 		return achievementData;
 	}
 }

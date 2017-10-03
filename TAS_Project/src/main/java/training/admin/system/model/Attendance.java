@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,24 +24,10 @@ public class Attendance {
 	@Column (name="datetime")
 	private String datetime;
 	
-	@Column (name="id_enrollment")
-	private long idEnrollment;
+	@ManyToOne
+	@JoinColumn (name="id_enrollment")
+	private Enrollment enrollment;
 
-	public Attendance(long idAttendance, String status, String datetime, long idEnrollment) {
-		
-		this.idAttendance = idAttendance;
-		this.status = status;
-		this.datetime = datetime;
-		this.idEnrollment = idEnrollment;
-	}
-
-	public long getIdAttendance() {
-		return idAttendance;
-	}
-
-	public void setIdAttendance(long idAttendance) {
-		this.idAttendance = idAttendance;
-	}
 
 	public String getStatus() {
 		return status;
@@ -57,16 +45,12 @@ public class Attendance {
 		this.datetime = datetime;
 	}
 
-	public long getIdEnrollment() {
-		return idEnrollment;
+	public Enrollment getEnrollment() {
+		return enrollment;
 	}
 
-	public void setIdEnrollment(long idEnrollment) {
-		this.idEnrollment = idEnrollment;
+	public void setEnrollment(Enrollment enrollment) {
+		enrollment = enrollment;
 	}
-	
-	
-	
-	
-	
+
 }
