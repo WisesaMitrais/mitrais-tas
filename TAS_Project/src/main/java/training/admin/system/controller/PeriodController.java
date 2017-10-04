@@ -15,8 +15,8 @@ import training.admin.system.model.Office;
 import training.admin.system.model.Training;
 import training.admin.system.repository.TrainingRepository;
 
-@RestController
-@RequestMapping("/training")
+//@RestController
+//@RequestMapping("/training")
 public class PeriodController {
 	
 	@Autowired
@@ -57,4 +57,5 @@ public class PeriodController {
 	public List<Training> findOpenEnrollment (){
 		return trainingRepository.findByOpenEnrollment(true);
 	}
+	
 }

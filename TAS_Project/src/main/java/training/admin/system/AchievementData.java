@@ -6,6 +6,16 @@ public class AchievementData {
 	private String jobFamily;
 	private String grade;
 	private String office;
+	private Long _beginning;
+	private Long _LI1;
+	private Long _LI2;
+	private Long _Int1;
+	private Long _Int2;
+	private Long _BW1;
+	private Long _CE1;
+	private Long _BW2;
+	private Long _CE2;
+	private Long _presentationSkill2;
 	private String beginning;
 	private String LI1;
 	private String LI2;
@@ -175,6 +185,66 @@ public class AchievementData {
 	}
 	public void setPresentationSkill2Status(String presentationSkill2Status) {
 		this.presentationSkill2Status = presentationSkill2Status;
+	}
+	public Long get_LI1() {
+		return _LI1;
+	}
+	public void set_LI1(Long _LI1) {
+		this._LI1 = _LI1;
+	}
+	public Long get_LI2() {
+		return _LI2;
+	}
+	public void set_LI2(Long _LI2) {
+		this._LI2 = _LI2;
+	}
+	public Long get_Int1() {
+		return _Int1;
+	}
+	public void set_Int1(Long _Int1) {
+		this._Int1 = _Int1;
+	}
+	public Long get_Int2() {
+		return _Int2;
+	}
+	public void set_Int2(Long _Int2) {
+		this._Int2 = _Int2;
+	}
+	public Long get_BW1() {
+		return _BW1;
+	}
+	public void set_BW1(Long _BW1) {
+		this._BW1 = _BW1;
+	}
+	public Long get_CE1() {
+		return _CE1;
+	}
+	public void set_CE1(Long _CE1) {
+		this._CE1 = _CE1;
+	}
+	public Long get_BW2() {
+		return _BW2;
+	}
+	public void set_BW2(Long _BW2) {
+		this._BW2 = _BW2;
+	}
+	public Long get_CE2() {
+		return _CE2;
+	}
+	public void set_CE2(Long _CE2) {
+		this._CE2 = _CE2;
+	}
+	public Long get_presentationSkill2() {
+		return _presentationSkill2;
+	}
+	public void set_presentationSkill2(Long _presentationSkill2) {
+		this._presentationSkill2 = _presentationSkill2;
+	}
+	public Long get_beginning() {
+		return _beginning;
+	}
+	public void set_beginning(Long _beginning) {
+		this._beginning = _beginning;
 	}
 	
 	

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import training.admin.system.model.Course;
 import training.admin.system.model.Schedule;
 import training.admin.system.model.Training;
+import training.admin.system.model.User;
 
 @Component
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
@@ -17,6 +18,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	List<Schedule> findByStartDateAfterAndEndDateBefore(Date startDate, Date endDate);
 	List<Schedule> findByEndDateAfterAndTraining(Date today, Training training);
 	List<Schedule> findByTraining(Training training);
+	List<Schedule> findByMainTrainer(User trainer);
+	List<Schedule> findByIdBackupTrainer(Long idTrainer);
 	
 	@Query(value="SELECT COUNT (id_schedule) FROM tb_schedule Where id_course=? AND id_training=?", nativeQuery = true)
 	Integer countSchedule(Long idTraining, Long idCourse);

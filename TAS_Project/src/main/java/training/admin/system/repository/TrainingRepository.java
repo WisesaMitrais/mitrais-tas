@@ -12,6 +12,8 @@ import training.admin.system.model.Training;
 @Component
 public interface TrainingRepository extends JpaRepository<Training, Long>{
 	List<Training> findByOpenEnrollment(Boolean openEnrollment);
+	List<Training> findByBccTraining(Boolean bccTraining);
+	List<Training> findByTrainingName(String name);
 	List<Training> findByActive(Boolean active);
 	
 	@Query(value="SELECT p.id_training AS idTraining, "

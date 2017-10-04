@@ -123,6 +123,16 @@ public class PeriodMenuController {
 			return Boolean.FALSE;
 		}
 	}
+	
+	@RequestMapping (value="/findBcc", method = RequestMethod.GET)
+	public List<PeriodData> findBcc(){
+		List<PeriodData> periodsData = new ArrayList<PeriodData>(); 
+		List<Training> listTraining = trainingRepository.findByBccTraining(true);
+		for (Training training:listTraining) {
+			periodsData.add(convertTrainingToPeriodData(training));
+		}
+		return periodsData;
+	}
 
 	private PeriodData convertTrainingToPeriodData(Training training) {
 		PeriodData periodData = new PeriodData();

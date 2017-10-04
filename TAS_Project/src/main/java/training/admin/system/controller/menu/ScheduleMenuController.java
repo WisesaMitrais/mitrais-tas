@@ -176,6 +176,17 @@ public class ScheduleMenuController {
 		return scheduleDatas;
 	}
 	
+	@GetMapping (value="/findByTrainer/{idTrainer}")
+	public List <ScheduleData> findByTrainer(@PathVariable Long idTrainer){
+		List <ScheduleData> scheduleDatas = new ArrayList<ScheduleData>();
+		User trainer = userRepository.findOne(idTrainer);
+		List <Schedule> schedules = scheduleRepository.findByMainTrainer(trainer);
+		for (Schedule schedule:schedules) {
+			scheduleDatas.add(ConvertSchedulesToScheduleData(schedule, false));
+		}
+		return scheduleDatas;
+	}
+	
 	@GetMapping (value="/count/{idTraining}/{idCourse}")
 	public Integer countShcedule (@PathVariable ("idTraining") Long idTraining,
 									@PathVariable ("idCourse") Long idCourse){

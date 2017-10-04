@@ -3,9 +3,6 @@ package training.admin.system.controller.menu;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.Provider.Service;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,34 +10,44 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.hibernate.validator.internal.util.privilegedactions.NewJaxbContext;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jxl.Workbook;
 import jxl.format.Alignment;
-import jxl.format.BoldStyle;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
 import jxl.write.Label;
-import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import training.admin.system.AchievementData;
+import training.admin.system.EditAchievement;
 import training.admin.system.model.Achievement;
+import training.admin.system.model.Course;
+import training.admin.system.model.Training;
 import training.admin.system.model.User;
 import training.admin.system.repository.AchievementRepository;
+import training.admin.system.repository.CourseRepository;
 import training.admin.system.repository.OfficeRepository;
+import training.admin.system.repository.TrainingRepository;
 import training.admin.system.repository.UserRepository;
 
 @RestController
@@ -53,6 +60,11 @@ public class AchievementController {
 	UserRepository userRepository;
 	@Autowired
 	OfficeRepository officeRepository;
+	@Autowired
+	TrainingRepository trainingRepository;
+	@Autowired
+	CourseRepository courseRepository;
+
 	
 	@RequestMapping(value="/all", method=RequestMethod.GET)
 	public List<Achievement> findAll( ) {
@@ -79,6 +91,124 @@ public class AchievementController {
 		User user = userRepository.findOne(idUser);
 		return convertAchievementToAchievementData(user);
 	}
+	
+	@PostMapping(value="/findByUser/{idUser}/update")
+	public Boolean updateAchievement(@PathVariable Long idUser,
+									@RequestBody EditAchievement editAchievement) throws JsonProcessingException {
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		System.out.println(objectMapper.writeValueAsString(editAchievement));
+		
+		try {
+			User user = userRepository.findOne(idUser);
+			System.out.println(user.getName());
+			List<String> bccCourses = getBccCourse();
+			for (String bccCourse:bccCourses) {
+				String status = "";
+//				System.out.println("======================\nCourse = " + bccCourse);
+				Training training = new Training();
+				switch (bccCourse) {
+				case "Beginning":
+					status = editAchievement.getBeginningStatus();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getBeginning());
+					}
+					break;
+				case "Low Intermediete 1":
+					status =editAchievement.getLI1Status();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getLI1());
+					}
+					break;
+				case "Low Intermediete 2":
+					status = editAchievement.getLI2Status();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getLI2());
+					}
+					break;
+				case "Intermediete 1":
+					status = editAchievement.getInt1Status();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getInt1());
+					}
+					break;
+				case "Intermediete 2":
+					status = editAchievement.getInt2Status();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getInt2());
+					}
+					break;
+				case "Business Writing 1":
+					status = editAchievement.getBW1Status();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getBW1());
+					}
+					break;
+				case "Business Writing 2":
+					status = editAchievement.getBW2Status();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getBW2());
+					}
+					break;
+				case "Communicating Effectively 1":
+					status = editAchievement.getCE1Status();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getCE1());
+					}
+					break;
+				case "Communicating Effectively 2":
+					status = editAchievement.getCE2Status();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getCE2());
+					}
+					break;
+				case "Presentation Skills 2":
+					status = editAchievement.getPresentationSkill2Status();
+					if(status.compareTo("Term")==0) {
+						training = trainingRepository.findOne(editAchievement.getPresentationSkill2());
+					}
+					break;
+					
+				default:
+					break;
+				}
+
+//				System.out.println("Status = " + status);
+//				System.out.println("Training = " + training.getTrainingName());
+				Course course = courseRepository.findByName(bccCourse);
+				List<Achievement> achievements = achievementRepository.findByUserAndCourse(user, course);
+				
+//				System.out.println(objectMapper.writeValueAsString(achievements));
+				
+				if (achievements.size()==0) {
+					Achievement newAchievement = new Achievement();
+					newAchievement.setUser(user);
+					newAchievement.setCourse(course);
+					newAchievement.setStatus(status);
+					if (status.compareTo("Term")==0)
+						newAchievement.setTraining(training);
+					else
+						newAchievement.setTraining(null);
+					achievementRepository.save(newAchievement);
+				} else {
+					Achievement achievement = achievements.get(0);
+					achievement.setStatus(status);
+					if (status.compareTo("Term")==0)
+						achievement.setTraining(training);
+					else
+						achievement.setTraining(null);
+					achievementRepository.save(achievement);
+				}
+			}
+				
+			return Boolean.TRUE;
+		} catch (Exception e) {
+			System.out.println(e);
+			return Boolean.FALSE;
+		}
+		
+	}
+	
 	
 	@GetMapping (value="/download")
 	@ResponseBody
@@ -213,6 +343,17 @@ public class AchievementController {
 		achievementData.setGrade(user.getGrade());
 		achievementData.setOffice(officeRepository.getOne(user.getIdOffice()).getCity());
 		
+		Long _beginning = new Long(0);
+		Long _LI1 = new Long(0);
+		Long _LI2 = new Long(0);
+		Long _Int1 = new Long(0);
+		Long _Int2 = new Long(0);
+		Long _BW1 = new Long(0);
+		Long _BW2 = new Long(0);
+		Long _CE1 = new Long(0);
+		Long _CE2 = new Long(0);
+		Long _PresentationSkill = new Long(0);
+		
 		String beginning = "-";
 		String LI1 = "-";
 		String LI2 = "-";
@@ -241,48 +382,68 @@ public class AchievementController {
 			switch (achievement.getCourse().getName()) {
 			case "Beginning":
 				beginningStatus = achievement.getStatus();
-				beginning = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				beginning = beginningStatus.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				_beginning = beginningStatus.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _beginning;
 				break;
 			case "Low Intermediete 1":
 				LI1Status = achievement.getStatus();
-				LI1 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				LI1 = LI1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				_LI1 = LI1Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _LI1;
 				break;
 			case "Low Intermediete 2":
 				LI2Status = achievement.getStatus();
-				LI2 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				LI2 = LI2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				_LI2 = LI2Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _LI2;
 				break;
 			case "Intermediete 1":
 				Int1Status = achievement.getStatus();
-				Int1 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				Int1 = Int1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				_Int1 = Int1Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _Int1;
 				break;
 			case "Intermediete 2":
 				Int2Status = achievement.getStatus();
-				Int2 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				Int2 = Int2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				_Int2 = Int2Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _Int2;
 				break;
 			case "Business Writing 1":
 				BW1Status = achievement.getStatus();
-				BW1 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				BW1 = BW1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";				
+				_BW1 = BW1Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _BW1;
 				break;
 			case "Business Writing 2":
 				BW2Status = achievement.getStatus();
-				BW2 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				BW2 = BW2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				_BW2 = BW2Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _BW2;
 				break;
 			case "Communicating Effectively 1":
 				CE1Status = achievement.getStatus();
-				CE1 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				CE1 = CE1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				_CE1 = CE1Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _CE1;
 				break;
 			case "Communicating Effectively 2":
 				CE2Status = achievement.getStatus();
-				CE2 = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				CE2 = CE2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				_CE2 = CE2Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _CE2;
 				break;
 			case "Presentation Skills 2":
 				PresentationSkillStatus = achievement.getStatus();
-				PresentationSkill = achievement.getStatus().compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : achievement.getStatus();
+				PresentationSkill = PresentationSkillStatus.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				_PresentationSkill = PresentationSkillStatus.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _PresentationSkill;
+				break;
 			default:
 				break;
 			}
 		}
-		
+		achievementData.set_beginning(_beginning);
+		achievementData.set_LI1(_LI1);
+		achievementData.set_LI2(_LI2);
+		achievementData.set_Int1(_Int1);
+		achievementData.set_Int2(_Int2);
+		achievementData.set_BW1(_BW1);
+		achievementData.set_CE1(_CE1);
+		achievementData.set_BW2(_BW2);
+		achievementData.set_CE2(_CE2);
+		achievementData.set_presentationSkill2(_PresentationSkill);
 		achievementData.setBeginning(beginning);
 		achievementData.setLI1(LI1);
 		achievementData.setLI2(LI2);
@@ -304,5 +465,21 @@ public class AchievementController {
 		achievementData.setCE2Status(CE2Status);
 		achievementData.setPresentationSkill2Status(PresentationSkillStatus);
 		return achievementData;
+	}
+	
+	public List <String> getBccCourse() {
+		List<String> bccCourse= new ArrayList<String>();
+		bccCourse.add("Beginning");
+		bccCourse.add("Low Intermediete 1");
+		bccCourse.add("Low Intermediete 2");
+		bccCourse.add("Intermediete 1");
+		bccCourse.add("Intermediete 2");
+		bccCourse.add("Business Writing 1");
+		bccCourse.add("Communicating Effectively 1");
+		bccCourse.add("Business Writing 2");
+		bccCourse.add("Communicating Effectively 2");
+		bccCourse.add("Presentation Skills 2");
+		
+		return bccCourse;
 	}
 }
