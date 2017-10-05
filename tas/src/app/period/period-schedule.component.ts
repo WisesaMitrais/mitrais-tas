@@ -35,6 +35,8 @@ export class PeriodScheduleComponent {
   bccTrainingChoosed;
   startTrainingChoosed;
   endTrainingChoosed;
+  startTrainingDate: string;
+  endTrainingDate: string;
   sub;
   displayedColumns = ['name', 'mainTrainer', 'backupTrainer', 'classroom', 'scheduleType', 'day', 'startTime', 'endTime', 'capacity', 'allParticipantList', 'action'];
   schedule: SchedulePeriod[];
@@ -58,6 +60,8 @@ export class PeriodScheduleComponent {
         this.bccTrainingChoosed = params['bcc2'];
         this.startTrainingChoosed = params['start2'];
         this.endTrainingChoosed = params['end2'];
+        this.startTrainingDate = params['start3'];
+        this.endTrainingDate = params['end3'];
     });
 
     this.periodService.getDataSchedule(this.idTrainingChoosed).subscribe(((schedule) => {
@@ -87,6 +91,8 @@ export class PeriodScheduleComponent {
     dialogRef.componentInstance.bccTrainingSelected = this.bccTrainingChoosed;
     dialogRef.componentInstance.startTrainingSelected = this.startTrainingChoosed;
     dialogRef.componentInstance.endTrainingSelected = this.endTrainingChoosed;
+    dialogRef.componentInstance.startTraining2 = this.startTrainingDate;
+    dialogRef.componentInstance.endTraining2 = this.endTrainingDate;
   }
 
   openDetailsDialog(schedule: SchedulePeriod){
@@ -153,6 +159,7 @@ export class ExampleDatabase {
         backupTrainer: this.dataS[i].backupTrainer,
         room: this.dataS[i].room,
         day: this.dataS[i].day,
+        hour: this.dataS[i].hour,
         startTime: this.dataS[i].startTime,
         endTime: this.dataS[i].endTime,
         capacity: this.dataS[i].capacity,

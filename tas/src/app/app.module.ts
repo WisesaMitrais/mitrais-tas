@@ -33,12 +33,24 @@ import { PeriodEnrollParticipantShowComponent } from './period/period-schedule-e
 import { PeriodScheduleEditComponent } from './period/period-schedule-edit.component';
 import { EditPeriodComponent } from './period/period-edit.component';
 import { UserComponent } from './user/user.component';
+import { AddUserComponent } from './user/user-add.component';
+import { EditUserComponent } from './user/user-edit.component';
+import { EnrollementComponent } from './enrollment/enrollment.component';
+import { AchievementComponent } from './achievement/achievement.component';
+import { AchievementDetailComponent } from './achievement/achievement-detail.component';
+import { AchievementRepeatComponent } from './achievement/achievement-repeat.component';
+import { TrainingMaintenanceComponent } from './training-maintenance/training-maintenance.component';
+import { TrainingMaintenanceAssessmentComponent } from './training-maintenance/training-maintenance-assessment.component';
+import { TrainingMaintenanceAttendanceComponent } from './training-maintenance/training-maintenance-attendance.component';
 
 import { AlertService } from './services/alert.service';
 import { LoginService } from './services/login.service';
 import { DashboardService } from './services/dashboard.service';
 import { PeriodService } from './services/period.service';
 import { UserService } from './services/user.service';
+import { EnrollmentService } from './services/enrollment.service';
+import { AchievementService } from './services/achievement.service';
+import { TrainingMaintenanceService } from './services/training-maintenance.service';
 import { UrlService } from './services/url.service';
 import { NotificationService } from './services/notification.service';
 
@@ -71,7 +83,16 @@ export class MaterialModule {}
     PeriodEnrollParticipantShowComponent,
     PeriodScheduleEditComponent,
     EditPeriodComponent,
-    UserComponent
+    UserComponent,
+    AddUserComponent,
+    EditUserComponent,
+    EnrollementComponent,
+    AchievementComponent,
+    AchievementDetailComponent,
+    AchievementRepeatComponent,
+    TrainingMaintenanceComponent,
+    TrainingMaintenanceAssessmentComponent,
+    TrainingMaintenanceAttendanceComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +114,10 @@ export class MaterialModule {}
     NotificationService,
     DashboardService,
     PeriodService,
-    UserService
+    UserService,
+    EnrollmentService,
+    AchievementService,
+    TrainingMaintenanceService
   ],
   bootstrap: [
     AppComponent

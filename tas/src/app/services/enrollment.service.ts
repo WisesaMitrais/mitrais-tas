@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { CookieService } from 'angular2-cookie/core';
 
-import { User } from './user';
-import { AddUser } from './user-add';
-import { Office } from './office';
-
+import { Enrollment } from './enrollment';
 import { Observable } from 'rxjs/Rx';
 import { UrlService } from '../services/url.service';
 
@@ -14,7 +12,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/throw';
 
 @Injectable() 
- export class UserService {
+ export class EnrollmentService {
      url: string;
      headers;
 
@@ -23,29 +21,8 @@ import 'rxjs/add/observable/throw';
             this.headers = this.urlService.getHeaderSecurity();
         }
 
-    public getDataUsers(): Observable<User[]>{
-        this.url = this.urlService.getAllUserData();
-        return this.http.get(this.url, {headers: this.headers})
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    public createNewUser(userData: AddUser): Observable<boolean>{
-        this.url = this.urlService.createNewUser();
-        return this.http.post(this.url, userData, {headers: this.headers})
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    public updateUser(userData: AddUser, idUser: string): Observable<boolean>{
-        this.url = this.urlService.updateUser(idUser);
-        return this.http.post(this.url, userData, {headers: this.headers})
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    public getOfficeData(): Observable<Office[]>{
-        this.url = this.urlService.getOfficeData();
+    public getEnrollmentData(idUser: number): Observable<Enrollment[]>{
+        this.url = this.urlService.getEnrollmentData(idUser);
         return this.http.get(this.url, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);

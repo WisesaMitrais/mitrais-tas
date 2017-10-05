@@ -3,7 +3,7 @@ import { Headers } from '@angular/http';
 
 @Injectable() 
 export class UrlService {
-    baseUrl: string = 'http://172.19.14.152:8080/';
+    baseUrl: string = 'http://mtpc659:8080/';
 
     public getHeaderSecurity(): Headers{
         let headers = new Headers();
@@ -74,6 +74,42 @@ export class UrlService {
     public getAllUserData(){
         return this.baseUrl+'user/all';
     }
+    public createNewUser(){
+        return this.baseUrl+'user/create';
+    }
+    public updateUser(idUser: string){
+        return this.baseUrl+'user/'+idUser+'/update';
+    }
+
+
+    public getEnrollmentData(idUser: number){
+        return this.baseUrl+'enrollment/findByUser/'+idUser;
+    }
+
+
+    public getAllAchievementData(){
+        return this.baseUrl+'achievement/findAllUser';
+    }
+    public getSingleAchievementData(idUser: string){
+        return this.baseUrl+'achievement/findByUser/'+idUser;
+    }
+    public updateAchievementData(idUser: number){
+        return this.baseUrl+'achievement/findByUser/'+idUser+'/update';
+    }
+    public getRepeatHistory(iduser: number){
+        return this.baseUrl+'schedule/findRepeatByUser/'+iduser;
+    }
+
+
+    public getTrainingByTrainerData(idTrainer: number){
+        return this.baseUrl+'schedule/findByTrainer/'+idTrainer;
+    }
+    public getAssessmentData(idSchedule: string){
+        return this.baseUrl+'assessment/findBySchedule/'+idSchedule;
+    }
+    public updateAssessmentData(idSchedule: string){
+        return this.baseUrl+'assessment/findBySchedule/'+idSchedule+'/update';
+    }
 
 
     public getTrainerData(){
@@ -87,5 +123,11 @@ export class UrlService {
     }
     public getBCCCourseData(){
         return this.baseUrl+'course/bcc';
+    }
+    public getOfficeData(){
+        return this.baseUrl+'office/all';
+    }
+    public getTrainingBCC(){
+        return this.baseUrl+'/period/findBcc';
     }
 }

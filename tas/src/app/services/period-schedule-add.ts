@@ -9,7 +9,8 @@ export class AddNewSchedule {
        public endDate: Date,
        public capacity: string,
        public periodic: boolean,
-       public periodicTime: string,
+       public day: number,
+       public hour: string,
        public createdBy: string,
        public updatedBy: string
     ) {  } 

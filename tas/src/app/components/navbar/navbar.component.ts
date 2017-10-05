@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
     location: Location;
     private toggleButton: any;
     private sidebarVisible: boolean;
+    userRole;
 
     constructor(location: Location,  
         private element: ElementRef, 
@@ -49,6 +50,8 @@ export class NavbarComponent implements OnInit {
     }
 
     toLogin(){
+        this.userRole = JSON.parse(this.cookieService.get('currentUser'));
+        this.userRole.roleActive = 'none';
         this.cookieService.remove('currentUser');
         this.router.navigate(['/login']);
     }

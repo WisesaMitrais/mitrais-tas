@@ -6,6 +6,7 @@ export class SchedulePeriod {
        public backupTrainer: string,
        public room: string,
        public day: string,
+       public hour: string,
        public startTime: string,
        public endTime: string,
        public capacity: string,

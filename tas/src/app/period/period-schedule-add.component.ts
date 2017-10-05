@@ -21,14 +21,19 @@ export class PeriodScheduleAddComponent implements OnInit{
     bccTrainingSelected;
     startTrainingSelected;
     endTrainingSelected;
+    startTraining2: string;
+    endTraining2: string;
     courseData: Course[];
     trainerData: Trainer[];
     roomData: Room[];
+    dayData = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     newSchedule: any = {};
     course: Course;
     trainer1: Trainer;
     trainer2: Trainer;
     room: Room;
+    day: string;
+    dayNumber: number;
     periodic: string;
     isPeriodic: boolean;
     finalData;
@@ -59,8 +64,13 @@ export class PeriodScheduleAddComponent implements OnInit{
         this.periodService.getRoomData().subscribe(((roomData) => {
             this.roomData = roomData;
         }));
-        this.newSchedule.startDate = new Date();
-        this.newSchedule.endDate = new Date();
+        if(this.bccTrainingSelected === 'true'){
+            this.newSchedule.startDate = new Date(parseInt(this.startTraining2));
+            this.newSchedule.endDate = new Date(parseInt(this.endTraining2));
+        }else{
+            this.newSchedule.startDate = new Date();
+            this.newSchedule.endDate = new Date();
+        }
         if (this.cookieService.get('currentUser')){
             this.currentUserModel = JSON.parse(this.cookieService.get('currentUser'));
         }
@@ -70,7 +80,33 @@ export class PeriodScheduleAddComponent implements OnInit{
         if(this.periodic === 'periodic'){
             this.isPeriodic = true;
         }else{
-            this.isPeriodic = false; //HARUSNYA START DATE DAN END DATE MENJADI STATIS !!!
+            this.isPeriodic = false;
+        }
+
+        switch (this.day) {
+            case 'Monday':
+                this.dayNumber = 1;
+                break;
+            case 'Tuesday':
+                this.dayNumber = 2;
+                break;
+            case 'Wednesday':
+                this.dayNumber = 3;
+                break;
+            case 'Thursday':
+                this.dayNumber = 4;
+                break;
+            case 'Friday':
+                this.dayNumber = 5;
+                break;
+            case 'Saturday':
+                this.dayNumber = 6;
+                break;
+            case 'Sunday':
+                this.dayNumber = 7;
+                break;  
+            default:
+                break;
         }
         this.finalData = new AddNewSchedule(this.course.idCourse,
                                        this.room.idRoom,
@@ -81,7 +117,8 @@ export class PeriodScheduleAddComponent implements OnInit{
                                        this.newSchedule.endDate,
                                        this.newSchedule.capacity,
                                        this.isPeriodic,
-                                       this.newSchedule.daytime,
+                                       this.dayNumber,
+                                       this.newSchedule.hour,
                                        this.currentUserModel.id,
                                        this.currentUserModel.id,);
         console.log(this.finalData);

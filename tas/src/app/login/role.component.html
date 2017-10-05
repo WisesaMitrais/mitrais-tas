@@ -1,7 +1,11 @@
 <md-toolbar style="background-color:#6100BF; color:#FEFEFE">Choose Your Role</md-toolbar>
 <br>
 <md-button-toggle-group #group="mdButtonToggleGroup">
-    <md-button-toggle *ngIf="adminRole === true" value="admin" style="width:113px; text-align:center" (click)="toDashboard('admin')">
+    <md-button-toggle *ngIf="adminRole === true && active === 1" value="admin" style="width:113px; text-align:center; background-color:#6100BF" (click)="toDashboard('admin')">
+      <md-icon style="color:#FEFEFE">content_paste</md-icon>
+      <h4 style="color:#FEFEFE">Admin</h4>
+    </md-button-toggle>
+    <md-button-toggle *ngIf="adminRole === true && active != 1" value="admin" style="width:113px; text-align:center" (click)="toDashboard('admin')">
       <md-icon style="color:#444444">content_paste</md-icon>
       <h4 style="color:#444444">Admin</h4>
     </md-button-toggle>
@@ -11,7 +15,11 @@
     </md-button-toggle>
 
 
-    <md-button-toggle *ngIf="managerRole === true" value="manager" style="width:112px; text-align:center" (click)="toDashboard('manager')">
+    <md-button-toggle *ngIf="managerRole === true && active === 2" value="manager" style="width:112px; text-align:center; background-color:#6100BF" (click)="toDashboard('manager')">
+        <md-icon style="color:#FEFEFE">gavel</md-icon>
+        <h4 style="color:#FEFEFE">Manager</h4>
+    </md-button-toggle>
+    <md-button-toggle *ngIf="managerRole === true && active != 2" value="manager" style="width:112px; text-align:center" (click)="toDashboard('manager')">
       <md-icon style="color:#444444">gavel</md-icon>
       <h4 style="color:#444444">Manager</h4>
     </md-button-toggle>
@@ -21,7 +29,11 @@
     </md-button-toggle>
 
 
-    <md-button-toggle *ngIf="trainerRole === true" value="trainer" style="width:113px; text-align:center" (click)="toDashboard('trainer')">
+    <md-button-toggle *ngIf="trainerRole === true && active === 3" value="trainer" style="width:113px; text-align:center; background-color:#6100BF" (click)="toDashboard('trainer')">
+        <md-icon style="color:#FEFEFE">border_color</md-icon>
+        <h4 style="color:#FEFEFE">Trainer</h4>
+    </md-button-toggle>
+    <md-button-toggle *ngIf="trainerRole === true && active != 3" value="trainer" style="width:113px; text-align:center" (click)="toDashboard('trainer')">
       <md-icon style="color:#444444">border_color</md-icon>
       <h4 style="color:#444444">Trainer</h4>
     </md-button-toggle>
@@ -31,7 +43,11 @@
     </md-button-toggle>
 
 
-    <md-button-toggle *ngIf="staffRole === true" value="staff" style="width:112px; text-align:center" (click)="toDashboard('staff')">
+    <md-button-toggle *ngIf="staffRole === true  && active === 4" value="staff" style="width:112px; text-align:center; background-color:#6100BF" (click)="toDashboard('staff')">
+        <md-icon style="color:#FEFEFE">work</md-icon>
+        <h4 style="color:#FEFEFE">Staff</h4>
+      </md-button-toggle>
+    <md-button-toggle *ngIf="staffRole === true  && active != 4" value="staff" style="width:112px; text-align:center" (click)="toDashboard('staff')">
       <md-icon style="color:#444444">work</md-icon>
       <h4 style="color:#444444">Staff</h4>
     </md-button-toggle>

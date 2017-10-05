@@ -41,6 +41,7 @@ export class EditPeriodComponent implements OnInit{
     }
 
     updatePeriod(){
+        console.log(this.periodSelected.idTraining);
         this.finalData = new AddPeriod(this.updatePeriodData.trainingName,
                                        this.updatePeriodData.startDate,
                                        this.updatePeriodData.endDate,

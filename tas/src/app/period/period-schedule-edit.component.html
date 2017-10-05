@@ -18,12 +18,12 @@
     </form>
     <form style="margin-bottom:10px">
         <md-select placeholder="Trainer" style="width:200px; margin-right:50px" [(ngModel)]="trainer1"  [ngModelOptions]="{standalone: true}">
-            <md-option *ngFor="let t1 of trainerData" [value]="t1">
+            <md-option *ngFor="let t1 of trainerData" [value]="t1.idTrainer">
                 {{ t1.name }}
             </md-option>
         </md-select>
         <md-select placeholder="Backup Trainer" style="width:200px" [(ngModel)]="trainer2"  [ngModelOptions]="{standalone: true}">
-            <md-option *ngFor="let t2 of trainerData" [value]="t2">
+            <md-option *ngFor="let t2 of trainerData" [value]="t2.idTrainer">
                 {{ t2.name }}
             </md-option>
         </md-select>
@@ -36,23 +36,40 @@
         </md-select>
     </form>
     <form>
-        <md-form-field style="margin-right:50px">
+        <md-form-field *ngIf="bccTrainingSelected === 'false'" style="margin-right:50px">
             <h5>Start Time :</h5>
             <input mdInput [mdDatepicker]="start" [(ngModel)]="updateScheduleData.startDate" #startDate = "ngModel" [ngModelOptions]="{standalone: true}">
             <md-datepicker-toggle mdSuffix [for]="start"></md-datepicker-toggle>
             <md-datepicker #start></md-datepicker>
         </md-form-field>
-        <md-form-field>
+        <md-form-field  *ngIf="bccTrainingSelected === 'false'">
             <h5>End Time :</h5>
             <input mdInput [mdDatepicker]="end" [(ngModel)]="updateScheduleData.endDate" #startDate = "ngModel" [ngModelOptions]="{standalone: true}">
             <md-datepicker-toggle mdSuffix [for]="end"></md-datepicker-toggle>
             <md-datepicker #end></md-datepicker>
         </md-form-field>
+        <md-form-field *ngIf="bccTrainingSelected === 'true'" style="margin-right:50px">
+            <h5>Start Time :</h5>
+            <input mdInput [mdDatepicker]="start" [(ngModel)]="updateScheduleData.startDate" #startDate = "ngModel" [ngModelOptions]="{standalone: true}" disabled>
+            <md-datepicker-toggle mdSuffix [for]="start" disabled></md-datepicker-toggle>
+            <md-datepicker #start disabled></md-datepicker>
+        </md-form-field>
+        <md-form-field *ngIf="bccTrainingSelected === 'true'">
+            <h5>End Time :</h5>
+            <input mdInput [mdDatepicker]="end" [(ngModel)]="updateScheduleData.endDate" #startDate = "ngModel" [ngModelOptions]="{standalone: true}" disabled>
+            <md-datepicker-toggle mdSuffix [for]="end" disabled></md-datepicker-toggle>
+            <md-datepicker #end disabled></md-datepicker>
+        </md-form-field>
     </form>
     <form>
-        <md-form-field style="width:330px; margin-right:15px">
-            <h5>Day/Time :</h5>
-            <input mdInput type="text" [(ngModel)]="updateScheduleData.daytime" #daytime = "ngModel" [ngModelOptions]="{standalone: true}">
+        <md-select placeholder="Day" style="width:200px; margin-right:15px" [(ngModel)]="day"  [ngModelOptions]="{standalone: true}">
+            <md-option *ngFor="let d of dayData" [value]="d">
+                {{ d }}
+            </md-option>
+        </md-select>
+        <md-form-field style="width:115px; margin-right:15px">
+            <h5>Hour :</h5>
+            <input mdInput type="text" [(ngModel)]="updateScheduleData.hour" #hour = "ngModel" [ngModelOptions]="{standalone: true}">
         </md-form-field>
         <md-form-field style="width:100px">
             <h5>Capacity :</h5>

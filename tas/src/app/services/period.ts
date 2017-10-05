@@ -9,8 +9,8 @@ export class Period {
        public updatedBy: string,
        public courses: number, 
        public bccTraining: boolean,
-       public _startDate: Date,
-       public _endDate: Date,
+       public _startDate: string,
+       public _endDate: string,
        public openEnrollment: boolean
     ) {  } 
  }

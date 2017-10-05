@@ -69,7 +69,7 @@ export class PeriodComponent {
 
   toScheduleList(period: Period){
     //window.location.reload();
-    this.router.navigate(['home/period/schedule-list'],  { queryParams: { id2: period.idTraining, name2: period.name, bcc2: period.bccTraining, start2: period.startDate, end2: period.endDate } });
+    this.router.navigate(['home/period/schedule-list'],  { queryParams: { id2: period.idTraining, name2: period.name, bcc2: period.bccTraining, start2: period.startDate, end2: period.endDate, start3: period._startDate, end3: period._endDate } });
   }
 
   deletePeriod(idTraining: string){

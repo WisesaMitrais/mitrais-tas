@@ -4,7 +4,7 @@
     </md-sidenav>
     <md-card style="background-color:#6100BF; color:#FEFEFE; height:50px; padding:0; margin:0; border-radius:0">
         <div class="navbar-left">
-            <button md-button (click)="sidenav.open()" style="height:50px; background-color:transparent; border:0"><i class="material-icons">menu</i></button>
+            <button md-button on-mouseover="sidenav.open()" style="height:50px; background-color:transparent; border:0"><i class="material-icons">menu</i></button>
         </div>
         <div class="navbar-header">
             <a class="navbar-brand" href="#" style="color:#FEFEFE">{{getTitle()}}</a>

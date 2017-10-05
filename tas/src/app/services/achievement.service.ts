@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { CookieService } from 'angular2-cookie/core';
 
-import { User } from './user';
-import { AddUser } from './user-add';
-import { Office } from './office';
-
+import { Achievement } from './achievement';
+import { UpdateAchievementData } from './achievement-update';
+import { AchievementRepeatHistory } from './achievement-repeat';
+import { Period } from './period';
 import { Observable } from 'rxjs/Rx';
 import { UrlService } from '../services/url.service';
 
@@ -14,7 +15,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/throw';
 
 @Injectable() 
- export class UserService {
+ export class AchievementService {
      url: string;
      headers;
 
@@ -23,29 +24,36 @@ import 'rxjs/add/observable/throw';
             this.headers = this.urlService.getHeaderSecurity();
         }
 
-    public getDataUsers(): Observable<User[]>{
-        this.url = this.urlService.getAllUserData();
+    public getAllAchievementData(): Observable<Achievement[]>{
+        this.url = this.urlService.getAllAchievementData();
+        return this.http.get(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    public getSingleAchievementData(idUser: string): Observable<Achievement>{
+        this.url = this.urlService.getSingleAchievementData(idUser);
         return this.http.get(this.url, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    public createNewUser(userData: AddUser): Observable<boolean>{
-        this.url = this.urlService.createNewUser();
-        return this.http.post(this.url, userData, {headers: this.headers})
+    public getTrainingBCCData(): Observable<Period[]>{
+        this.url = this.urlService.getTrainingBCC();
+        return this.http.get(this.url, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    public updateUser(userData: AddUser, idUser: string): Observable<boolean>{
-        this.url = this.urlService.updateUser(idUser);
-        return this.http.post(this.url, userData, {headers: this.headers})
+    public postUpdateData(achievementData: UpdateAchievementData, idUser: number): Observable<boolean>{
+        this.url = this.urlService.updateAchievementData(idUser);
+        return this.http.post(this.url, achievementData, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    public getOfficeData(): Observable<Office[]>{
-        this.url = this.urlService.getOfficeData();
+    public getRepeatHistoryData(idUser: number): Observable<AchievementRepeatHistory[]>{
+        this.url = this.urlService.getRepeatHistory(idUser);
         return this.http.get(this.url, {headers: this.headers})
             .map(this.extractData)
             .catch(this.handleError);

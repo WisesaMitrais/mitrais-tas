@@ -1,0 +1,54 @@
+<md-toolbar style="background-color:#6100BF; color:#FEFEFE">Create New User</md-toolbar>
+<div style="margin-left:10px">
+    <form>
+        <md-form-field style="width:300px; margin-right:20px">
+            <h5>Full Name :</h5>
+            <input mdInput type="text" [(ngModel)]="newUser.fullName" #fullName = "ngModel" [ngModelOptions]="{standalone: true}">
+        </md-form-field>
+        <md-form-field style="width:250px;">
+            <h5>Email :</h5>
+            <input mdInput type="text" [(ngModel)]="newUser.email" #email = "ngModel" [ngModelOptions]="{standalone: true}">
+        </md-form-field>
+    </form>
+    <form>
+        <md-form-field style="width:175px; margin-right:20px">
+            <h5>Username :</h5>
+            <input mdInput type="text" [(ngModel)]="newUser.username" #username = "ngModel" [ngModelOptions]="{standalone: true}">
+        </md-form-field>
+        <md-form-field style="width:175px;  margin-right:20px">
+            <h5>Password :</h5>
+            <input mdInput type="password" [(ngModel)]="newUser.password" #password = "ngModel" [ngModelOptions]="{standalone: true}">
+        </md-form-field>
+        <md-form-field style="width:175px;">
+            <h5>Repeat Password :</h5>
+            <input mdInput type="password" [(ngModel)]="newUser.repeatPassword" #repeatPassword = "ngModel" [ngModelOptions]="{standalone: true}">
+        </md-form-field>
+    </form>
+    <form>
+        <md-form-field style="width:200px; margin-right:20px">
+            <h5>Job Family & Stream :</h5>
+            <input mdInput type="text" [(ngModel)]="newUser.jobFamilyStream" #jobFamilyStream = "ngModel" [ngModelOptions]="{standalone: true}">
+        </md-form-field>
+        <md-form-field style="width:100px; margin-right:20px">
+            <h5>Grade :</h5>
+            <input mdInput type="text" [(ngModel)]="newUser.grade" #grade = "ngModel" [ngModelOptions]="{standalone: true}">
+        </md-form-field>
+        <md-select placeholder="Office" style="width:200px; padding-top:40px" [(ngModel)]="office"  [ngModelOptions]="{standalone: true}">
+            <md-option *ngFor="let o of officeData" [value]="o">
+                {{ o.name }}
+            </md-option>
+        </md-select>
+    </form>
+    <form>
+        <h5>Role(s) :</h5>
+        <md-checkbox style="margin-right:20px" [(ngModel)]="newUser.isAdmin" #isAdmin = "ngModel" [ngModelOptions]="{standalone: true}">Admin</md-checkbox>
+        <md-checkbox style="margin-right:20px" [(ngModel)]="newUser.isManager" #isManager = "ngModel" [ngModelOptions]="{standalone: true}">Manager</md-checkbox>
+        <md-checkbox style="margin-right:20px" [(ngModel)]="newUser.isTrainer" #isTrainer = "ngModel" [ngModelOptions]="{standalone: true}">Trainer</md-checkbox>
+        <md-checkbox [(ngModel)]="newUser.isStaff" #isStaff = "ngModel" [ngModelOptions]="{standalone: true}">Staff</md-checkbox>
+    </form>
+</div>
+<br><br>
+<form>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="createNewUser()"><md-icon style="padding-right:50px">check</md-icon>Save</button>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="closeDialog()"><md-icon style="padding-right:50px">close</md-icon>Cancel</button>
+</form>

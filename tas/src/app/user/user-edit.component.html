@@ -1,0 +1,27 @@
+<md-toolbar style="background-color:#6100BF; color:#FEFEFE">Edit User</md-toolbar>
+<md-list style="margin-bottom:35px">
+    <md-list-item style="margin-bottom:-15px"><div style="width:120px"><b>Name</b></div><b> :&ensp;</b>{{userSelected.name}}</md-list-item>
+    <md-list-item style="margin-bottom:-10px"><div style="width:120px"><b>Email</b></div><b> :&ensp;</b>{{userSelected.email}}</md-list-item>
+    <md-list-item><div style="width:120px"><b>Job Family & Stream / Grade</b></div><b> :&ensp;</b>{{userSelected.jobFamilyStream}} / {{userSelected.grade}}</md-list-item>
+</md-list>
+<div style="margin-left:20px">
+    <form style="margin-bottom:5px">
+        <h5>Status :</h5>
+        <md-radio-group [(ngModel)]="active" [ngModelOptions]="{standalone: true}">
+            <md-radio-button value="active" style="margin-right:10px">Active</md-radio-button>
+            <md-radio-button value="notActive">Not Active</md-radio-button>
+        </md-radio-group>
+    </form>
+    <form>
+        <h5>Role(s) :</h5>
+        <md-checkbox style="margin-right:20px" [(ngModel)]="userData.isAdmin" #isAdmin = "ngModel" [ngModelOptions]="{standalone: true}">Admin</md-checkbox>
+        <md-checkbox style="margin-right:20px" [(ngModel)]="userData.isManager" #isManager = "ngModel" [ngModelOptions]="{standalone: true}">Manager</md-checkbox>
+        <md-checkbox style="margin-right:20px" [(ngModel)]="userData.isTrainer" #isTrainer = "ngModel" [ngModelOptions]="{standalone: true}">Trainer</md-checkbox>
+        <md-checkbox [(ngModel)]="userData.isStaff" #isStaff = "ngModel" [ngModelOptions]="{standalone: true}">Staff</md-checkbox>
+    </form>
+</div>
+<br><br>
+<form>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="updateUser()"><md-icon style="padding-right:50px">check</md-icon>Save</button>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="closeDialog()"><md-icon style="padding-right:50px">close</md-icon>Cancel</button>
+</form>

@@ -1,0 +1,92 @@
+<div class="main-content" style="margin:0">
+    <md-card style="padding:0; margin-left:20px; margin-right:20px">
+        <md-card-header style="background-color:#6100BF;padding-top:10px; padding-left:20px; height:65px">
+            <div md-card-avatar style="color:#FEFEFE; padding-top:15px"><md-icon>dvr</md-icon></div>
+            <md-card-title style="color:#FEFEFE; padding-top:15px">ACHIEVEMENT MAINTENANCE</md-card-title>
+            <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'" style="position:absolute; right:0; margin-right:20px; margin-top:0; padding:0">
+                <md-input-container floatPlaceholder="never" style="color:#FEFEFE">
+                    <input mdInput #filter placeholder="search user ...">
+                </md-input-container>
+            </div>
+        </md-card-header>
+        <md-card-content>
+           <md-table #table [dataSource]="dataSource" mdSort style="background-color:#F2F2F2">
+                <ng-container mdColumnDef="employeeName">
+                    <md-header-cell *mdHeaderCellDef md-sort-header><b> Employee Name </b></md-header-cell>
+                    <md-cell *mdCellDef="let row"> {{row.employeeName}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="jobFamily">
+                    <md-header-cell *mdHeaderCellDef md-sort-header><b> Job Family </b></md-header-cell>
+                    <md-cell *mdCellDef="let row"> {{row.jobFamily}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="grade">
+                    <md-header-cell *mdHeaderCellDef md-sort-header><b> Grade </b></md-header-cell>
+                    <md-cell *mdCellDef="let row"> {{row.grade}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="office">
+                    <md-header-cell *mdHeaderCellDef md-sort-header><b> Office </b></md-header-cell>
+                    <md-cell *mdCellDef="let row"> {{row.office}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="b">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> B </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.beginning}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="li1">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> LI 1 </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.li1}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="li2">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> LI 2 </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.li2}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="int1">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> INT 1 </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.int1}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="int2">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> INT 2 </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.int2}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="bw1">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> BW 1 </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.bw1}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="ce1">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> CE 1 </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.ce1}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="bw2">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> BW 2 </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.bw2}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="ce2">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> CE 2 </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.ce2}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="ps2">
+                    <md-header-cell *mdHeaderCellDef style="background-color:#E9E9E9" md-sort-header><b> PS 2 </b></md-header-cell>
+                    <md-cell *mdCellDef="let row" style="background-color:#E9E9E9"> {{row.presentationSkill2}} </md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="action">
+                    <md-header-cell *mdHeaderCellDef><b> Action </b></md-header-cell>
+                    <md-cell *mdCellDef="let row">
+                        <button md-button [mdMenuTriggerFor]="menu"><md-icon>more_horiz</md-icon></button>
+                        <md-menu #menu="mdMenu">
+                            <button md-menu-item (click)="openDetailDialog(row)">Detail</button>
+                            <button md-menu-item (click)="openRepeatHistoryDialog(row)">Repeat History</button>
+                        </md-menu>
+                    </md-cell>
+                </ng-container>
+                <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+                <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+            </md-table>
+            <md-paginator #paginator
+                            [length]="0"
+                            [pageIndex]="0"
+                            [pageSize]="0"
+                            [pageSizeOptions]="[10, 25, 50, 100]">
+            </md-paginator>
+            <button md-button style="margin-left:30px; margin-bottom:10px; width:160px; background-color:#6100BF; color:#FEFEFE" (click)="ExportToExcel()"><md-icon style="margin-right:10px">get_app</md-icon>Export to Excel</button>
+        </md-card-content>
+    </md-card>
+</div>

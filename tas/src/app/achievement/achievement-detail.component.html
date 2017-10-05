@@ -1,0 +1,74 @@
+<md-toolbar style="background-color:#6100BF; color:#FEFEFE; margin-bottom:5px">Achievement Details</md-toolbar>
+<ul style="margin-bottom:370px; list-style-type: none; padding:0">
+    <li style="float: left; margin-right:50px">
+        <form>
+            <md-list>
+                <md-radio-group [(ngModel)]="course" [ngModelOptions]="{standalone: true}" (change)="statusCheck()"> 
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="be">Beginning</md-radio-button>
+                    </md-list-item>
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="li1">Low Intermediate 1</md-radio-button>
+                    </md-list-item>
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="li2">Low Intermediate 2</md-radio-button>
+                    </md-list-item>
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="int1">Intermediate 1</md-radio-button>
+                    </md-list-item>
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="int2">Intermediate 2</md-radio-button>
+                    </md-list-item>
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="bw1">Business Writing 1</md-radio-button>
+                    </md-list-item>
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="ce1">Communication Effectively 1</md-radio-button>
+                    </md-list-item>
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="bw2">Business Writing 2</md-radio-button>
+                    </md-list-item>
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="ce2">Communication Effectively 2</md-radio-button>
+                    </md-list-item>
+                    <md-list-item style="margin-bottom:-15px">
+                        <md-radio-button value="ps2">Presentation Skills 2</md-radio-button>
+                    </md-list-item>
+                </md-radio-group>
+            </md-list>
+        </form>
+    </li>
+    <li style="float: left">
+        <md-list style="margin-bottom:30px; margin-left:40px">
+            <md-list-item style="margin-bottom:-15px"><div style="width:152px"><b>Name</b></div><b> :&ensp;</b>{{achievementSelected.employeeName}}</md-list-item>
+            <md-list-item style="margin-bottom:-15px"><div style="width:152px"><b>Job Family & Stream</b></div><b> :&ensp;</b>{{achievementSelected.jobFamily}}</md-list-item>
+            <md-list-item style="margin-bottom:-15px"><div style="width:152px"><b>Grade</b></div><b> :&ensp;</b>{{achievementSelected.grade}}</md-list-item>
+            <md-list-item style="margin-bottom:-15px"><div style="width:152px"><b>Office</b></div><b> :&ensp;</b>{{achievementSelected.office}}</md-list-item>
+        </md-list>
+        <form style="margin-bottom:25px; margin-left:50px">
+            <md-select placeholder="Choose Status" style="width:300px; margin-right:50px" [(ngModel)]="status"  [ngModelOptions]="{standalone: true}" (change)="isEnabledTrainingData()">
+                <md-option *ngFor="let s of statusData" [value]="s">
+                    {{ s }}
+                </md-option>
+            </md-select>
+        </form>
+        <form *ngIf="trainingDataIsEnabled === false" style="margin-bottom:10px; margin-left:50px">
+            <md-select placeholder="Choose Training" style="width:300px; margin-right:50px" [(ngModel)]="training"  [ngModelOptions]="{standalone: true}" disabled>
+                <md-option *ngFor="let t of trainingData" [value]="t.idTraining" disabled>
+                    {{ t.name }}
+                </md-option>
+            </md-select>
+        </form>
+        <form *ngIf="trainingDataIsEnabled === true" style="margin-bottom:10px; margin-left:50px">
+            <md-select placeholder="Choose Training" style="width:300px; margin-right:50px" [(ngModel)]="training"  [ngModelOptions]="{standalone: true}" (change)="changeTrainingData()">
+                <md-option *ngFor="let t of trainingData" [value]="t.idTraining">
+                    {{ t.name }}
+                </md-option>
+            </md-select>
+        </form>
+    </li>
+</ul>
+<form>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="updateAchievement()"><md-icon style="padding-right:50px">check</md-icon>Save</button>
+    <button md-button style="width:150px; background-color:#6100BF; color:#FEFEFE" (click)="closeDialog()"><md-icon style="padding-right:50px">close</md-icon>Close</button>
+</form>

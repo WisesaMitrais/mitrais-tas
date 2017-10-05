@@ -20,6 +20,15 @@ import { PeriodEnrollParticipantShowComponent } from './period/period-schedule-e
 import { PeriodScheduleEditComponent } from './period/period-schedule-edit.component';
 import { EditPeriodComponent } from './period/period-edit.component';
 import { UserComponent } from './user/user.component';
+import { AddUserComponent } from './user/user-add.component';
+import { EditUserComponent } from './user/user-edit.component';
+import { EnrollementComponent } from './enrollment/enrollment.component';
+import { AchievementComponent } from './achievement/achievement.component';
+import { AchievementDetailComponent } from './achievement/achievement-detail.component';
+import { AchievementRepeatComponent } from './achievement/achievement-repeat.component';
+import { TrainingMaintenanceComponent } from './training-maintenance/training-maintenance.component';
+import { TrainingMaintenanceAssessmentComponent } from './training-maintenance/training-maintenance-assessment.component';
+import { TrainingMaintenanceAttendanceComponent } from './training-maintenance/training-maintenance-attendance.component';
 
 const routes: Routes =[
   { path: '', redirectTo:'home/dashboard', pathMatch: 'full', canActivate: [LoginAuth] },
@@ -41,16 +50,18 @@ const routes: Routes =[
         ]},
         { path: 'edit', component: EditPeriodComponent }
       ]},
-      { path: 'user', component: UserComponent, children: [ //PROGRESS TAS SAMPAI DISINI !
-        { path: 'add', component: PeriodComponent },
-        { path: 'edit', component: PeriodComponent }
+      { path: 'user', component: UserComponent, children: [
+        { path: 'add', component: AddUserComponent },
+        { path: 'edit', component: EditUserComponent }
       ]},
-      { path: 'enrollment', component: PeriodComponent, children: [
-        { path: 'details', component: PeriodComponent }
+      { path: 'enrollment', component: EnrollementComponent },
+      { path: 'achievement', component: AchievementComponent, children: [
+        { path: 'details', component: AchievementDetailComponent },
+        { path: 'repeat-history', component: AchievementRepeatComponent }
       ]},
-      { path: 'achievement', component: PeriodComponent, children: [
-        { path: 'edit', component: PeriodComponent },
-        { path: 'details', component: PeriodComponent }
+      { path: 'training', component: TrainingMaintenanceComponent, children: [
+        { path: 'attendance', component: TrainingMaintenanceAttendanceComponent },
+        { path: 'assessment', component: TrainingMaintenanceAssessmentComponent }
       ]}
   ]}
 ];

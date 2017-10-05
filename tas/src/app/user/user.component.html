@@ -48,7 +48,7 @@
                     <md-cell *mdCellDef="let row">
                         <button md-button [mdMenuTriggerFor]="menu"><md-icon>more_horiz</md-icon></button>
                         <md-menu #menu="mdMenu">
-                            <button md-menu-item>Edit</button>
+                            <button md-menu-item (click)="openEditDialog(row)">Edit</button>
                         </md-menu>
                     </md-cell>
                 </ng-container>

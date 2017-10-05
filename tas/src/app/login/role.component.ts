@@ -14,6 +14,7 @@ import { NavbarComponent } from '../components/navbar/navbar.component';
 export class RoleComponent implements OnInit{
     userRole;
     roles;
+    active: number;
     adminRole: boolean = false;
     managerRole: boolean = false;
     trainerRole: boolean = false;
@@ -27,6 +28,17 @@ export class RoleComponent implements OnInit{
 
     ngOnInit(){
         this.userRole = JSON.parse(this.cookieService.get('currentUser'));
+        if(this.userRole.roleActive === 'admin'){
+            this.active = 1;
+        }else if(this.userRole.roleActive === 'manager'){
+            this.active = 2;
+        }else if(this.userRole.roleActive === 'trainer'){
+            this.active = 3;
+        }else if(this.userRole.roleActive === 'staff'){
+            this.active = 4;
+        }else{
+            this.active = 5;
+        }
         this.roles = this.userRole.roles;
         for(let i = 0; i < this.roles.length; i++){
             if(this.roles[i].name == "Admin"){
@@ -39,7 +51,6 @@ export class RoleComponent implements OnInit{
                 this.staffRole = true;
             }
         }
-        console.log(this.roles);
     }
 
     toDashboard(role: string): void {
