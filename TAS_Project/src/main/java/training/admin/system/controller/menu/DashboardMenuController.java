@@ -11,19 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import training.admin.system.ActiveTraining;
 import training.admin.system.BccCourse;
 import training.admin.system.model.Course;
 import training.admin.system.model.Office;
 import training.admin.system.model.Schedule;
 import training.admin.system.model.Training;
-import training.admin.system.model.User;
 import training.admin.system.repository.CourseRepository;
+import training.admin.system.repository.OfficeRepository;
 import training.admin.system.repository.RoomRepository;
 import training.admin.system.repository.ScheduleRepository;
 import training.admin.system.repository.TrainingRepository;
 import training.admin.system.repository.UserRepository;
-import training.admin.system.repository.OfficeRepository;
 
 @RestController
 @RequestMapping("/dashboard")
@@ -90,8 +92,8 @@ public class DashboardMenuController {
 	
 	@SuppressWarnings("deprecation")
 	@RequestMapping (value="/bccCourse", method = RequestMethod.GET)
-	public List<BccCourse> getBccCourse(){
-		
+	public List<BccCourse> getBccCourse() throws JsonProcessingException{
+		ObjectMapper objectMapper = new ObjectMapper();
 		System.out.println("\nProcessing for BCC Course Request");
 		System.out.println("---------------------------------");
 		
@@ -101,22 +103,25 @@ public class DashboardMenuController {
 		cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
 		cal.add(Calendar.DATE, 1);
 		Date startDateWeek = cal.getTime();
-//		System.out.println("StartDate = " + startDateWeek.toString());
+		System.out.println("StartDate = " + startDateWeek.toString());
 		
 		cal.add(Calendar.DATE, 4);
 		Date endDateWeek = cal.getTime();
-//		System.out.println("EndDate = " + endDateWeek.toString());
+		System.out.println("EndDate = " + endDateWeek.toString());
 		
 		List<Schedule> schedules = scheduleRepository.findByStartDateBeforeAndEndDateAfter(endDateWeek, startDateWeek);
-//		System.out.println("schedules length = " + schedules.size());
+		System.out.println("schedules length = " + schedules.size());
+		
+
+		System.out.println(objectMapper.writeValueAsString(schedules));
 		
 		for (Schedule schedule:schedules) {
-//			System.out.println("schedules id = " + schedule.getIdSchedule());
+			System.out.println("schedules id = " + schedule.getIdSchedule());
 			Course course = schedule.getCourse();
 
 			if(!course.isBccCourse()) continue;
 				
-//			System.out.println("course = " + course.getName() + " " + course.isBccCourse());
+			System.out.println("course = " + course.getName() + " " + course.isBccCourse());
 			
 			String trainerName = schedule.getMainTrainer().getName();
 			BccCourse newBccCourse = new BccCourse();
@@ -134,7 +139,7 @@ public class DashboardMenuController {
 				iter++;
 			}
 			
-//			System.out.println("createNew = " +createNew); 
+			System.out.println("createNew = " +createNew +" " + objectMapper.writeValueAsString(newBccCourse)); 
 			
 			newBccCourse.setTrainer(trainerName);
 			for (Integer i=1; i<=5; i++) {
@@ -152,45 +157,45 @@ public class DashboardMenuController {
 				switch (i) {
 				case 1:
 					if (!createNew) {
-						if (newBccCourse.getMon().compareTo("-")==0) {
+						if (newBccCourse.getMon().compareTo("-")==0) 
 							newBccCourse.setMon(data);
-						}
+						
 					}
 					else 
 						newBccCourse.setMon(data);
 					break;
 				case 2:
 					if (!createNew) {
-						if (newBccCourse.getTue().compareTo("-")==0) {
+						if (newBccCourse.getTue().compareTo("-")==0) 
 							newBccCourse.setTue(data);
-						}
+						
 					}
 					else 
 						newBccCourse.setTue(data);
 					break;
 				case 3:
 					if (!createNew) {
-						if (newBccCourse.getWed().compareTo("-")==0) {
+						if (newBccCourse.getWed().compareTo("-")==0) 
 							newBccCourse.setWed(data);
-						}
+						
 					}
 					else 
 						newBccCourse.setWed(data);
 					break;
 				case 4:
 					if (!createNew) {
-						if (newBccCourse.getThu().compareTo("-")==0) {
+						if (newBccCourse.getThu().compareTo("-")==0) 
 							newBccCourse.setThu(data);
-						}
+						
 					}
 					else 
 						newBccCourse.setThu(data);
 					break;
 				case 5:
 					if (!createNew) {
-						if (newBccCourse.getFri().compareTo("-")==0) {
+						if (newBccCourse.getFri().compareTo("-")==0) 
 							newBccCourse.setFri(data);
-						}
+						
 					}
 					else 
 						newBccCourse.setFri(data);
@@ -200,6 +205,8 @@ public class DashboardMenuController {
 				}
 				
 			}
+
+			System.out.println("createNew = " +createNew +" " + objectMapper.writeValueAsString(newBccCourse)); 
 			if (createNew)
 				bccCourses.add(newBccCourse);
 			else {

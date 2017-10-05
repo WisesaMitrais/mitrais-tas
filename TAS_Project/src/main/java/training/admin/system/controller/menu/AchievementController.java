@@ -10,8 +10,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.hibernate.validator.internal.util.privilegedactions.NewJaxbContext;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -96,9 +94,9 @@ public class AchievementController {
 	public Boolean updateAchievement(@PathVariable Long idUser,
 									@RequestBody EditAchievement editAchievement) throws JsonProcessingException {
 		
-		ObjectMapper objectMapper = new ObjectMapper();
-		System.out.println(objectMapper.writeValueAsString(editAchievement));
-		
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		System.out.println("Update Achievement JSON = " + objectMapper.writeValueAsString(editAchievement));
+//		
 		try {
 			User user = userRepository.findOne(idUser);
 			System.out.println(user.getName());
@@ -382,52 +380,52 @@ public class AchievementController {
 			switch (achievement.getCourse().getName()) {
 			case "Beginning":
 				beginningStatus = achievement.getStatus();
-				beginning = beginningStatus.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				beginning = beginningStatus.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : beginningStatus;
 				_beginning = beginningStatus.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _beginning;
 				break;
 			case "Low Intermediete 1":
 				LI1Status = achievement.getStatus();
-				LI1 = LI1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				LI1 = LI1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : LI1Status;
 				_LI1 = LI1Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _LI1;
 				break;
 			case "Low Intermediete 2":
 				LI2Status = achievement.getStatus();
-				LI2 = LI2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				LI2 = LI2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : LI2Status;
 				_LI2 = LI2Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _LI2;
 				break;
 			case "Intermediete 1":
 				Int1Status = achievement.getStatus();
-				Int1 = Int1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				Int1 = Int1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : Int1Status;
 				_Int1 = Int1Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _Int1;
 				break;
 			case "Intermediete 2":
 				Int2Status = achievement.getStatus();
-				Int2 = Int2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				Int2 = Int2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : Int2Status;
 				_Int2 = Int2Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _Int2;
 				break;
 			case "Business Writing 1":
 				BW1Status = achievement.getStatus();
-				BW1 = BW1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";				
+				BW1 = BW1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : BW1Status;				
 				_BW1 = BW1Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _BW1;
 				break;
 			case "Business Writing 2":
 				BW2Status = achievement.getStatus();
-				BW2 = BW2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				BW2 = BW2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : BW2Status;
 				_BW2 = BW2Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _BW2;
 				break;
 			case "Communicating Effectively 1":
 				CE1Status = achievement.getStatus();
-				CE1 = CE1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				CE1 = CE1Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : CE1Status;
 				_CE1 = CE1Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining(): _CE1;
 				break;
 			case "Communicating Effectively 2":
 				CE2Status = achievement.getStatus();
-				CE2 = CE2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				CE2 = CE2Status.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : CE2Status;
 				_CE2 = CE2Status.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _CE2;
 				break;
 			case "Presentation Skills 2":
 				PresentationSkillStatus = achievement.getStatus();
-				PresentationSkill = PresentationSkillStatus.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : "-";
+				PresentationSkill = PresentationSkillStatus.compareTo("Term")==0 ? achievement.getTraining().getTrainingName() : PresentationSkillStatus;
 				_PresentationSkill = PresentationSkillStatus.compareTo("Term")==0 ? achievement.getTraining().getIdTraining() : _PresentationSkill;
 				break;
 			default:

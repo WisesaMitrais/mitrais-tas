@@ -18,7 +18,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	List<Schedule> findByStartDateAfterAndEndDateBefore(Date startDate, Date endDate);
 	List<Schedule> findByEndDateAfterAndTraining(Date today, Training training);
 	List<Schedule> findByTraining(Training training);
-	List<Schedule> findByMainTrainer(User trainer);
+	List<Schedule> findByMainTrainerOrIdBackupTrainer(User trainer, Long idBackupTrainer);
 	List<Schedule> findByIdBackupTrainer(Long idTrainer);
 	
 	@Query(value="SELECT COUNT (id_schedule) FROM tb_schedule Where id_course=? AND id_training=?", nativeQuery = true)

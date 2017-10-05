@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import training.admin.system.AddEnrollment;
 import training.admin.system.EnrollmentData;
+import training.admin.system.model.Assessment;
 import training.admin.system.model.Enrollment;
 import training.admin.system.model.Schedule;
 import training.admin.system.model.User;
+import training.admin.system.repository.AssesmentRepository;
 import training.admin.system.repository.CourseRepository;
 import training.admin.system.repository.EnrollmentRepository;
 import training.admin.system.repository.ScheduleRepository;
@@ -43,6 +45,8 @@ public class EnrollmentController {
 	ScheduleRepository scheduleRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	AssesmentRepository assessmentRepository;
 	
 	@RequestMapping(value="/all", method=RequestMethod.GET)
 	public List<Enrollment> findAll(){
@@ -122,7 +126,8 @@ public class EnrollmentController {
 		} else if (today.compareTo(endTime)<=0) {
 			status = "In Progress";
 		} else {
-			status = "Done";
+			Assessment assessment = assessmentRepository.findByEnrollment(enrollment);
+			status = assessment==null ? "Done" : assessment.getStatus();
 		}
 		enrollmentData.setIdEnrollment(enrollment.getIdEnrollment());
 		enrollmentData.setUserNumber(enrollment.getUser().getIdUser());

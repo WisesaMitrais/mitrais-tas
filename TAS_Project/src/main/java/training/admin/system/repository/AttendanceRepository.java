@@ -11,5 +11,5 @@ import training.admin.system.model.Enrollment;
 @Component
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
-	List <Attendance> findByEnrollment(Enrollment enrollment);
+	Attendance findByEnrollment(Enrollment enrollment);
 }

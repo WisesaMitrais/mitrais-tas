@@ -1,7 +1,6 @@
 package training.admin.system.controller.menu;
 
 import java.text.SimpleDateFormat;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,13 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import training.admin.system.PeriodData;
-import training.admin.system.UserData;
-import training.admin.system.model.Course;
 import training.admin.system.model.Schedule;
 import training.admin.system.model.Training;
-import training.admin.system.model.User;
-import training.admin.system.model.UserRole;
 import training.admin.system.repository.CourseRepository;
 import training.admin.system.repository.OfficeRepository;
 import training.admin.system.repository.RoomRepository;
@@ -83,19 +81,23 @@ public class PeriodMenuController {
 	
 	@RequestMapping (value="/{id}/update",method = RequestMethod.POST)
 	public Boolean update (@RequestBody Training trainingParam,
-						@PathVariable ("id") Long idTraining) {
+						@PathVariable ("id") Long idTraining) throws JsonProcessingException {
 		
-		List<Schedule> schedules = scheduleRepository.findByTraining(trainingParam);
-		for (Schedule schedule:schedules) {
-			if (schedule.getStartDate().before(trainingParam.getStartDate()) || schedule.getEndDate().after(trainingParam.getEndDate())) {
-				System.out.println("Training period is out of range!");
-				return Boolean.FALSE;
-			}
-		}
+		ObjectMapper objectMapper = new ObjectMapper();
+		System.out.println("Update Training JSON = " + objectMapper.writeValueAsString(trainingParam));
 		
-		Date currentDate = new Date(System.currentTimeMillis());
 		try {
 			Training training = trainingRepository.findOne(idTraining);
+			List<Schedule> schedules = scheduleRepository.findByTraining(training);
+			for (Schedule schedule:schedules) {
+				if (schedule.getStartDate().before(trainingParam.getStartDate()) || schedule.getEndDate().after(trainingParam.getEndDate())) {
+					System.out.println("Training period is out of range!");
+					return Boolean.FALSE;
+				}
+			}
+			
+			Date currentDate = new Date(System.currentTimeMillis());
+		
 			training.setTrainingName(trainingParam.getTrainingName());
 			training.setStartDate(trainingParam.getStartDate());
 			training.setEndDate(trainingParam.getEndDate());

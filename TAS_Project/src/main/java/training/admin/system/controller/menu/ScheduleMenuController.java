@@ -15,13 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import training.admin.system.AddSchedule;
-import training.admin.system.PeriodData;
+import training.admin.system.RepeatData;
 import training.admin.system.ScheduleData;
+import training.admin.system.model.Assessment;
 import training.admin.system.model.Course;
+import training.admin.system.model.Enrollment;
 import training.admin.system.model.Room;
 import training.admin.system.model.Schedule;
 import training.admin.system.model.Training;
 import training.admin.system.model.User;
+import training.admin.system.repository.AssesmentRepository;
 import training.admin.system.repository.CourseRepository;
 import training.admin.system.repository.EnrollmentRepository;
 import training.admin.system.repository.OfficeRepository;
@@ -48,6 +51,8 @@ public class ScheduleMenuController {
 	TrainingRepository trainingRepository;
 	@Autowired
 	EnrollmentRepository enrollmentRepository;
+	@Autowired
+	AssesmentRepository assessmentRepository;
 	
 	@GetMapping("/all")
 	public List<ScheduleData> findAll(){
@@ -135,9 +140,9 @@ public class ScheduleMenuController {
 			schedule.setIdBackupTrainer(newSchedule.getIdBackupTrainer());
 			schedule.setPeriodic(newSchedule.getPeriodic());
 			if (newSchedule.getPeriodic()) {
+				schedule.setDay(newSchedule.getDay().toString());
 				schedule.setHour(newSchedule.getHour());
 			} else {
-				schedule.setDay(newSchedule.getDay().toString());
 				schedule.setHour(newSchedule.getHour());
 			}
 			schedule.setCourse(course);
@@ -180,11 +185,37 @@ public class ScheduleMenuController {
 	public List <ScheduleData> findByTrainer(@PathVariable Long idTrainer){
 		List <ScheduleData> scheduleDatas = new ArrayList<ScheduleData>();
 		User trainer = userRepository.findOne(idTrainer);
-		List <Schedule> schedules = scheduleRepository.findByMainTrainer(trainer);
+		List <Schedule> schedules = scheduleRepository.findByMainTrainerOrIdBackupTrainer(trainer, trainer.getIdUser());
 		for (Schedule schedule:schedules) {
 			scheduleDatas.add(ConvertSchedulesToScheduleData(schedule, false));
 		}
 		return scheduleDatas;
+	}
+	
+	@GetMapping (value = "/findRepeatByUser/{idUser}")
+	public List<RepeatData> findRepeat (@PathVariable Long idUser){
+		List<RepeatData> repeatDatas = new ArrayList<RepeatData>();
+		
+		User user = userRepository.findOne(idUser);
+		List<Enrollment> enrollments = enrollmentRepository.findByUser(user);
+		for (Enrollment enrollment:enrollments) {
+			RepeatData repeatData = new RepeatData();
+			Schedule schedule = enrollment.getSchedule();
+			repeatData.setTrainingName(schedule.getTraining().getTrainingName());
+			repeatData.setCourseName(schedule.getCourse().getName());
+			repeatData.setStartDate(new SimpleDateFormat("d MMMM yyyy").format(schedule.getStartDate()));
+			repeatData.setEndDate(new SimpleDateFormat("d MMMM yyyy").format(schedule.getEndDate()));
+			
+			Assessment assessment = assessmentRepository.findByEnrollment(enrollment);
+			if(assessment==null)
+				repeatData.setStatus("In Progress");
+			else
+				repeatData.setStatus(assessment.getStatus());
+			
+			repeatDatas.add(repeatData);
+		}
+		
+		return repeatDatas;
 	}
 	
 	@GetMapping (value="/count/{idTraining}/{idCourse}")
