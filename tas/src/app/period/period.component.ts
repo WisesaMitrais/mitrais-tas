@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MdPaginator, MdSort, SelectionModel, MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { CookieService } from 'angular2-cookie/core';
 
 import { AddPeriodComponent } from './period-add.component';
 import { EditPeriodComponent } from './period-edit.component';
@@ -25,6 +26,9 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./period.component.css']
 })
 export class PeriodComponent {
+  currentUser;
+  roleActive: number;
+
   result;
   displayedColumns = ['idTraining', 'name', 'active', 'courses', 'startDate', 'endDate', 'createdBy', 'updatedBy', 'action'];
   period: Period[];
@@ -36,7 +40,7 @@ export class PeriodComponent {
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private periodService: PeriodService, public dialog: MdDialog, private router: Router, private notificationService: NotificationService) {  
+  constructor(private cookieService: CookieService, private periodService: PeriodService, public dialog: MdDialog, private router: Router, private notificationService: NotificationService) {  
       this.periodService.getDataPeriod().subscribe(((period) => {
       this.period = period;
       this.exampleDatabase = new ExampleDatabase(this.period);
@@ -53,6 +57,12 @@ export class PeriodComponent {
         this.dataSource.filter = this.filter.nativeElement.value;
       });
     }));
+    this.currentUser = JSON.parse(this.cookieService.get('currentUser'));
+    if(this.currentUser.roleActive === 'admin'){
+      this.roleActive = 1;
+    }else{
+      this.roleActive = 0;
+    }
   }
 
   openDialog(): void {

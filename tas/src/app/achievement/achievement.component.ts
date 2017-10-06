@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, Inject } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MdPaginator, MdSort, SelectionModel } from '@angular/material';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { CookieService } from 'angular2-cookie/core';
 
 import { AchievementDetailComponent } from './achievement-detail.component';
 import { AchievementRepeatComponent } from './achievement-repeat.component';
@@ -25,9 +26,12 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./achievement.component.css']
 })
 export class AchievementComponent {
+  currentUser;
+  roleActive: number;
+
   result;
   displayedColumns = ['employeeName', 'jobFamily', 'grade', 'office', 'b', 'li1', 'li2', 'int1', 'int2', 'bw1', 'ce1', 'bw2', 'ce2', 'ps2', 'action'];
-  achievement: Achievement[];
+  achievement: Achievement[] = [];
   exampleDatabase;
   dataSource: ExampleDataSource | null;
   selection = new SelectionModel<string>(true, []);
@@ -36,25 +40,56 @@ export class AchievementComponent {
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private achievementService: AchievementService, 
+  constructor(private cookieService: CookieService,
+    private achievementService: AchievementService, 
     public dialog: MdDialog, 
-    private notificationService: NotificationService) {  
-    this.achievementService.getAllAchievementData().subscribe(((achievement) => {
-      this.achievement = achievement;
-      this.exampleDatabase = new ExampleDatabase(this.achievement);
-      this.paginator.length = this.exampleDatabase.data.length;
-      this.paginator.pageSize = 10;
-      this.paginator._pageIndex = 0; 
-      
-      this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
-      Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        if (!this.dataSource) { return; }
-        this.dataSource.filter = this.filter.nativeElement.value;
-      });
-    }));
+    private notificationService: NotificationService) {
+    this.currentUser = JSON.parse(this.cookieService.get('currentUser'));
+    if(this.currentUser.roleActive === 'admin'){
+      this.roleActive = 1;
+    }else if(this.currentUser.roleActive === 'manager'){
+      this.roleActive = 2;
+    }else if(this.currentUser.roleActive === 'trainer'){
+      this.roleActive = 3;
+    }else if(this.currentUser.roleActive === 'staff'){
+      this.roleActive = 4;
+    }
+    
+    if(this.roleActive == 1 || this.roleActive == 2){
+      this.achievementService.getAllAchievementData().subscribe(((achievement) => {
+        this.achievement = achievement;
+        this.exampleDatabase = new ExampleDatabase(this.achievement);
+        this.paginator.length = this.exampleDatabase.data.length;
+        this.paginator.pageSize = 10;
+        this.paginator._pageIndex = 0; 
+        
+        this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
+        Observable.fromEvent(this.filter.nativeElement, 'keyup')
+        .debounceTime(150)
+        .distinctUntilChanged()
+        .subscribe(() => {
+          if (!this.dataSource) { return; }
+          this.dataSource.filter = this.filter.nativeElement.value;
+        });
+      }));
+    }else if(this.roleActive == 3 || this.roleActive == 4){
+      this.achievementService.getSingleAchievementData(this.currentUser.id).subscribe(((achievement) => {
+        this.achievement[0] = achievement;
+        this.exampleDatabase = new ExampleDatabase(this.achievement);
+        this.paginator.length = this.exampleDatabase.data.length;
+        this.paginator.pageSize = 10;
+        this.paginator._pageIndex = 0; 
+        
+        this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
+        Observable.fromEvent(this.filter.nativeElement, 'keyup')
+        .debounceTime(150)
+        .distinctUntilChanged()
+        .subscribe(() => {
+          if (!this.dataSource) { return; }
+          this.dataSource.filter = this.filter.nativeElement.value;
+        });
+      }));
+    }
   }
 
   openDetailDialog(achievement: Achievement): void{

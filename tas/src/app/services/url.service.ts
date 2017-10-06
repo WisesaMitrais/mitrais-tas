@@ -90,7 +90,7 @@ export class UrlService {
     public getAllAchievementData(){
         return this.baseUrl+'achievement/findAllUser';
     }
-    public getSingleAchievementData(idUser: string){
+    public getSingleAchievementData(idUser: number){
         return this.baseUrl+'achievement/findByUser/'+idUser;
     }
     public updateAchievementData(idUser: number){
@@ -103,6 +103,9 @@ export class UrlService {
 
     public getTrainingByTrainerData(idTrainer: number){
         return this.baseUrl+'schedule/findByTrainer/'+idTrainer;
+    }
+    public getAllTrainingData(){
+        return this.baseUrl+'schedule/all';
     }
     public getAssessmentData(idSchedule: string){
         return this.baseUrl+'assessment/findBySchedule/'+idSchedule;

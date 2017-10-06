@@ -30,6 +30,13 @@ import 'rxjs/add/observable/throw';
             .catch(this.handleError);
     }
 
+    public getAllTrainingMaintenanceData(): Observable<SchedulePeriod[]>{
+        this.url = this.urlService.getAllTrainingData();
+        return this.http.get(this.url, {headers: this.headers})
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     public getAllAssessmentData(idSchedule: string): Observable<TrainingMaintenanceAssessment[]>{
         this.url = this.urlService.getAssessmentData(idSchedule);
         return this.http.get(this.url, {headers: this.headers})

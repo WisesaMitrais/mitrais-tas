@@ -27,6 +27,7 @@ import 'rxjs/add/operator/debounceTime';
 })
 export class TrainingMaintenanceComponent {
     userRole;
+    roleActive: number;
 
     idCurrentUser;
     displayedColumns = ['name', 'mainTrainer', 'backupTrainer', 'classroom', 'scheduleType', 'day', 'startTime', 'endTime', 'capacity', 'allParticipantList', 'action'];
@@ -45,30 +46,57 @@ export class TrainingMaintenanceComponent {
       private notificationService: NotificationService) {
       this.userRole = JSON.parse(this.cookieService.get('currentUser'));
       this.idCurrentUser = this.userRole.id;
-      this.trainingMaintenanceService.getTrainingMaintenanceData(this.idCurrentUser).subscribe(((schedule) => {
-      this.schedule = schedule;
-      this.exampleDatabase = new ExampleDatabase(this.schedule);
-      this.paginator.length = this.exampleDatabase.data.length;
-      this.paginator.pageSize = 10;
-      this.paginator._pageIndex = 0; 
-        
-      this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
-      Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        if (!this.dataSource) { return; }
-        this.dataSource.filter = this.filter.nativeElement.value;
-        });
-      }));
+      if(this.userRole.roleActive === 'admin'){
+        this.roleActive = 1;
+      }else if(this.userRole.roleActive === 'manager'){
+        this.roleActive = 2;
+      }else if(this.userRole.roleActive === 'trainer'){
+        this.roleActive = 3;
+      }else if(this.userRole.roleActive === 'staff'){
+        this.roleActive = 4;
+      }
+      if(this.roleActive === 1){
+        this.trainingMaintenanceService.getAllTrainingMaintenanceData().subscribe(((schedule) => {
+          this.schedule = schedule;
+          this.exampleDatabase = new ExampleDatabase(this.schedule);
+          this.paginator.length = this.exampleDatabase.data.length;
+          this.paginator.pageSize = 10;
+          this.paginator._pageIndex = 0; 
+            
+          this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
+          Observable.fromEvent(this.filter.nativeElement, 'keyup')
+          .debounceTime(150)
+          .distinctUntilChanged()
+          .subscribe(() => {
+            if (!this.dataSource) { return; }
+            this.dataSource.filter = this.filter.nativeElement.value;
+            });
+          }));
+      }else{
+        this.trainingMaintenanceService.getTrainingMaintenanceData(this.idCurrentUser).subscribe(((schedule) => {
+          this.schedule = schedule;
+          this.exampleDatabase = new ExampleDatabase(this.schedule);
+          this.paginator.length = this.exampleDatabase.data.length;
+          this.paginator.pageSize = 10;
+          this.paginator._pageIndex = 0; 
+            
+          this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
+          Observable.fromEvent(this.filter.nativeElement, 'keyup')
+          .debounceTime(150)
+          .distinctUntilChanged()
+          .subscribe(() => {
+            if (!this.dataSource) { return; }
+            this.dataSource.filter = this.filter.nativeElement.value;
+            });
+          }));
+      }
     }
   
     openAttendanceDialog(schedule: SchedulePeriod){
       let dialogRef = this.dialog.open(TrainingMaintenanceAttendanceComponent, {
-        width: '1000px',
-        height: '640px'
+        width: '500px',
+        height: '500px'
       });
-      // dialogRef.componentInstance.scheduleSelected = schedule;
     }
   
     openAssessmentDialog(schedule: SchedulePeriod){

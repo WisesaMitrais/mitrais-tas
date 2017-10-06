@@ -31,7 +31,7 @@ import 'rxjs/add/observable/throw';
             .catch(this.handleError);
     }
     
-    public getSingleAchievementData(idUser: string): Observable<Achievement>{
+    public getSingleAchievementData(idUser: number): Observable<Achievement>{
         this.url = this.urlService.getSingleAchievementData(idUser);
         return this.http.get(this.url, {headers: this.headers})
             .map(this.extractData)
